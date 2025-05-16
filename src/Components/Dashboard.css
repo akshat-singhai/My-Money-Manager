@@ -1,0 +1,233 @@
+/* Minimalist, glassmorphism-inspired dashboard styles */
+body {
+    background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    padding: 0rem 0rem;
+    background: transparent;
+    animation: fadeInDash 0.7s;
+}
+
+@keyframes fadeInDash {
+    from { opacity: 0; transform: translateY(40px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+.expense-chart,
+.pie-chart-container {
+    width: 100%;
+    max-width: 420px;
+    margin: 2.5rem 0;
+    padding: 1.5rem 1.2rem;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    font-size: 1.15rem;
+    color: #232946;
+    font-weight: 500;
+    text-align: center;
+    transition: box-shadow 0.3s, transform 0.3s;
+    animation: fadeInDash 0.9s;
+
+}
+
+.expense-chart:hover,
+.pie-chart-container:hover {
+    box-shadow: 0 16px 40px rgba(31, 38, 135, 0.18);
+    transform: scale(1.025);
+}
+
+.expense-chart h2,
+.pie-chart-container h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.7rem;
+    color: #232946;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.expense-chart p,
+.pie-chart-container p {
+    margin: 0;
+    font-size: 1.08rem;
+    color: #555;
+}
+
+.expense-chart .chart,
+.pie-chart-container .chart {
+    width: 100%;
+    min-height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Button Styles */
+.OpenBtn, .CloseBtn {
+    border: none;
+    color: #fff;
+    padding: 12px 28px;
+    font-size: 1rem;
+    margin: 10px 6px;
+    cursor: pointer;
+    border-radius: 18px;
+    background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(31, 38, 135, 0.10);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.OpenBtn:hover, .CloseBtn:hover {
+    background: linear-gradient(90deg, #fc5c7d 0%, #6a82fb 100%);
+    transform: scale(1.04);
+    box-shadow: 0 6px 18px rgba(31, 38, 135, 0.18);
+}
+
+.OpenBtn:active, .CloseBtn:active {
+    transform: scale(0.97);
+    box-shadow: 0 1px 3px rgba(31, 38, 135, 0.13);
+}
+
+/* Info Boxes */
+.balanceBox, .TotalBox, .TransactionsBox, .TotalIncomeBox, .TotalExpensebox, .IncomBox, .ExpenseBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    padding: 16px 22px;
+    border-radius: 16px;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(255,255,255,0.65);
+    box-shadow: 0 2px 12px rgba(31, 38, 135, 0.10);
+    margin: 0.1rem 0.rem;
+    min-width: 140px;
+    color: #232946;
+    border: 1px solid rgba(255,255,255,0.18);
+    transition: box-shadow 0.2s, transform 0.2s;
+    animation: fadeInDash 1.1s;
+}
+
+.balanceBox {
+    background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+    color: #fff;
+}
+
+.TotalBox {
+    background: linear-gradient(90deg, #f7971e 0%, #ffd200 100%);
+    color: #232946;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    width: 6rem;
+    height: 2.8rem;
+    display: flex;
+
+    border-radius: 16px;
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+.TransactionsBox {
+    background: linear-gradient(90deg, #e0c3fc 0%, #8ec5fc 100%);
+    color: #5f11e5;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    width: 6rem;
+    text-align: center;
+    margin: 0px 3px;
+}
+
+.TotalIncomeBox, .IncomBox {
+    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+    color: #fffb00;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    width: 6rem;
+    
+    text-align: center;
+    margin-right: 3px;
+}
+
+.TotalExpensebox, .ExpenseBox {
+    background: linear-gradient(90deg, #ffa9a9 0%, #f09819 100%);
+    color: #ff0000;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    width: 6rem;
+    height: 2.8rem;
+    text-align: center;
+    margin-right: 3px;
+}
+
+.balanceBox:hover,
+.TotalBox:hover,
+.TransactionsBox:hover,
+.TotalIncomeBox:hover,
+.TotalExpensebox:hover,
+.IncomBox:hover,
+.ExpenseBox:hover {
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.18);
+    transform: scale(1.04);
+}
+
+@media (max-width: 700px) {
+    .dashboard {
+        padding: 1rem 0.2rem;
+    }
+    .expense-chart,
+    .pie-chart-container {
+        max-width: 98vw;
+        padding: 1rem 0.5rem;
+    }
+    .balanceBox, .TotalBox, .TransactionsBox, .TotalIncomeBox, .TotalExpensebox, .IncomBox, .ExpenseBox {
+        min-width: 90px;
+        font-size: 0.98rem;
+        padding: 10px 8px;
+    }
+}
+.heading2{
+    font-size: 1.5rem;
+    color: #000000;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0.5rem 0;
+    text-align: center;
+    animation: fadeInDash 1.2s;
+    padding: 0.5rem 1rem;
+}
+.chart-containe-box{
+  background-color: #43cea2;
+}
+.nivLink{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    padding: 12px 28px;
+    margin: 10px 6px;
+    cursor: pointer;
+    border-radius: 18px;
+    background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(31, 38, 135, 0.10);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    
+}
