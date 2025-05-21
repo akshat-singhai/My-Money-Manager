@@ -11,11 +11,7 @@ const AddTransaction = () => {
   const [type, setType] = useState("income");
   const [category, setCategory] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-
-
- 
-
-
+  const [notes, setNotes] = useState(""); // NEW: Notes state
 
   const categories = type === "income" ? incomeCategories : expenseCategories;
 
@@ -25,14 +21,14 @@ const AddTransaction = () => {
 
     const value = type === "expense" ? -Math.abs(+amount) : +amount;
 
-    addTransaction({ text, amount: value, category, type, date });
+    addTransaction({ text, amount: value, category, type, date, notes }); // Pass notes
     setText("");
     setAmount("");
     setCategory("");
+    setNotes(""); // Clear notes
   };
 
   const henladelOnClick = () => {
-
     toast.success('Transaction Added Successfully', {
       duration: 2000,
       position: 'top-center',
@@ -91,6 +87,14 @@ const AddTransaction = () => {
         value={date}
         onChange={(e) => setDate(e.target.value)}
         className="dateBox"
+      />
+      <label htmlFor="notes" className="notesLabel">Notes (optional):</label>
+      <textarea
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        placeholder="Notes (optional)"
+        className="notesBox"
+        rows={2}
       />
       <button type="submit" className="BtnAT" onClick={henladelOnClick} >Add Transaction</button>
     </form>

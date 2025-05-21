@@ -358,3 +358,50 @@
   padding: 8px 12px;
   box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
 }
+.notesBox {
+  background: #e0e7ff;
+  border-radius: 8px;
+  color: #3b3663;
+  font-weight: 500;
+  padding: 10px 14px;
+  font-size: 1.08rem;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.06);
+  border: 1px solid #d1d5db;
+  width: 90%;
+  min-height: 48px;
+  margin-top: 0.7rem;
+  margin-bottom: 1rem;
+  resize: vertical;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.notesBox:focus {
+  outline: none;
+  background: #dbeafe;
+  box-shadow: 0 4px 16px rgba(80, 80, 160, 0.13);
+}
+.transaction-list-container .filters select {
+  min-width: 140px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.notesBox::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+.notesBox:hover{
+  background: #dbeafe;
+  box-shadow: 0 4px 16px rgba(80, 80, 160, 0.13);
+  transition: background 0.2s, box-shadow 0.2s;
+
+}
+.transaction-list-container .filters input[type="text"],
+.transaction-list-container .filters select {
+  min-width: 140px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}

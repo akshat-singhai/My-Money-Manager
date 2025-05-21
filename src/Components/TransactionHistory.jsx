@@ -25,16 +25,15 @@ const TransactionList = () => {
       <h3>Transaction History</h3>
 
       <div className="filters">
-        
-        <div className="SearchBox"><FaSearch /> Search by description:
+        <div className="SearchBox">
+          <FaSearch /> Search by description:
           <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="search-input"          
-        />
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
+          />
         </div>
-        
 
         <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
           <option value="all">All Types</option>
@@ -53,25 +52,30 @@ const TransactionList = () => {
       {filtered.length === 0 ? (
         <p className="no-transactions">No matching transactions found.</p>
       ) : (
-       
-      <ul className="transaction-list">
-  {filtered.map(({ id, text, amount, category, type, date }) => (
-    <li key={id} className={`transaction-item ${type}`}>
-      <div>
-        <strong>{text}</strong>
-        <span className="category">({category})</span>
-        <div className="type">{type ? type.toUpperCase() : ""}</div>
-        <div className="date">
-          {date ? new Date(date).toLocaleDateString() : ""}
-        </div>
-      </div>
-      <div className="amount">
-        ₹{Math.abs(amount)}
-        <button className="delete-btn" onClick={() => deleteTransaction(id)}>❌</button>
-      </div>
-    </li>
-  ))}
-</ul>
+        <ul className="transaction-list">
+          {filtered.map(({ id, text, amount, category, type, date, notes }) => (
+            <li key={id} className={`transaction-item ${type}`}>
+              <div>
+                <strong>{text}</strong>
+                <span className="category">({category})</span>
+                <div className="type">{type ? type.toUpperCase() : ""}</div>
+                <div className="date">
+                  {date ? new Date(date).toLocaleDateString() : ""}
+                </div>
+                {/* Show notes if present */}
+                {notes && notes.trim() !== "" && (
+                  <div className="notes" style={{ marginTop: "0.3rem", color: "#6366f1", fontStyle: "italic" }}>
+                    📝 {notes}
+                  </div>
+                )}
+              </div>
+              <div className="amount">
+                ₹{Math.abs(amount)}
+                <button className="delete-btn" onClick={() => deleteTransaction(id)}>❌</button>
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
