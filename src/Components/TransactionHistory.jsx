@@ -77,6 +77,7 @@ const TransactionList = () => {
           ))}
         </ul>
       )}
+      
     </div>
   );
 };

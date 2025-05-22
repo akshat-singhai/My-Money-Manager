@@ -4,7 +4,7 @@ import TransactionList from "./Components/TransactionList";
 import Dashboard from "./Components/Dashboard";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import TransactionHistory from "./Components/TransactionHistory";
-
+import FinanceTools from "./Components/finance-tools";
 import "./App.css";
 
 function App() {
@@ -17,11 +17,13 @@ function App() {
             <Link to="/" className="nivBox">ADD Transaction</Link>
             <Link to="/Dashboard" className="nivBox">Dashboard</Link>
             <Link to="/history" className="nivBox">Transaction History</Link>
+            <Link to="/finance-tools" className="nivBox">Finance Tools</Link>
           </nav>
           <Routes>
             <Route path="/" element={<TransactionList />} />
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/history" element={<TransactionHistory />} />
+            <Route path="/finance-tools" element={<FinanceTools />} />
           </Routes>
           
           <div className="footer">
