@@ -231,3 +231,23 @@ body {
     transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
     
 }
+@media (max-width: 700px) {
+    .dashboard {
+        padding: 1rem 0.2rem;
+    }
+    .expense-chart,
+    .pie-chart-container {
+        max-width: 98vw;
+        padding: 1rem 0.5rem;
+    }
+    .balanceBox, .TotalBox, .TransactionsBox, .TotalIncomeBox, .TotalExpensebox, .IncomBox, .ExpenseBox {
+        min-width: 90px;
+        font-size: 0.98rem;
+        padding: 10px 8px;
+        width: 100%;
+        margin: 0.3rem 0;
+        flex-direction: column;
+        align-items: stretch;
+        box-sizing: border-box;
+    }
+}

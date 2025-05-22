@@ -5,6 +5,11 @@ body {
   padding: 0;
 }
 
+@keyframes fadeInTools {
+  from { opacity: 0; transform: translateY(40px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
 .container {
   max-width: 600px;
   margin: 40px auto;
@@ -12,12 +17,14 @@ body {
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  animation: fadeInTools 0.7s;
 }
 
 h1, h2 {
   color: #2f855a;
   margin-bottom: 20px;
   text-align: center;
+  animation: fadeInTools 1s;
 }
 
 input, select {
@@ -28,6 +35,13 @@ input, select {
   border-radius: 6px;
   box-sizing: border-box;
   font-size: 16px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #38a169;
+  box-shadow: 0 0 8px #38a16933;
 }
 
 button {
@@ -40,10 +54,14 @@ button {
   border-radius: 6px;
   cursor: pointer;
   margin-top: 10px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  animation: fadeInTools 0.8s;
 }
 
 button:hover {
   background-color: #2f855a;
+  transform: scale(1.04);
+  box-shadow: 0 4px 16px rgba(56, 161, 105, 0.13);
 }
 
 .result {
@@ -53,4 +71,43 @@ button:hover {
   margin-top: 10px;
   border-radius: 6px;
   font-weight: bold;
+  animation: fadeInTools 0.9s;
+  transition: box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(56, 161, 105, 0.08);
+}
+/* ...existing code... */
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 98vw;
+    margin: 10px 1vw;
+    padding: 10px 4vw;
+    border-radius: 7px;
+  }
+
+  h1, h2 {
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+  }
+
+  input, select {
+    font-size: 15px;
+    padding: 8px;
+    margin: 6px 0;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 10px;
+    margin-top: 8px;
+  }
+
+  .result {
+    font-size: 1rem;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(56, 161, 105, 0.06);
+    
+  }
 }

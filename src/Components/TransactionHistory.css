@@ -126,3 +126,50 @@
 
 }
  
+/* ...existing code... */
+
+@keyframes fadeInTransaction {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.transaction-list-container {
+  /* ...existing code... */
+  animation: fadeInTransaction 0.7s;
+}
+
+.transaction-item {
+  /* ...existing code... */
+  animation: fadeInTransaction 0.6s;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.transaction-item:hover {
+  box-shadow: 0 6px 24px rgba(80, 80, 160, 0.13);
+  transform: scale(1.02);
+}
+
+.delete-btn {
+  /* ...existing code... */
+  transition: color 0.2s, transform 0.15s;
+}
+
+.delete-btn:active {
+  transform: scale(1.2) rotate(-10deg);
+}
+
+.filters {
+  /* ...existing code... */
+  animation: fadeInTransaction 0.8s;
+}
+
+.no-transactions {
+  /* ...existing code... */
+  animation: fadeInTransaction 0.8s;
+}
