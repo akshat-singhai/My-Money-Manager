@@ -52,30 +52,39 @@ const TransactionList = () => {
       {filtered.length === 0 ? (
         <p className="no-transactions">No matching transactions found.</p>
       ) : (
-        <ul className="transaction-list">
-          {filtered.map(({ id, text, amount, category, type, date, notes }) => (
-            <li key={id} className={`transaction-item ${type}`}>
-              <div>
-                <strong>{text}</strong>
-                <span className="category">({category})</span>
-                <div className="type">{type ? type.toUpperCase() : ""}</div>
-                <div className="date">
-                  {date ? new Date(date).toLocaleDateString() : ""}
-                </div>
-                {/* Show notes if present */}
-                {notes && notes.trim() !== "" && (
-                  <div className="notes" style={{ marginTop: "0.3rem", color: "#6366f1", fontStyle: "italic" }}>
-                    📝 {notes}
-                  </div>
-                )}
-              </div>
-              <div className="amount">
-                ₹{Math.abs(amount)}
-                <button className="delete-btn" onClick={() => deleteTransaction(id)}>❌</button>
-              </div>
-            </li>
-          ))}
-        </ul>
+       // ...existing code...
+<ul className="transaction-list">
+  {filtered.map(({ id, text, amount, category, type, date, notes, paymentMode, accountType }) => (
+    <li key={id} className={`transaction-item ${type}`}>
+      <div>
+        <strong>{text}</strong>
+        <span className="category">({category})</span>
+        <div className="type">{type ? type.toUpperCase() : ""}</div>
+        <div className="date">
+          {date ? new Date(date).toLocaleDateString() : ""}
+        </div>
+        {/* Show Payment Mode */}
+        <div className="payment-mode">
+          Payment Mode: {paymentMode ? paymentMode.charAt(0).toUpperCase() + paymentMode.slice(1) : "N/A"}
+          {paymentMode === "account" && accountType && (
+            <span> ({accountType.charAt(0).toUpperCase() + accountType.slice(1)})</span>
+          )}
+        </div>
+        {/* Show notes if present */}
+        {notes && notes.trim() !== "" && (
+          <div className="notes" style={{ marginTop: "0.3rem", color: "#6366f1", fontStyle: "italic" }}>
+            📝 {notes}
+          </div>
+        )}
+      </div>
+      <div className="amount">
+        ₹{Math.abs(amount)}
+        <button className="delete-btn" onClick={() => deleteTransaction(id)}>❌</button>
+      </div>
+    </li>
+  ))}
+</ul>
+// ...existing code...
       )}
       
     </div>

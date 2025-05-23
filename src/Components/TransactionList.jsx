@@ -11,7 +11,9 @@ const AddTransaction = () => {
   const [type, setType] = useState("income");
   const [category, setCategory] = useState("");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [notes, setNotes] = useState(""); // NEW: Notes state
+  const [notes, setNotes] = useState("");
+  const [paymentMode, setPaymentMode] = useState("cash"); // NEW: payment mode
+  const [accountType, setAccountType] = useState("online"); // NEW: account type
 
   const categories = type === "income" ? incomeCategories : expenseCategories;
 
@@ -21,11 +23,14 @@ const AddTransaction = () => {
 
     const value = type === "expense" ? -Math.abs(+amount) : +amount;
 
-    addTransaction({ text, amount: value, category, type, date, notes }); // Pass notes
+    // Add paymentMode and accountType to transaction
+    addTransaction({ text, amount: value, category, type, date, notes, paymentMode, accountType: paymentMode === "account" ? accountType : null });
     setText("");
     setAmount("");
     setCategory("");
-    setNotes(""); // Clear notes
+    setNotes("");
+    setPaymentMode("cash");
+    setAccountType("online");
   };
 
   const henladelOnClick = () => {
@@ -82,6 +87,37 @@ const AddTransaction = () => {
           </option>
         ))}
       </select>
+
+      {/* Payment Mode */}
+      <label htmlFor="paymentMode" className="notesLabel">Payment Mode:</label>
+      <select
+        id="paymentMode"
+        value={paymentMode}
+        onChange={(e) => setPaymentMode(e.target.value)}
+        className="categoryBox"
+      >
+        <option value="cash">Cash</option>
+        <option value="account">Account</option>
+        <option value="creditCard">Credit Card</option>
+        <option value="debitCard">Debit Card</option>
+      </select>
+
+      {/* Account Type (only if paymentMode is account) */}
+      {paymentMode === "account" && (
+        <>
+          <label htmlFor="accountType" className="notesLabel">Account Type:</label>
+          <select
+            id="accountType"
+            value={accountType}
+            onChange={(e) => setAccountType(e.target.value)}
+            className="categoryBox"
+          >
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
+          </select>
+        </>
+      )}
+
       <input
         type="date"
         value={date}
