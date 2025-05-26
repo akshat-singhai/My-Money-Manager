@@ -21,6 +21,12 @@ export const TransactionProvider = ({ children }) => {
   const deleteTransaction = (id) => {
     setTransactions((prev) => prev.filter((tx) => tx.id !== id));
   };
+  const updateTransaction = (id, updatedData) => {
+  setTransactions((prev) =>
+    prev.map((tx) => (tx.id === id ? { ...tx, ...updatedData } : tx))
+  );
+};
+
 
   return (
     <TransactionContext.Provider value={{ transactions, addTransaction, deleteTransaction }}>

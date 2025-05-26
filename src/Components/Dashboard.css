@@ -1,253 +1,174 @@
-/* Minimalist, glassmorphism-inspired dashboard styles */
-body {
-    background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
-    font-family: 'Segoe UI', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+/* Root Reset & Glass Background */
+* {
+  box-sizing: border-box;
 }
 
+body {
+  background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #232946;
+}
+
+/* Dashboard Container */
 .dashboard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    width: 100%;
-    padding: 0rem 0rem;
-    background: transparent;
-    animation: fadeInDash 0.7s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 1rem 0.5rem;
+  background: transparent;
+  animation: fadeInDash 0.8s ease-out;
 }
 
 @keyframes fadeInDash {
-    from { opacity: 0; transform: translateY(40px);}
-    to { opacity: 1; transform: translateY(0);}
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-.expense-chart,
-.pie-chart-container {
-    width: 100%;
-    max-width: 420px;
-    margin: 2.5rem 0;
-    padding: 1.5rem 1.2rem;
-    border-radius: 22px;
-    background: rgba(255, 255, 255, 0.55);
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.12);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.25);
-    display: flex;
-    align-items: center;
-    font-size: 1.15rem;
-    color: #232946;
-    font-weight: 500;
-    text-align: center;
-    transition: box-shadow 0.3s, transform 0.3s;
-    animation: fadeInDash 0.9s;
-
+/* Card Containers */
+.expense-chart, .pie-chart-container, .bar-chart-section, .chart-box {
+  width: 100%;
+  max-width: 420px;
+  margin: 1.5rem 0;
+  padding: 1.2rem 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  animation: floatIn 0.9s ease forwards;
 }
 
-.expense-chart:hover,
-.pie-chart-container:hover {
-    box-shadow: 0 16px 40px rgba(31, 38, 135, 0.18);
-    transform: scale(1.025);
+.expense-chart:hover, .pie-chart-container:hover, .bar-chart-section:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.2);
 }
 
-.expense-chart h2,
-.pie-chart-container h2 {
-    margin: 0 0 1rem 0;
-    font-size: 1.7rem;
-    color: #232946;
-    font-weight: 700;
-    letter-spacing: 1px;
+@keyframes floatIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-.expense-chart p,
-.pie-chart-container p {
-    margin: 0;
-    font-size: 1.08rem;
-    color: #555;
+/* Headings */
+.heading2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #232946;
+  margin: 0.5rem 0;
+  text-align: center;
 }
 
-.expense-chart .chart,
-.pie-chart-container .chart {
-    width: 100%;
-    min-height: 220px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Balance Boxes */
+.balanceBox {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  animation: fadeInDash 1.1s ease;
 }
 
-/* Button Styles */
-.OpenBtn, .CloseBtn {
-    border: none;
-    color: #fff;
-    padding: 12px 28px;
-    font-size: 1rem;
-    margin: 10px 6px;
-    cursor: pointer;
-    border-radius: 18px;
-    background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
-    font-weight: 600;
-    letter-spacing: 1px;
-    box-shadow: 0 2px 8px rgba(31, 38, 135, 0.10);
-    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+.balanceBox > div {
+  min-width: 120px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.07);
 }
 
-.OpenBtn:hover, .CloseBtn:hover {
-    background: linear-gradient(90deg, #fc5c7d 0%, #6a82fb 100%);
-    transform: scale(1.04);
-    box-shadow: 0 6px 18px rgba(31, 38, 135, 0.18);
+.balanceBox > div:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 28px rgba(31, 38, 135, 0.18);
+}
+
+/* Buttons */
+.OpenBtn, .CloseBtn, .nivLink {
+  border: none;
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 18px;
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 3px 12px rgba(31, 38, 135, 0.12);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.OpenBtn:hover, .CloseBtn:hover, .nivLink:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
+  box-shadow: 0 8px 28px rgba(31, 38, 135, 0.18);
 }
 
 .OpenBtn:active, .CloseBtn:active {
-    transform: scale(0.97);
-    box-shadow: 0 1px 3px rgba(31, 38, 135, 0.13);
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(31, 38, 135, 0.1);
 }
 
-/* Info Boxes */
-.balanceBox, .TotalBox, .TransactionsBox, .TotalIncomeBox, .TotalExpensebox, .IncomBox, .ExpenseBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1rem;
-    padding: 16px 22px;
-    border-radius: 16px;
-    font-weight: 600;
-    text-align: center;
-    background: rgba(255,255,255,0.65);
-    box-shadow: 0 2px 12px rgba(31, 38, 135, 0.10);
-    margin: 0.1rem 0.rem;
-    min-width: 140px;
-    color: #232946;
-    border: 1px solid rgba(255,255,255,0.18);
-    transition: box-shadow 0.2s, transform 0.2s;
-    animation: fadeInDash 1.1s;
+/* Collapsible Section Animation */
+.chart-box {
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);
 }
 
-.balanceBox {
-    background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
-    color: #fff;
+/* Charts & Lists */
+.pie-chart-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.8rem 0 0 0;
 }
 
-.TotalBox {
-    background: linear-gradient(90deg, #f7971e 0%, #ffd200 100%);
-    color: #232946;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    width: 6rem;
-    height: 2.8rem;
-    display: flex;
-
-    border-radius: 16px;
-    text-align: center;
-    margin: 0.5rem 0;
+.pie-chart-container li {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
 }
 
-.TransactionsBox {
-    background: linear-gradient(90deg, #e0c3fc 0%, #8ec5fc 100%);
-    color: #5f11e5;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    width: 6rem;
-    text-align: center;
-    margin: 0px 3px;
+.recent-transactions {
+  margin-top: 1.2rem;
+  background: rgba(236, 254, 255, 0.6);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.07);
 }
 
-.TotalIncomeBox, .IncomBox {
-    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
-    color: #fffb00;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    width: 6rem;
-    
-    text-align: center;
-    margin-right: 3px;
+.recent-transactions ul {
+  margin: 0.5rem 0 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-.TotalExpensebox, .ExpenseBox {
-    background: linear-gradient(90deg, #ffa9a9 0%, #f09819 100%);
-    color: #ff0000;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    width: 6rem;
-    height: 2.8rem;
-    text-align: center;
-    margin-right: 3px;
+.recent-transactions li {
+  font-size: 0.97rem;
+  margin-bottom: 5px;
+  color: #6366f1;
 }
 
-.balanceBox:hover,
-.TotalBox:hover,
-.TransactionsBox:hover,
-.TotalIncomeBox:hover,
-.TotalExpensebox:hover,
-.IncomBox:hover,
-.ExpenseBox:hover {
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.18);
-    transform: scale(1.04);
-}
-
+/* Responsive */
 @media (max-width: 700px) {
-    .dashboard {
-        padding: 1rem 0.2rem;
-    }
-    .expense-chart,
-    .pie-chart-container {
-        max-width: 98vw;
-        padding: 1rem 0.5rem;
-    }
-    .balanceBox, .TotalBox, .TransactionsBox, .TotalIncomeBox, .TotalExpensebox, .IncomBox, .ExpenseBox {
-        min-width: 90px;
-        font-size: 0.98rem;
-        padding: 10px 8px;
-    }
-}
-.heading2{
-    font-size: 1.5rem;
-    color: #000000;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin: 0.5rem 0;
+  .balanceBox {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .expense-chart, .pie-chart-container, .bar-chart-section {
+    max-width: 95vw;
+  }
+
+  .OpenBtn, .CloseBtn {
+    width: 100%;
     text-align: center;
-    animation: fadeInDash 1.2s;
-    padding: 0.5rem 1rem;
-}
-.chart-containe-box{
-  background-color: #43cea2;
-}
-.nivLink{
-    text-decoration: none;
-    color: #fff;
-    font-size: 1rem;
-    padding: 12px 28px;
-    margin: 10px 6px;
-    cursor: pointer;
-    border-radius: 18px;
-    background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
-    font-weight: 600;
-    letter-spacing: 1px;
-    box-shadow: 0 2px 8px rgba(31, 38, 135, 0.10);
-    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-    
-}
-@media (max-width: 700px) {
-    .dashboard {
-        padding: 1rem 0.2rem;
-    }
-    .expense-chart,
-    .pie-chart-container {
-        max-width: 98vw;
-        padding: 1rem 0.5rem;
-    }
-    .balanceBox, .TotalBox, .TransactionsBox, .TotalIncomeBox, .TotalExpensebox, .IncomBox, .ExpenseBox {
-        min-width: 90px;
-        font-size: 0.98rem;
-        padding: 10px 8px;
-        width: 100%;
-        margin: 0.3rem 0;
-        flex-direction: column;
-        align-items: stretch;
-        box-sizing: border-box;
-    }
+  }
 }
