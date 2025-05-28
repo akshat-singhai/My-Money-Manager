@@ -12,7 +12,6 @@
   font-weight: 500;
   color: #232946;
   width: 92%;
-  max-width: 950px;
   margin: 1.2rem auto 1.5rem auto;
   animation: slideInFade 0.7s ease-in-out;
   transition: all 0.4s cubic-bezier(.4,0,.2,1);
@@ -60,6 +59,8 @@
   align-items: center;
   margin-top: 0.5rem;
   transition: max-height 0.3s cubic-bezier(.4,0,.2,1);
+  width: 80%;
+  background-color: transparent;
 }
 
 /* Nav Item Styling */

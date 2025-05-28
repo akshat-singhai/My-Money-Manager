@@ -116,7 +116,7 @@ const Dashboard = () => {
       <h2 className="heading2">Dashboard</h2>
 
       <div className="balanceBox">
-        <div className="TotalBox">Total: <span style={{ color: "#6366f1" }}>₹{total}</span></div>
+        <div className="TotalBox">Total: <span style={{ color: "Tomato" }}>₹{total}</span></div>
         <div className="TransactionsBox">Total Transactions: <span style={{ color: "#38bdf8" }}>{transactions.length}</span></div>
         <div className="TotalIncomeBox">Total Income: <span style={{ color: "#10b981" }}>₹{income}</span></div>
         <div className="TotalExpensebox">Total Expense: <span style={{ color: "#ef4444" }}>₹{Math.abs(expense)}</span></div>

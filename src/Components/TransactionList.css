@@ -405,3 +405,321 @@
   border-radius: 6px;
   font-size: 14px;
 }
+/* --- Modern UI Improvements --- */
+
+/* Container */
+.transaction-list-container {
+  max-width: 700px;
+  margin: 32px auto;
+  padding: 32px 24px;
+  background: #f8fafc;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(80, 80, 160, 0.13);
+  font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+}
+
+/* Header */
+.transaction-list-container h3 {
+  text-align: center;
+  margin-bottom: 28px;
+  font-size: 2rem;
+  color: #3730a3;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Filters Section */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+  justify-content: center;
+  background: #e0e7ff;
+  padding: 16px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(80, 80, 160, 0.07);
+}
+
+.filters input[type="text"],
+.filters input[type="date"],
+.filters select {
+  padding: 10px 16px;
+  border: 1px solid #c7d2fe;
+  border-radius: 8px;
+  min-width: 150px;
+  font-size: 15px;
+  background: #f1f5f9;
+  color: #3730a3;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(80, 80, 160, 0.04);
+}
+
+.filters input[type="text"]:focus,
+.filters input[type="date"]:focus,
+.filters select:focus {
+  outline: none;
+  border: 1.5px solid #6366f1;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.13);
+}
+
+/* Transaction List */
+.transaction-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  border-left: 6px solid;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(80, 80, 160, 0.09);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.transaction-item:hover {
+  background: #f1f5f9;
+  box-shadow: 0 8px 32px rgba(80, 80, 160, 0.15);
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* Type Styles */
+.transaction-item.income {
+  border-color: #22c55e;
+  color: #166534;
+}
+
+.transaction-item.expense {
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+/* Transaction Info */
+.transaction-item strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+  color: #3730a3;
+  font-weight: 700;
+}
+
+.transaction-item .category {
+  font-size: 13px;
+  font-style: italic;
+  color: #6366f1;
+}
+
+.transaction-item .type {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Amount & Delete */
+.amount {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #0f172a;
+  font-size: 1.13rem;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #a5b4fc;
+  font-size: 22px;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.15s;
+  margin-left: 10px;
+}
+
+.delete-btn:hover {
+  color: #ef4444;
+  transform: scale(1.2);
+}
+
+/* No Transactions */
+.no-transactions {
+  text-align: center;
+  color: #64748b;
+  padding: 28px;
+  font-size: 1.1rem;
+  background: #f1f5f9;
+  border-radius: 10px;
+  margin-top: 24px;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
+}
+
+/* Notes Box */
+.notesBox {
+  background: #e0e7ff;
+  border-radius: 10px;
+  color: #3730a3;
+  font-weight: 500;
+  padding: 12px 16px;
+  font-size: 1.08rem;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.06);
+  border: 1px solid #c7d2fe;
+  width: 95%;
+  min-height: 52px;
+  margin-top: 0.7rem;
+  margin-bottom: 1rem;
+  resize: vertical;
+  transition: background 0.2s, box-shadow 0.2s, border 0.2s;
+}
+
+.notesBox:focus,
+.notesBox:hover {
+  outline: none;
+  background: #dbeafe;
+  border: 1.5px solid #6366f1;
+  box-shadow: 0 4px 16px rgba(80, 80, 160, 0.13);
+}
+
+.notesBox::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .transaction-list-container {
+    padding: 12px 2vw;
+  }
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px 8px;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 4px;
+  }
+}
+/* --- Improved Dark Mode Support --- */
+body.dark-mode .transaction-list-container {
+  background: #181f2a;
+  color: #e0e7ef;
+  box-shadow: 0 8px 32px rgba(56, 189, 248, 0.10);
+}
+body.dark-mode .transaction-item {
+  background: #232946;
+  color: #e0e7ef;
+  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.08);
+  border-left-color: #6366f1;
+}
+body.dark-mode .transaction-item.income {
+  border-color: #22d3ee;
+  color: #22d3ee;
+}
+body.dark-mode .transaction-item.expense {
+  border-color: #f87171;
+  color: #f87171;
+}
+body.dark-mode .amount {
+  color: #f4f4f4;
+  text-shadow: 0 0 8px #38bdf855;
+}
+body.dark-mode .category {
+  color: #a5b4fc;
+}
+body.dark-mode .type {
+  color: #c7d2fe;
+}
+body.dark-mode .delete-btn {
+  color: #a5b4fc;
+}
+body.dark-mode .delete-btn:hover {
+  color: #f87171;
+}
+body.dark-mode .no-transactions {
+  background: #232946;
+  color: #a5b4fc;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.04);
+}
+body.dark-mode .filters {
+  background: #232946;
+  box-shadow: 0 2px 12px rgba(56, 189, 248, 0.05);
+}
+body.dark-mode .filters input,
+body.dark-mode .filters select {
+  background: #181f2a;
+  color: #e0e7ef;
+  border: 1.5px solid #6366f1;
+}
+body.dark-mode .filters input:focus,
+body.dark-mode .filters select:focus {
+  background: #232946;
+  border: 1.5px solid #38bdf8;
+  color: #fff;
+}
+body.dark-mode .notesBox {
+  background: #232946;
+  color: #e0e7ef;
+  border: 1.5px solid #6366f1;
+}
+body.dark-mode .notesBox:focus,
+body.dark-mode .notesBox:hover {
+  background: #181f2a;
+  border: 1.5px solid #38bdf8;
+  color: #fff;
+}
+body.dark-mode .notesBox::placeholder {
+  color: #64748b;
+}
+body.dark-mode .transaction-list-container h3 {
+  color: #a5b4fc;
+  text-shadow: 0 2px 8px #23294655;
+}
+body.dark-mode .transaction-list-container h3::after {
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  opacity: 0.85;
+}
+body.dark-mode .BtnAT {
+  background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.08);
+}
+body.dark-mode .BtnAT:hover {
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+body.dark-mode .BtnAT:active {
+  transform: translateY(0) scale(1);
+  box-shadow: 0 1px 4px rgba(80, 80, 160, 0.04);
+}
+body.dark-mode .formDiv {
+  background: linear-gradient(120deg, #1a2233 60%, #232946 100%);
+  box-shadow: 0 6px 24px rgba(56, 189, 248, 0.08);
+}
+body.dark-mode .formDiv input[type="text"],
+body.dark-mode .formDiv input[type="number"],
+body.dark-mode .formDiv select {
+  background: #232946;
+  color: #e0e7ef;
+  border: 1.5px solid #6366f1;
+}
+body.dark-mode .formDiv input[type="text"]:focus,
+body.dark-mode .formDiv input[type="number"]:focus,
+body.dark-mode .formDiv select:focus {
+  background: #181f2a;
+  border: 1.5px solid #38bdf8;
+  color: #fff;
+}
+body.dark-mode .formDiv h3 {
+  color: #38bdf8;
+  text-shadow: 0 2px 8px #23294655;
+}
+/* --- End Improved Dark Mode Support --- */
+
+/* --- End Modern UI Improvements --- */

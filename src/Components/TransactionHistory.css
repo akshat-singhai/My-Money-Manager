@@ -1,12 +1,15 @@
-
+/* --- Modern UI Improvements --- */
 
 .transaction-list-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-
+  max-width: 650px;
+  margin: 36px auto;
+  padding: 32px 24px;
+  background: #f8fafc;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(80, 80, 160, 0.13);
+  font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+  animation: fadeInTransaction 0.7s;
 }
-
 
 .transaction-list {
   list-style: none;
@@ -15,119 +18,173 @@
 }
 
 .transaction-item {
-  background: #f9f9f9;
-  border-left: 5px solid;
-  margin-bottom: 12px;
-  padding: 12px 16px;
-  border-radius: 8px;
+  background: #fff;
+  border-left: 6px solid;
+  margin-bottom: 18px;
+  padding: 18px 22px;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  animation: fadeInTransaction 0.6s;
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+  box-shadow: 0 4px 18px rgba(80, 80, 160, 0.09);
+}
+
+.transaction-item:hover {
+  box-shadow: 0 12px 36px rgba(80, 80, 160, 0.18);
+  transform: scale(1.025);
+  background: #f1f5f9;
 }
 
 .transaction-item.income {
-  border-color: #28a745;
-  color: #1e6f1e;
+  border-color: #22c55e;
+  color: #166534;
 }
 
 .transaction-item.expense {
-  border-color: #dc3545;
-  color: #8b0000;
+  border-color: #ef4444;
+  color: #991b1b;
 }
 
 .amount {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-weight: bold;
+  color: #0f172a;
+  font-size: 1.13rem;
 }
 
 .category {
   font-style: italic;
-  color: #555;
-  margin-left: 5px;
+  color: #6366f1;
+  margin-left: 8px;
+  font-size: 0.98rem;
 }
 
 .type {
   font-size: 12px;
   margin-top: 4px;
-  color: #888;
+  color: #64748b;
 }
 
 .delete-btn {
   background: none;
   border: none;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
-  color: #888;
+  color: #a5b4fc;
+  margin-left: 12px;
+  transition: color 0.2s, transform 0.15s;
 }
 
 .delete-btn:hover {
-  color: red;
+  color: #ef4444;
+  transform: scale(1.15);
+}
+
+.delete-btn:active {
+  transform: scale(1.2) rotate(-10deg);
 }
 
 .no-transactions {
   text-align: center;
-  color: #777;
-  padding: 20px;
+  color: #64748b;
+  padding: 28px;
+  font-size: 1.1rem;
+  background: #f1f5f9;
+  border-radius: 10px;
+  margin-top: 24px;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
+  animation: fadeInTransaction 0.8s;
 }
+
+/* Filters */
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 16px;
+  margin-bottom: 28px;
   justify-content: center;
+  background: #e0e7ff;
+  padding: 16px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(80, 80, 160, 0.07);
+  animation: fadeInTransaction 0.8s;
 }
 
 .filters input,
 .filters select {
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #c7d2fe;
   min-width: 150px;
+  font-size: 1rem;
+  background: #f8fafc;
+  color: #3730a3;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(80, 80, 160, 0.04);
 }
+
+.filters input:focus,
+.filters select:focus {
+  outline: none;
+  border: 1.5px solid #6366f1;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.13);
+  background: #e0f2fe;
+}
+
 .filters input[type="text"] {
   width: 100%;
 }
+
 .filters select {
   width: auto;
 }
-.SearchBox{
+
+/* Search Box */
+.SearchBox, .search-input {
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #c7d2fe;
   margin-bottom: 20px;
-  font-size: 16px;
-  transition: border-color 0.3s;
-  outline: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  color: #333;
-  font-family: 'Arial', sans-serif;
+  font-size: 1rem;
+  background: #f8fafc;
+  color: #3730a3;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
   font-weight: 400;
   box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.07);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.SearchBox:focus {
-  border-color: #007bff;
-  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
-}
-.search-input{
-  max-width: 95%;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: #f0f0f0;
-  margin-bottom: 20px;
-  font-size: 16px;
-  transition: border-color 0.3s;
-  outline: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
+.SearchBox:focus, .search-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.13);
+  background: #e0f2fe;
 }
- 
-/* ...existing code... */
 
+/* Responsive */
+@media (max-width: 700px) {
+  .transaction-list-container {
+    padding: 12px 2vw;
+  }
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px 8px;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 4px;
+  }
+}
+
+/* Animation */
 @keyframes fadeInTransaction {
   from {
     opacity: 0;
@@ -138,38 +195,180 @@
     transform: translateY(0) scale(1);
   }
 }
+/* --- Modern Advanced Animations --- */
 
-.transaction-list-container {
-  /* ...existing code... */
-  animation: fadeInTransaction 0.7s;
-}
-
-.transaction-item {
-  /* ...existing code... */
-  animation: fadeInTransaction 0.6s;
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-
+/* 3D Card Hover Effect for Transactions */
 .transaction-item:hover {
-  box-shadow: 0 6px 24px rgba(80, 80, 160, 0.13);
-  transform: scale(1.02);
+  transform: perspective(600px) rotateY(2deg) scale(1.03);
+  box-shadow: 0 20px 60px 0 rgba(56, 189, 248, 0.18), 0 2px 8px rgba(80, 80, 160, 0.10);
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1), box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.2s;
 }
 
-.delete-btn {
-  /* ...existing code... */
-  transition: color 0.2s, transform 0.15s;
+/* Animated Gradient Border on Focus */
+@keyframes gradientBorderTransactionHistory {
+  0% {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 0 #38bdf880;
+  }
+  50% {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 6px #6366f133;
+  }
+  100% {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 0 #38bdf880;
+  }
+}
+.transaction-item:focus-within {
+  animation: gradientBorderTransactionHistory 1.2s infinite;
+  outline: none;
 }
 
-.delete-btn:active {
-  transform: scale(1.2) rotate(-10deg);
+/* Button Ripple Animation */
+@keyframes rippleTransactionHistory {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+.delete-btn:active::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 10px; height: 10px;
+  background: rgba(239,68,68,0.18);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  animation: rippleTransactionHistory 0.5s linear;
+  pointer-events: none;
 }
 
-.filters {
-  /* ...existing code... */
-  animation: fadeInTransaction 0.8s;
+/* Fade-in Up for List Items with Stagger */
+.transaction-list li {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUpStaggerTransactionHistory 0.7s forwards;
+}
+.transaction-list li:nth-child(1) { animation-delay: 0.05s; }
+.transaction-list li:nth-child(2) { animation-delay: 0.12s; }
+.transaction-list li:nth-child(3) { animation-delay: 0.19s; }
+.transaction-list li:nth-child(4) { animation-delay: 0.26s; }
+.transaction-list li:nth-child(5) { animation-delay: 0.33s; }
+
+@keyframes fadeInUpStaggerTransactionHistory {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.no-transactions {
-  /* ...existing code... */
-  animation: fadeInTransaction 0.8s;
+/* Pulse Animation for Amount */
+.amount {
+  animation: pulseAmountHistory 2.2s infinite alternate;
 }
+@keyframes pulseAmountHistory {
+  0% {
+    text-shadow: 0 0 0 #38bdf855;
+  }
+  100% {
+    text-shadow: 0 0 8px #38bdf822;
+  }
+}
+
+/* Animated underline for section header */
+.transaction-list-container h3 {
+  position: relative;
+  overflow: visible;
+}
+.transaction-list-container h3::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  margin: 0.5rem auto 0 auto;
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  border-radius: 2px;
+  animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1);
+}
+@keyframes underlineGrowTransactionHistory {
+  from { width: 0; opacity: 0.2; }
+  to { width: 60px; opacity: 1; }
+}
+/* --- Dark Mode Support --- */
+body.dark-mode .transaction-list-container {
+  background: #232946;
+  color: #f4f4f4;
+  box-shadow: 0 8px 32px rgba(56, 189, 248, 0.13);
+}
+body.dark-mode .transaction-item {
+  background: #1a2233;
+  color: #f4f4f4;
+  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.09);
+}
+body.dark-mode .transaction-item.income {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+body.dark-mode .transaction-item.expense {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+body.dark-mode .amount {
+  color: #f4f4f4;
+  text-shadow: 0 0 8px #38bdf855;
+}
+body.dark-mode .category {
+  color: #a5b4fc;
+}
+body.dark-mode .type {
+  color: #a5b4fc;
+}
+body.dark-mode .delete-btn {
+  color: #a5b4fc;
+}
+body.dark-mode .delete-btn:hover {
+  color: #ef4444;
+}
+body.dark-mode .no-transactions {
+  background: #232946;
+  color: #a5b4fc;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.04);
+}
+body.dark-mode .filters {
+  background: #1a2233;
+  box-shadow: 0 2px 12px rgba(56, 189, 248, 0.07);
+}
+body.dark-mode .filters input,
+body.dark-mode .filters select {
+  background: #232946;
+  color: #a5b4fc;
+  border: 1.5px solid #6366f1;
+}
+body.dark-mode .filters input:focus,
+body.dark-mode .filters select:focus {
+  background: #232946;
+  border: 1.5px solid #38bdf8;
+  color: #fff;
+}
+body.dark-mode .SearchBox,
+body.dark-mode .search-input {
+  background: #232946;
+  color: #a5b4fc;
+  border: 1.5px solid #6366f1;
+}
+body.dark-mode .SearchBox:focus,
+body.dark-mode .search-input:focus {
+  background: #1a2233;
+  border: 1.5px solid #38bdf8;
+  color: #fff;
+}
+body.dark-mode .notes {
+  color: #38bdf8 !important;
+}
+body.dark-mode .transaction-list-container h3::after {
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  opacity: 0.7;
+}
+/* --- End Dark Mode Support --- */
+/* --- End Modern Advanced Animations --- */
+/* --- End Modern UI Improvements --- */

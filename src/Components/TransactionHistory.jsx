@@ -2,8 +2,7 @@ import React, { useContext, useState } from "react";
 import { TransactionContext } from "../Context/TransactionContext";
 import { incomeCategories, expenseCategories } from "../data/categories";
 import "./TransactionHistory.css";
-import { FaSearch } from "react-icons/fa"
-import { Link } from "react-router-dom"; // Use Link instead of navigate
+import { FaSearch } from "react-icons/fa" 
 
 const TransactionList = () => {
   const { transactions, deleteTransaction } = useContext(TransactionContext);
@@ -22,6 +21,7 @@ const TransactionList = () => {
 
   return (
     <div className="transaction-list-container">
+    
       <h3>Transaction History</h3>
 
       <div className="filters">
