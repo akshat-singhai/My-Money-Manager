@@ -215,5 +215,359 @@ body.dark-mode .result {
   margin-top: 10px;
   border-radius: 6px;
 }
+/* --- Glassmorphism & Animated Border for Container --- */
+.container {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(56, 161, 105, 0.13);
+  box-shadow: 0 8px 32px rgba(56, 161, 105, 0.13), 0 1.5px 8px #38a16955;
+  position: relative;
+  overflow: hidden;
+}
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 18px;
+  padding: 2px;
+  background: linear-gradient(270deg, #38a169, #2563eb, #38a169);
+  background-size: 400% 400%;
+  animation: borderGradientMoveTools 5s linear infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+@keyframes borderGradientMoveTools {
+  0% { background-position: 0% 50%;}
+  100% { background-position: 100% 50%;}
+}
+.container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Ripple Effect for All Buttons --- */
+button {
+  position: relative;
+  overflow: hidden;
+}
+button:active::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 10px; height: 10px;
+  background: rgba(56,161,105,0.18);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  animation: rippleTools 0.5s linear;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes rippleTools {
+  to {
+    transform: scale(8);
+    opacity: 0;
+  }
+}
+
+/* --- Animated Placeholder for Inputs --- */
+input::placeholder, select::placeholder {
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+input:focus::placeholder, select:focus::placeholder {
+  opacity: 0.3;
+}
+
+/* --- Subtle Hover Lift for Result Box --- */
+.result {
+  transition: box-shadow 0.2s, transform 0.18s;
+}
+.result:hover {
+  box-shadow: 0 12px 36px rgba(56, 161, 105, 0.18);
+  transform: translateY(-2px) scale(1.025);
+}
+
+/* --- Accessibility: Focus Outlines --- */
+input:focus, select:focus, button:focus {
+  outline: 2px solid #38a169;
+  outline-offset: 2px;
+}
+
+/* --- Smoother Transitions --- */
+input, select, button, .result {
+  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s, transform 0.18s;
+}
+
+/* --- Improved Mobile Spacing --- */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px 2vw;
+    border-radius: 12px;
+  }
+  h1, h2 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  input, select {
+    font-size: 14px;
+    padding: 8px 6px;
+    margin: 6px 0;
+    border-radius: 6px;
+  }
+  button {
+    font-size: 14px;
+    padding: 9px;
+    margin-top: 7px;
+    border-radius: 6px;
+  }
+  .result {
+    font-size: 0.95rem;
+    padding: 8px;
+    margin-top: 7px;
+    border-radius: 6px;
+  }
+}
+/* ...existing code... */
+
+.tools-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+  background: linear-gradient(90deg, #38a169 0%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tool-card {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(56, 161, 105, 0.13), 0 1.5px 8px #38a16955;
+  padding: 1.5rem 1.2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid rgba(56, 161, 105, 0.13);
+}
+
+.tool-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #2563eb;
+}
+
+.tool-input {
+  width: 100%;
+  font-size: 1rem;
+  padding: 10px 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.tool-input:focus {
+  border: 1.5px solid #38a169;
+  box-shadow: 0 2px 8px #38a16933;
+  outline: none;
+}
+
+.tool-btn-row {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+}
+
+.tool-btn {
+  font-size: 1rem;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 2px 8px rgba(56, 161, 105, 0.08);
+  font-weight: 600;
+}
+.tool-btn-green {
+  background: linear-gradient(90deg, #38a169 0%, #2563eb 100%);
+  color: #fff;
+}
+.tool-btn-green:hover {
+  background: linear-gradient(90deg, #2563eb 0%, #38a169 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+.tool-btn-reset {
+  background: #f1f5f9;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+}
+.tool-btn-reset:hover {
+  background: #2563eb;
+  color: #fff;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.result {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  background: #f0fdf4;
+  color: #166534;
+  box-shadow: 0 2px 8px #38a16922;
+  font-weight: 500;
+  transition: box-shadow 0.2s, transform 0.18s;
+}
+.result.info {
+  background: #f0f9ff;
+  color: #2563eb;
+}
+.result.success {
+  background: #f0fdf4;
+  color: #166534;
+}
+.animated-result {
+  animation: fadeInScale 0.6s cubic-bezier(.4,0,.2,1);
+}
+@keyframes fadeInScale {
+  0% { opacity: 0; transform: scale(0.85);}
+  100% { opacity: 1; transform: scale(1);}
+}
+
+/* Responsive improvements */
+@media (max-width: 600px) {
+  .tool-card {
+    padding: 1rem 0.5rem;
+    border-radius: 12px;
+  }
+  .tools-heading {
+    font-size: 1.3rem;
+  }
+  .tool-title {
+    font-size: 1rem;
+  }
+  .result {
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+  }
+}
+/* --- Dark Mode Support for Finance Tools --- */
+body.dark-mode {
+  background: linear-gradient(120deg, #181f2a 0%, #232946 100%);
+  color: #e0e7ef;
+}
+
+body.dark-mode .container {
+  background: rgba(24, 31, 42, 0.97);
+  box-shadow: 0 8px 32px rgba(56, 189, 248, 0.10);
+  color: #e0e7ef;
+  border: 1.5px solid rgba(99,102,241,0.13);
+}
+
+body.dark-mode .tools-heading {
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.dark-mode .tool-card {
+  background: rgba(35, 41, 70, 0.92);
+  box-shadow: 0 8px 32px rgba(56, 189, 248, 0.10);
+  border: 1.5px solid rgba(99,102,241,0.13);
+}
+
+body.dark-mode .tool-title {
+  color: #38bdf8;
+}
+
+body.dark-mode .tool-input {
+  background: #232946;
+  color: #e0e7ef;
+  border: 1.5px solid #6366f1;
+}
+body.dark-mode .tool-input:focus {
+  background: #181f2a;
+  border: 1.5px solid #38bdf8;
+  color: #fff;
+}
+
+body.dark-mode .tool-btn {
+  background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.13);
+}
+body.dark-mode .tool-btn:hover {
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+}
+
+body.dark-mode .tool-btn-reset {
+  background: #232946;
+  color: #38bdf8;
+  border: 1px solid #38bdf8;
+}
+body.dark-mode .tool-btn-reset:hover {
+  background: #38bdf8;
+  color: #fff;
+}
+
+body.dark-mode .result {
+  background: linear-gradient(90deg, #232946 60%, #181f2a 100%);
+  color: #38bdf8;
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.10);
+}
+body.dark-mode .result.info {
+  background: linear-gradient(90deg, #232946 60%, #181f2a 100%);
+  color: #38bdf8;
+}
+body.dark-mode .result.success {
+  background: linear-gradient(90deg, #232946 60%, #181f2a 100%);
+  color: #22d3ee;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode select::placeholder {
+  color: #64748b;
+}
+
+body.dark-mode .result:hover {
+  box-shadow: 0 6px 24px rgba(56, 189, 248, 0.15);
+}
+body.dark-mode .result:active {
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.08);
+}
+
+/* Responsive dark mode tweaks */
+@media (max-width: 600px) {
+  body.dark-mode .container {
+    border-radius: 12px;
+    padding: 24px 20px;
+  }
+  body.dark-mode .tools-heading {
+    font-size: 1.3rem;
+  }
+  body.dark-mode .tool-title {
+    font-size: 1rem;
+  }
+  body.dark-mode .result {
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: 8px;
+  }
+}
+body.dark-mode ::selection {
+  background: #38bdf8;
+  color: #181f2a;
+}
+
+/* --- End Dark Mode Support for Finance Tools --- */
+/* --- End Modern Finance Tools UI Improvements --- */
 /* --- End Dark Mode Support --- */
 /* --- End Modern UI Improvements --- */

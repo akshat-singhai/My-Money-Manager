@@ -539,3 +539,280 @@ body.dark-mode .transaction-list-container h3::after {
     padding: 4px 4px;
   }
 }
+/* --- Glassmorphism & Animated Border for Container --- */
+.transaction-list-container {
+  background: rgba(248, 250, 252, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(99, 102, 241, 0.13);
+  box-shadow: 0 8px 32px rgba(80, 80, 160, 0.13), 0 1.5px 8px #38bdf855;
+  position: relative;
+  overflow: hidden;
+}
+.transaction-list-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 18px;
+  padding: 2px;
+  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
+  background-size: 400% 400%;
+  animation: borderGradientMoveTH 6s linear infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.6;
+}
+@keyframes borderGradientMoveTH {
+  0% { background-position: 0% 50%;}
+  100% { background-position: 100% 50%;}
+}
+.transaction-list-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Glassmorphism for Transaction Items --- */
+.transaction-item {
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(99, 102, 241, 0.10);
+  box-shadow: 0 4px 18px rgba(80, 80, 160, 0.09);
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+}
+
+/* --- Animated Gradient Underline for Section Header --- */
+.transaction-list-container h3 {
+  position: relative;
+  overflow: visible;
+}
+.transaction-list-container h3::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  margin: 0.5rem auto 0 auto;
+  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
+  border-radius: 2px;
+  background-size: 200% 200%;
+  animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1), gradientMoveTH 2.5s linear infinite;
+}
+@keyframes gradientMoveTH {
+  0% { background-position: 0% 50%;}
+  100% { background-position: 100% 50%;}
+}
+
+/* --- Ripple Effect for All Buttons --- */
+button, .delete-btn {
+  position: relative;
+  overflow: hidden;
+}
+button:active::after, .delete-btn:active::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 10px; height: 10px;
+  background: rgba(56,189,248,0.18);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  animation: rippleTransactionHistory 0.5s linear;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* --- Animated Placeholder for Inputs --- */
+input::placeholder, textarea::placeholder {
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+input:focus::placeholder, textarea:focus::placeholder {
+  opacity: 0.3;
+}
+
+/* --- Focus Outlines for Accessibility --- */
+input:focus, select:focus, textarea:focus, button:focus, .delete-btn:focus {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+/* --- Smoother Transitions --- */
+input, select, button, .delete-btn, .transaction-item, .amount {
+  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s, transform 0.18s;
+}
+
+/* --- Subtle Shadow and Lift on Hover for Transaction Items --- */
+.transaction-item:hover {
+  background: #e0e7ff;
+  box-shadow: 0 20px 60px 0 rgba(56, 189, 248, 0.18), 0 2px 8px rgba(80, 80, 160, 0.10);
+  transform: perspective(600px) rotateY(2deg) scale(1.03);
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1), box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.2s;
+}
+
+/* --- Animated Pulse for Amount --- */
+.amount {
+  animation: pulseAmountHistory 2.2s infinite alternate;
+}
+@keyframes pulseAmountHistory {
+  0% { text-shadow: 0 0 0 #38bdf855; }
+  100% { text-shadow: 0 0 8px #38bdf822; }
+}
+
+/* --- Responsive Badge Scaling & Mobile Improvements --- */
+@media (max-width: 426px) {
+  .transaction-list-container {
+    padding: 6px 1vw;
+    border-radius: 10px;
+  }
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 4px;
+    font-size: 0.65rem;
+    height: 10rem;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px 2px;
+    border-radius: 8px;
+  }
+  .formDiv, .transactionList {
+    max-width: 99vw;
+    padding: 0.5rem;
+  }
+  .transactionList li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    padding: 0.6rem 0.3rem;
+  }
+  .amount {
+    font-size: 1rem;
+  }
+  .category, .type {
+    font-size: 0.8rem;
+  }
+  .delete-btn {
+    font-size: 13px;
+    margin-left: 21rem;
+    width: 2.9rem;
+    margin-top:-3rem;
+    margin-bottom: 0.2rem;
+    top:-6rem;
+  }
+  .no-transactions {
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+  .notesBox {
+    font-size: 0.95rem;
+    padding: 8px 8px;
+  }
+}
+@media (max-width: 376px) {
+  .transaction-list-container {
+    padding: 4px 0.5vw;
+    border-radius: 8px;
+  }
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 7px 2px;
+    font-size: 0.6rem;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px 1px;
+    border-radius: 6px;
+  }
+  .formDiv, .transactionList {
+    max-width: 100vw;
+    padding: 0.3rem;
+  }
+  .transactionList li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    padding: 0.4rem 0.2rem;
+  }
+  .amount {
+    font-size: 0.9rem;
+  }
+  .category, .type {
+    font-size: 0.7rem;
+  }
+  .delete-btn {
+    font-size: 11px;
+    margin-left: 19rem;
+    width: 2.2rem;
+    margin-top: -2rem;
+    margin-bottom: 0.1rem;
+    top: -3rem;
+  }
+  .no-transactions {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+  .notesBox {
+    font-size: 0.85rem;
+    padding: 6px 6px;
+  }
+}
+@media (max-width: 321px) {
+  .transaction-list-container {
+    padding: 2px 0.2vw;
+    border-radius: 6px;
+  }
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 4px 1px;
+    font-size: 0.5rem;
+    height: 8rem;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 2px;
+    padding: 2px 1px;
+    border-radius: 4px;
+  }
+  .formDiv, .transactionList {
+    max-width: 100vw;
+    padding: 0.15rem;
+  }
+  .transactionList li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+    padding: 0.2rem 0.1rem;
+  }
+  .amount {
+    font-size: 0.7rem;
+  }
+  .category, .type {
+    font-size: 0.6rem;
+  }
+  .delete-btn {
+    font-size: 9px;
+    margin-left: 16rem;
+    width: 2.7rem;
+    top: -5.2rem;
+  }
+  .no-transactions {
+    padding: 6px;
+    font-size: 0.7rem;
+  }
+  .notesBox {
+    font-size: 0.7rem;
+    padding: 4px 4px;
+  }
+}
+
+/* --- End Modern Transaction History Improvements --- */

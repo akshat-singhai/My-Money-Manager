@@ -50,7 +50,7 @@ const AddTransaction = () => {
     <form onSubmit={handleSubmit} className="formDiv">
       <Toaster />
       <h3 className="Heading1">Add Transaction</h3>
-
+      
       <select value={type} onChange={(e) => setType(e.target.value)} className="optionsDiv">
         <option value="income"> Income</option>
         <option value="expense">Expense</option>
@@ -117,8 +117,7 @@ const AddTransaction = () => {
       />
 
       <button type="submit" className="BtnAT">Add Transaction</button>
-      <button className="fab-add-transaction" title="Add Transaction">+</button>
-    </form>
+          </form>
   );
 };
 

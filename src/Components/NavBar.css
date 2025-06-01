@@ -271,3 +271,145 @@ body.dark-mode .heading3 {
 .nav-links{
 margin-top: -3.7rem;
 }
+/* --- Glassmorphism & Animated Border for NavBar --- */
+.nav-container {
+  background: rgba(248, 250, 252, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(56,189,248,0.13);
+  box-shadow: 0 8px 32px rgba(56, 189, 248, 0.12), 0 1.5px 8px #38bdf855;
+  position: relative;
+  overflow: hidden;
+}
+.nav-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 2rem;
+  padding: 2px;
+  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
+  background-size: 400% 400%;
+  animation: borderGradientMove 5s linear infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+@keyframes borderGradientMove {
+  0% { background-position: 0% 50%;}
+  100% { background-position: 100% 50%;}
+}
+.nav-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Ripple Effect for Toggles and Nav Links --- */
+.menu-toggle, .theme-toggle, .navBox {
+  position: relative;
+  overflow: hidden;
+}
+.menu-toggle:active::after, .theme-toggle:active::after, .navBox:active::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 10px; height: 10px;
+  background: rgba(56,189,248,0.18);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  animation: rippleNav 0.5s linear;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes rippleNav {
+  to {
+    transform: scale(8);
+    opacity: 0;
+  }
+}
+
+/* --- Animated Underline for Active Nav Link --- */
+.navBox::after {
+  content: "";
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  transition: width 0.3s cubic-bezier(.4,0,.2,1), background 0.5s;
+  border-radius: 2px;
+}
+.navBox:hover::after,
+.navBox.active::after {
+  width: 70%;
+  background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
+}
+
+/* --- Subtle Hover Lift and Shadow for Nav Links --- */
+.navBox {
+  transition: all 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s;
+}
+.navBox:hover, .navBox.active {
+  transform: translateY(-2px) scale(1.045);
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.18);
+}
+
+/* --- Focus Outlines for Accessibility --- */
+.menu-toggle:focus, .theme-toggle:focus, .navBox:focus {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+/* --- Responsive Improvements --- */
+@media (max-width: 768px) {
+  .nav-links {
+    margin-top: 0;
+    padding-bottom: 0.7rem;
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s;
+  }
+  .nav-links.active {
+    max-height: 400px;
+    opacity: 1;
+    pointer-events: auto;
+    transition: max-height 0.5s cubic-bezier(.4,0,.2,1), opacity 0.3s;
+  }
+  .navBox {
+    width: 100%;
+    text-align: center;
+    font-size: 1.08rem;
+    padding: 0.9rem 1.2rem;
+    margin: 0.2rem 0;
+    justify-content: center;
+  }
+}
+
+/* --- Dark Mode Glassmorphism --- */
+body.dark-mode .nav-container {
+  background: rgba(35, 41, 70, 0.92);
+  box-shadow: 0 8px 32px rgba(56, 189, 248, 0.16);
+  border: 1.5px solid rgba(99,102,241,0.13);
+}
+body.dark-mode .nav-container::before {
+  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
+  opacity: 0.7;
+}
+body.dark-mode .navBox {
+  background: linear-gradient(90deg, #232946 60%, #1a2233 100%);
+  color: #f4f4f4;
+  box-shadow: 0 2px 10px rgba(56, 189, 248, 0.10);
+}
+body.dark-mode .navBox.active,
+body.dark-mode .navBox:hover {
+  background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
+  color: #fff;
+  border: 1.5px solid #38bdf8;
+}
+
+/* --- End Modern NavBar Improvements --- */
