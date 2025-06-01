@@ -18,7 +18,7 @@
 }
 
 .transaction-item {
-  background: #fff;
+  backdrop-filter: blur(1.02rem);
   border-left: 6px solid;
   margin-bottom: 18px;
   padding: 18px 22px;
@@ -29,6 +29,8 @@
   animation: fadeInTransaction 0.6s;
   transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
   box-shadow: 0 4px 18px rgba(80, 80, 160, 0.09);
+  font-size: 0.7rem;
+
 }
 
 .transaction-item:hover {
@@ -50,10 +52,10 @@
 .amount {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-weight: bold;
   color: #0f172a;
-  font-size: 1.13rem;
+  font-size: 1.20rem;
 }
 
 .category {
@@ -64,7 +66,7 @@
 }
 
 .type {
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 4px;
   color: #64748b;
 }
@@ -72,11 +74,13 @@
 .delete-btn {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   color: #a5b4fc;
   margin-left: 12px;
   transition: color 0.2s, transform 0.15s;
+  width: 50px;
+
 }
 
 .delete-btn:hover {
@@ -369,6 +373,167 @@ body.dark-mode .transaction-list-container h3::after {
   background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
   opacity: 0.7;
 }
+.typeIncomex{
+  font-size: 14px;
+  margin-bottom: -3px;
+  font-weight: bold;
+}
 /* --- End Dark Mode Support --- */
 /* --- End Modern Advanced Animations --- */
 /* --- End Modern UI Improvements --- */
+@media (max-width: 426px) {
+  .transaction-list-container {
+    padding: 6px 1vw;
+    border-radius: 10px;
+  }
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 4px;
+    font-size: 0.65rem;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px 2px;
+    border-radius: 8px;
+  }
+  .formDiv, .transactionList {
+    max-width: 99vw;
+    padding: 0.5rem;
+  }
+  .transactionList li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    padding: 0.6rem 0.3rem;
+  }
+  .amount {
+    font-size: 1rem;
+  
+    
+  }
+  .category, .type {
+    font-size: 0.8rem;
+  }
+  .delete-btn {
+    font-size: 13px;
+    margin-left: 21rem;
+    width: 2.9rem;
+    margin-top: -3rem;
+    margin-bottom: 0.2rem;
+    top:-3rem;
+
+  }
+  .no-transactions {
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+  .notesBox {
+    font-size: 0.95rem;
+    padding: 8px 8px;
+  }
+}
+@media (max-width: 376px) {
+  .transaction-list-container {
+    padding: 4px 0.5vw;
+    border-radius: 8px;
+  }
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 7px 2px;
+    font-size: 0.6rem;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px 1px;
+    border-radius: 6px;
+  }
+  .formDiv, .transactionList {
+    max-width: 100vw;
+    padding: 0.3rem;
+  }
+  .transactionList li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    padding: 0.4rem 0.2rem;
+  }
+  .amount {
+    font-size: 0.9rem;
+  }
+  .category, .type {
+    font-size: 0.7rem;
+  }
+  .delete-btn {
+    font-size: 11px;
+    margin-left: 19rem;
+    width: 2.2rem;
+    margin-top: -2rem;
+    margin-bottom: 0.1rem;
+    top: -3rem;
+  }
+  .no-transactions {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+  .notesBox {
+    font-size: 0.85rem;
+    padding: 6px 6px;
+  }
+}
+@media (max-width: 321px) {
+  .transaction-list-container {
+    padding: 2px 0.2vw;
+    border-radius: 6px;
+  }
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 4px 1px;
+    font-size: 0.5rem;
+  }
+  .filters {
+    flex-direction: column;
+    gap: 2px;
+    padding: 2px 1px;
+    border-radius: 4px;
+  }
+  .formDiv, .transactionList {
+    max-width: 100vw;
+    padding: 0.15rem;
+  }
+  .transactionList li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+    padding: 0.2rem 0.1rem;
+  }
+  .amount {
+    font-size: 0.7rem;
+  }
+  .category, .type {
+    font-size: 0.6rem;
+  }
+  .delete-btn {
+    font-size: 9px;
+    margin-left: 16rem;
+    width: 1.5rem;
+    margin-top: -2.2rem;
+    margin-bottom: 0.05rem;
+    top: -2.2rem;
+  }
+  .no-transactions {
+    padding: 6px;
+    font-size: 0.7rem;
+  }
+  .notesBox {
+    font-size: 0.7rem;
+    padding: 4px 4px;
+  }
+}

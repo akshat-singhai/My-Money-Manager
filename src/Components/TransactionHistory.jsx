@@ -56,7 +56,7 @@ const TransactionList = () => {
           {filtered.map(({ id, text, amount, category, type, date, notes, paymentMode, accountType }) => (
             <li key={id} className={`transaction-item ${type}`}>
               <div>
-                <strong>{text}</strong>
+                <h4 className="typeIncomex">{text}</h4>
                 <span className="category">({category})</span>
                 <div className="type">{type ? type.toUpperCase() : ""}</div>
                 <div className="date">
@@ -76,10 +76,10 @@ const TransactionList = () => {
               </div>
               <div className="amount">
                 ₹{Math.abs(amount)}
-                <button className="delete-btn" onClick={() => deleteTransaction(id)}>❌</button>
                 
               
               </div>
+                <button className="delete-btn" onClick={() => deleteTransaction(id)}>❌</button>
             </li>
           ))}
         </ul>

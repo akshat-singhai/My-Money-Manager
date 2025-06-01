@@ -1,7 +1,7 @@
 /* Modern, clean, animated transaction form styles */
 .formDiv {
   padding: 2rem 1.5rem;
-  background: linear-gradient(120deg, #f8fafc 60%, #e0e7ff 100%);
+ background: linear-gradient(120deg, #f8fafc 60%, #e0e7ff 100%);
   border-radius: 18px;
   margin-bottom: 2rem;
   box-shadow: 0 6px 24px rgba(80, 80, 160, 0.08);
@@ -115,6 +115,7 @@
   margin: 2rem auto 0 auto;
   max-width: 480px;
   animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    backdrop-filter: blur(10px);
 }
 
 .transactionList li {
@@ -408,6 +409,9 @@
 /* --- Modern UI Improvements --- */
 
 /* Container */
+/* --- Modern, Clean, Responsive, Animated Transaction List & Form --- */
+
+/* Container */
 .transaction-list-container {
   max-width: 700px;
   margin: 32px auto;
@@ -426,6 +430,21 @@
   color: #3730a3;
   font-weight: 800;
   letter-spacing: 1px;
+  position: relative;
+}
+.transaction-list-container h3::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  margin: 0.5rem auto 0 auto;
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  border-radius: 2px;
+  animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1);
+}
+@keyframes underlineGrowTransactionHistory {
+  from { width: 0; opacity: 0.2; }
+  to { width: 60px; opacity: 1; }
 }
 
 /* Filters Section */
@@ -440,7 +459,6 @@
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(80, 80, 160, 0.07);
 }
-
 .filters input[type="text"],
 .filters input[type="date"],
 .filters select {
@@ -454,7 +472,6 @@
   transition: border 0.2s, box-shadow 0.2s;
   box-shadow: 0 1px 4px rgba(80, 80, 160, 0.04);
 }
-
 .filters input[type="text"]:focus,
 .filters input[type="date"]:focus,
 .filters select:focus {
@@ -469,7 +486,6 @@
   padding: 0;
   margin: 0;
 }
-
 .transaction-item {
   display: flex;
   justify-content: space-between;
@@ -481,23 +497,33 @@
   background: #fff;
   box-shadow: 0 4px 18px rgba(80, 80, 160, 0.09);
   transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  animation: fadeInUpStaggerTransactionHistory 0.7s forwards;
+  opacity: 0;
+  transform: translateY(30px);
 }
-
-.transaction-item:hover {
-  background: #f1f5f9;
-  box-shadow: 0 8px 32px rgba(80, 80, 160, 0.15);
-  transform: translateY(-2px) scale(1.01);
+.transaction-list li:nth-child(1) { animation-delay: 0.05s; }
+.transaction-list li:nth-child(2) { animation-delay: 0.12s; }
+.transaction-list li:nth-child(3) { animation-delay: 0.19s; }
+.transaction-list li:nth-child(4) { animation-delay: 0.26s; }
+.transaction-list li:nth-child(5) { animation-delay: 0.33s; }
+@keyframes fadeInUpStaggerTransactionHistory {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
-/* Type Styles */
 .transaction-item.income {
   border-color: #22c55e;
   color: #166534;
 }
-
 .transaction-item.expense {
   border-color: #ef4444;
   color: #991b1b;
+}
+.transaction-item:hover {
+  background: #f1f5f9;
+  box-shadow: 0 8px 32px rgba(80, 80, 160, 0.15);
+  transform: translateY(-2px) scale(1.01);
 }
 
 /* Transaction Info */
@@ -508,13 +534,11 @@
   color: #3730a3;
   font-weight: 700;
 }
-
 .transaction-item .category {
   font-size: 13px;
   font-style: italic;
   color: #6366f1;
 }
-
 .transaction-item .type {
   font-size: 12px;
   color: #64748b;
@@ -529,8 +553,12 @@
   gap: 10px;
   color: #0f172a;
   font-size: 1.13rem;
+  animation: pulseAmountHistory 2.2s infinite alternate;
 }
-
+@keyframes pulseAmountHistory {
+  0% { text-shadow: 0 0 0 #38bdf855; }
+  100% { text-shadow: 0 0 8px #38bdf822; }
+}
 .delete-btn {
   background: none;
   border: none;
@@ -539,11 +567,28 @@
   cursor: pointer;
   transition: color 0.2s, transform 0.15s;
   margin-left: 10px;
+  position: relative;
 }
-
 .delete-btn:hover {
   color: #ef4444;
   transform: scale(1.2);
+}
+.delete-btn:active::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 10px; height: 10px;
+  background: rgba(239,68,68,0.18);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  animation: rippleTransactionHistory 0.5s linear;
+  pointer-events: none;
+}
+@keyframes rippleTransactionHistory {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
 
 /* No Transactions */
@@ -575,7 +620,6 @@
   resize: vertical;
   transition: background 0.2s, box-shadow 0.2s, border 0.2s;
 }
-
 .notesBox:focus,
 .notesBox:hover {
   outline: none;
@@ -583,13 +627,101 @@
   border: 1.5px solid #6366f1;
   box-shadow: 0 4px 16px rgba(80, 80, 160, 0.13);
 }
-
 .notesBox::placeholder {
   color: #9ca3af;
   font-style: italic;
 }
 
+/* --- Transaction Form --- */
+.formDiv {
+  padding: 2rem 1.5rem;
+  background: linear-gradient(120deg, #f8fafc 60%, #e0e7ff 100%);
+  border-radius: 18px;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 24px rgba(80, 80, 160, 0.08);
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.formDiv h3 {
+  margin-bottom: 1.2rem;
+  color: #3b3663;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.formDiv input[type="text"],
+.formDiv input[type="number"],
+.formDiv select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #e7eef9;
+  font-size: 1.08rem;
+  color: #22223b;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
+  transition: box-shadow 0.2s, background 0.2s;
+}
+.formDiv input[type="text"]:focus,
+.formDiv input[type="number"]:focus,
+.formDiv select:focus {
+  outline: none;
+  background: #e0e7ff;
+  box-shadow: 0 4px 16px rgba(80, 80, 160, 0.10);
+}
+.BtnAT {
+  background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
+  color: #fff;
+  border: none;
+  padding: 12px 0;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  width: 100%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.08);
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 0.5rem;
+  letter-spacing: 1px;
+}
+.BtnAT:hover {
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+.BtnAT:active {
+  transform: translateY(0) scale(1);
+  box-shadow: 0 1px 4px rgba(80, 80, 160, 0.04);
+}
+
 /* Responsive */
+@media (max-width: 900px) {
+  .transaction-list-container {
+    padding: 16px 2vw;
+    border-radius: 14px;
+  }
+  .transaction-item {
+    padding: 14px 8px;
+    border-radius: 10px;
+  }
+  .filters {
+    padding: 10px 4px;
+    border-radius: 10px;
+  }
+}
 @media (max-width: 700px) {
   .transaction-list-container {
     padding: 12px 2vw;
@@ -605,7 +737,18 @@
     gap: 10px;
     padding: 10px 4px;
   }
+  .formDiv, .transactionList {
+    max-width: 98vw;
+    padding: 1rem;
+  }
+  .transactionList li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem 0.7rem;
+  }
 }
+
 /* --- Improved Dark Mode Support --- */
 body.dark-mode .transaction-list-container {
   background: #181f2a;
@@ -720,6 +863,5 @@ body.dark-mode .formDiv h3 {
   color: #38bdf8;
   text-shadow: 0 2px 8px #23294655;
 }
-/* --- End Improved Dark Mode Support --- */
 
-/* --- End Modern UI Improvements --- */
+/* --- End Modern UI & Dark Mode --- */

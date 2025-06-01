@@ -15,7 +15,7 @@
   margin: 1.2rem auto 1.5rem auto;
   animation: slideInFade 0.7s ease-in-out;
   transition: all 0.4s cubic-bezier(.4,0,.2,1);
-  backdrop-filter: blur(22px);
+  backdrop-filter: blur(10px);
   position: relative;
   border: 1.5px solid rgba(56,189,248,0.08);
 }
@@ -30,7 +30,7 @@
 
 /* Hamburger & Theme Toggle */
 .menu-toggle, .theme-toggle {
-  font-size: 2rem;
+  font-size: 3rem;
   background: none;
   border: none;
   color: #232946;
@@ -40,6 +40,11 @@
   margin-left: 0.5rem;
   transition: background 0.3s, transform 0.3s cubic-bezier(.4,0,.2,1);
   outline: none;
+}
+.menu-toggle{
+  border-radius: 10%;
+ width: 60px;
+ 
 }
 .menu-toggle:hover, .theme-toggle:hover {
   background: #e0eafc;
@@ -171,6 +176,10 @@ body.dark-mode .navBox:hover {
 body.dark-mode .menu-toggle,
 body.dark-mode .theme-toggle {
   color: #f4f4f4;
+}
+.body.dark-mode .theme-toggle {
+  border-radius: 50%;
+ 
 }
 body.dark-mode .nav-links {
   background: linear-gradient(90deg, #232946 60%, #1a2233 100%);
