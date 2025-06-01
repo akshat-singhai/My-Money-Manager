@@ -598,12 +598,8 @@ body.dark-mode .transaction-list-container h3::after {
   background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
   border-radius: 2px;
   background-size: 200% 200%;
-  animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1), gradientMoveTH 2.5s linear infinite;
 }
-@keyframes gradientMoveTH {
-  0% { background-position: 0% 50%;}
-  100% { background-position: 100% 50%;}
-}
+
 
 /* --- Ripple Effect for All Buttons --- */
 button, .delete-btn {
@@ -652,13 +648,6 @@ input, select, button, .delete-btn, .transaction-item, .amount {
 }
 
 /* --- Animated Pulse for Amount --- */
-.amount {
-  animation: pulseAmountHistory 2.2s infinite alternate;
-}
-@keyframes pulseAmountHistory {
-  0% { text-shadow: 0 0 0 #38bdf855; }
-  100% { text-shadow: 0 0 8px #38bdf822; }
-}
 
 /* --- Responsive Badge Scaling & Mobile Improvements --- */
 @media (max-width: 426px) {

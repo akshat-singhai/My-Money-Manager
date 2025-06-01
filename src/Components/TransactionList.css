@@ -1,25 +1,15 @@
 /* Modern, clean, animated transaction form styles */
 .formDiv {
   padding: 2rem 1.5rem;
- background: linear-gradient(120deg, #f8fafc 60%, #e0e7ff 100%);
+  background: linear-gradient(120deg, #f8fafc 60%, #e0e7ff 100%);
+  border: 2px solid slateblue;
   border-radius: 18px;
   margin-bottom: 2rem;
   box-shadow: 0 6px 24px rgba(80, 80, 160, 0.08);
   max-width: 420px;
   margin-left: auto;
   margin-right: auto;
-  animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  
 }
 
 .formDiv h3 {
@@ -43,7 +33,6 @@
   font-size: 1.08rem;
   color: #22223b;
   box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
-  transition: box-shadow 0.2s, background 0.2s;
 }
 
 .formDiv input[type="text"]:focus,
@@ -63,29 +52,11 @@
   padding: 10px 0;
   border: none;
   color: #3b3663;
-  transition: background 0.2s;
 }
 
 .optionsDiv:focus,
 .optionsDiv:hover {
   background: #dbeafe;
-}
-
-.incomeBox,
-.expenseBox {
-  font-weight: 600;
-  border-radius: 6px;
-  padding: 8px 0;
-}
-
-.incomeBox {
-  background: #e6fffa;
-  color: #059669;
-}
-
-.expenseBox {
-  background: #fff1f2;
-  color: #dc2626;
 }
 
 .BtnAT {
@@ -99,14 +70,12 @@
   width: 100%;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(80, 80, 160, 0.08);
-  transition: background 0.2s, transform 0.15s;
   margin-top: 0.5rem;
   letter-spacing: 1px;
 }
 
 .BtnAT:hover {
   background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
-  transform: translateY(-2px) scale(1.03);
 }
 
 .transactionList {
@@ -114,8 +83,7 @@
   padding: 0;
   margin: 2rem auto 0 auto;
   max-width: 480px;
-  animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-    backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .transactionList li {
@@ -128,8 +96,6 @@
   align-items: center;
   box-shadow: 0 2px 12px rgba(80, 80, 160, 0.07);
   font-size: 1.08rem;
-  animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  transition: box-shadow 0.2s, transform 0.2s;
 }
 
 .transactionList li.income {
@@ -169,14 +135,17 @@
     padding: 1rem 0.7rem;
   }
 }
-.InputDiv{
+
+.InputDiv {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
- 
 }
-.amountBox {
+
+.amountBox,
+.descriptionBox,
+.dateBox {
   background: #e0e7ff;
   border-radius: 6px;
   color: #3b3663;
@@ -184,59 +153,23 @@
   padding: 8px 12px;
   font-size: 1.08rem;
   box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
-  transition: background 2.5s, box-shadow 5.6s;
   width: 100%;
+}
+
+.amountBox {
   text-align: center;
   margin-left: 10px;
 }
-.descriptionBox{
-  background: #e0e7ff;
-  border-radius: 6px;
-  color: #3b3663;
-  font-weight: 600;
-  padding: 8px 12px;
-  font-size: 1.08rem;
-  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
-  transition: background 2.5s, box-shadow 5.6s;
+
+.descriptionBox {
   width: calc(100% - 10px);
-  align-items: center;
-  justify-content: center;
-}
-      .Add Transaction{
-        background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
-        color: #fff;
-        border: none;
-        padding: 12px 0;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        width: 100%;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(80, 80, 160, 0.08);
-        transition: background 0.2s, transform 0.15s;
-        margin-top: 0.5rem;
-        letter-spacing: 1px;
-        font-family: 'Times New Roman', Times, serif;
-      }
-      
-.filters select {
-  min-width: 130px;
-}
-.transaction-list-container {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Segoe UI', sans-serif;
 }
 
-.transaction-list-container h3 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.6rem;
-  color: #333;
+.dateBox {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-/* Filters Section */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -255,168 +188,6 @@
   font-size: 14px;
 }
 
-/* Transaction List */
-.transaction-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.transaction-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  border-left: 5px solid;
-  border-radius: 8px;
-  background-color: #fdfdfd;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  transition: background-color 0.2s ease;
-}
-
-.transaction-item:hover {
-  background-color: #f5f5f5;
-}
-
-/* Type Styles */
-.transaction-item.income {
-  border-color: #28a745;
-  color: #1e6f1e;
-}
-
-.transaction-item.expense {
-  border-color: #dc3545;
-  color: #8b0000;
-}
-
-/* Transaction Info */
-.transaction-item strong {
-  display: block;
-  font-size: 16px;
-  margin-bottom: 2px;
-}
-
-.transaction-item .category {
-  font-size: 13px;
-  font-style: italic;
-  color: #555;
-}
-
-.transaction-item .type {
-  font-size: 11px;
-  color: #888;
-  margin-top: 4px;
-  
-}
-
-/* Amount & Delete */
-.amount {
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #000;
-}
-
-.delete-btn {
-  background: none;
-  border: none;
-  color: #aaa;
-  font-size: 18px;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.delete-btn:hover {
-  color: red;
-}
-
-.no-transactions {
-  text-align: center;
-  color: #777;
-  padding: 20px;
-  font-size: 15px;
-}
-.transaction-list-container .filters {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.dateBox{
-  background: #e0e7ff;
-  border-radius: 6px;
-  color: #3b3663;
-  font-weight: 600;
-  padding: 8px 12px;
-  font-size: 1.08rem;
-  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
-  transition: background 2.5s, box-shadow 5.6s;
-  width: calc(100% -30px);
-  margin-left: 10px;  
-  margin-right: 10px;
-  font-size: 1.08rem;
-  color: #3b3663;
-  font-weight: 600;
-  padding: 8px 12px;
-  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
-}
-.notesBox {
-  background: #e0e7ff;
-  border-radius: 8px;
-  color: #3b3663;
-  font-weight: 500;
-  padding: 10px 14px;
-  font-size: 1.08rem;
-  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.06);
-  border: 1px solid #d1d5db;
-  width: 100%;
- 
-  min-height: 48px;
-  margin-top: 0.7rem;
-  margin-bottom: 1rem;
-  resize: vertical;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-
-.notesBox:focus {
-  outline: none;
-  background: #dbeafe;
-  box-shadow: 0 4px 16px rgba(80, 80, 160, 0.13);
-}
-.transaction-list-container .filters select {
-  min-width: 140px;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-.notesBox::placeholder {
-  color: #9ca3af;
-  font-style: italic;
-}
-.notesBox:hover{
-  background: #dbeafe;
-  box-shadow: 0 4px 16px rgba(80, 80, 160, 0.13);
-  transition: background 0.2s, box-shadow 0.2s;
-
-}
-.transaction-list-container .filters input[type="text"],
-.transaction-list-container .filters select {
-  min-width: 140px;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-/* --- Modern UI Improvements --- */
-
-/* Container */
-/* --- Modern, Clean, Responsive, Animated Transaction List & Form --- */
-
-/* Container */
 .transaction-list-container {
   max-width: 700px;
   margin: 32px auto;
@@ -427,7 +198,6 @@
   font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
 }
 
-/* Header */
 .transaction-list-container h3 {
   text-align: center;
   margin-bottom: 28px;
@@ -437,6 +207,7 @@
   letter-spacing: 1px;
   position: relative;
 }
+
 .transaction-list-container h3::after {
   content: "";
   display: block;
@@ -445,14 +216,8 @@
   margin: 0.5rem auto 0 auto;
   background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
   border-radius: 2px;
-  animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1);
-}
-@keyframes underlineGrowTransactionHistory {
-  from { width: 0; opacity: 0.2; }
-  to { width: 60px; opacity: 1; }
 }
 
-/* Filters Section */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -464,6 +229,7 @@
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(80, 80, 160, 0.07);
 }
+
 .filters input[type="text"],
 .filters input[type="date"],
 .filters select {
@@ -474,9 +240,8 @@
   font-size: 15px;
   background: #f1f5f9;
   color: #3730a3;
-  transition: border 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 4px rgba(80, 80, 160, 0.04);
 }
+
 .filters input[type="text"]:focus,
 .filters input[type="date"]:focus,
 .filters select:focus {
@@ -485,12 +250,12 @@
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.13);
 }
 
-/* Transaction List */
 .transaction-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .transaction-item {
   display: flex;
   justify-content: space-between;
@@ -501,37 +266,24 @@
   border-radius: 12px;
   background: #fff;
   box-shadow: 0 4px 18px rgba(80, 80, 160, 0.09);
-  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
-  animation: fadeInUpStaggerTransactionHistory 0.7s forwards;
-  opacity: 0;
-  transform: translateY(30px);
 }
-.transaction-list li:nth-child(1) { animation-delay: 0.05s; }
-.transaction-list li:nth-child(2) { animation-delay: 0.12s; }
-.transaction-list li:nth-child(3) { animation-delay: 0.19s; }
-.transaction-list li:nth-child(4) { animation-delay: 0.26s; }
-.transaction-list li:nth-child(5) { animation-delay: 0.33s; }
-@keyframes fadeInUpStaggerTransactionHistory {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+
 .transaction-item.income {
   border-color: #22c55e;
   color: #166534;
 }
+
 .transaction-item.expense {
   border-color: #ef4444;
   color: #991b1b;
 }
+
 .transaction-item:hover {
   background: #f1f5f9;
   box-shadow: 0 8px 32px rgba(80, 80, 160, 0.15);
   transform: translateY(-2px) scale(1.01);
 }
 
-/* Transaction Info */
 .transaction-item strong {
   display: block;
   font-size: 1.1rem;
@@ -539,18 +291,19 @@
   color: #3730a3;
   font-weight: 700;
 }
+
 .transaction-item .category {
   font-size: 13px;
   font-style: italic;
   color: #6366f1;
 }
+
 .transaction-item .type {
   font-size: 12px;
   color: #64748b;
   margin-top: 4px;
 }
 
-/* Amount & Delete */
 .amount {
   font-weight: bold;
   display: flex;
@@ -558,45 +311,22 @@
   gap: 10px;
   color: #0f172a;
   font-size: 1.13rem;
-  animation: pulseAmountHistory 2.2s infinite alternate;
 }
-@keyframes pulseAmountHistory {
-  0% { text-shadow: 0 0 0 #38bdf855; }
-  100% { text-shadow: 0 0 8px #38bdf822; }
-}
+
 .delete-btn {
   background: none;
   border: none;
   color: #a5b4fc;
   font-size: 22px;
   cursor: pointer;
-  transition: color 0.2s, transform 0.15s;
   margin-left: 10px;
   position: relative;
 }
+
 .delete-btn:hover {
   color: #ef4444;
-  transform: scale(1.2);
-}
-.delete-btn:active::after {
-  content: '';
-  position: absolute;
-  left: 50%; top: 50%;
-  width: 10px; height: 10px;
-  background: rgba(239,68,68,0.18);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  animation: rippleTransactionHistory 0.5s linear;
-  pointer-events: none;
-}
-@keyframes rippleTransactionHistory {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
 }
 
-/* No Transactions */
 .no-transactions {
   text-align: center;
   color: #64748b;
@@ -608,7 +338,6 @@
   box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
 }
 
-/* Notes Box */
 .notesBox {
   background: #e0e7ff;
   border-radius: 10px;
@@ -623,8 +352,8 @@
   margin-top: 0.7rem;
   margin-bottom: 1rem;
   resize: vertical;
-  transition: background 0.2s, box-shadow 0.2s, border 0.2s;
 }
+
 .notesBox:focus,
 .notesBox:hover {
   outline: none;
@@ -632,84 +361,10 @@
   border: 1.5px solid #6366f1;
   box-shadow: 0 4px 16px rgba(80, 80, 160, 0.13);
 }
+
 .notesBox::placeholder {
   color: #9ca3af;
   font-style: italic;
-}
-
-/* --- Transaction Form --- */
-.formDiv {
-  padding: 2rem 1.5rem;
-  background: linear-gradient(120deg, #f8fafc 60%, #e0e7ff 100%);
-  border-radius: 18px;
-  margin-bottom: 2rem;
-  box-shadow: 0 6px 24px rgba(80, 80, 160, 0.08);
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
-  animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-}
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-.formDiv h3 {
-  margin-bottom: 1.2rem;
-  color: #3b3663;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-align: center;
-}
-.formDiv input[type="text"],
-.formDiv input[type="number"],
-.formDiv select {
-  width: 100%;
-  padding: 12px 14px;
-  margin-bottom: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: #e7eef9;
-  font-size: 1.08rem;
-  color: #22223b;
-  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
-  transition: box-shadow 0.2s, background 0.2s;
-}
-.formDiv input[type="text"]:focus,
-.formDiv input[type="number"]:focus,
-.formDiv select:focus {
-  outline: none;
-  background: #e0e7ff;
-  box-shadow: 0 4px 16px rgba(80, 80, 160, 0.10);
-}
-.BtnAT {
-  background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
-  color: #fff;
-  border: none;
-  padding: 12px 0;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  width: 100%;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(80, 80, 160, 0.08);
-  transition: background 0.2s, transform 0.15s;
-  margin-top: 0.5rem;
-  letter-spacing: 1px;
-}
-.BtnAT:hover {
-  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
-  transform: translateY(-2px) scale(1.03);
-}
-.BtnAT:active {
-  transform: translateY(0) scale(1);
-  box-shadow: 0 1px 4px rgba(80, 80, 160, 0.04);
 }
 
 /* Responsive */
@@ -777,7 +432,6 @@ body.dark-mode .transaction-item.expense {
 body.dark-mode .amount {
   color: #f4f4f4;
   text-shadow: 0 0 8px #38bdf855;
-
 }
 body.dark-mode .category {
   color: #a5b4fc;
@@ -841,10 +495,8 @@ body.dark-mode .BtnAT {
 }
 body.dark-mode .BtnAT:hover {
   background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
-  transform: translateY(-2px) scale(1.03);
 }
 body.dark-mode .BtnAT:active {
-  transform: translateY(0) scale(1);
   box-shadow: 0 1px 4px rgba(80, 80, 160, 0.04);
 }
 body.dark-mode .formDiv {
@@ -870,199 +522,6 @@ body.dark-mode .formDiv h3 {
   color: #38bdf8;
   text-shadow: 0 2px 8px #23294655;
 }
-/* Add this at the top of your file or after :root if you have one */
-* {
-  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s, transform 0.2s;
-}
 
-/* For specific elements, add or enhance transitions for smoother effects */
-.formDiv,
-.transaction-list-container,
-.transaction-item,
-.filters,
-.notesBox,
-.BtnAT,
-.delete-btn {
-  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s, transform 0.2s;
-}
+
 /* --- End Modern UI & Dark Mode --- */
-/* Floating Add Transaction Button */
-.fab-add-transaction {
-  position: fixed;
-  bottom: 32px;
-  right: 32px;
-  z-index: 1000;
-  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 62px;
-  height: 62px;
-  font-size: 2.2rem;
-  box-shadow: 0 8px 32px rgba(80, 80, 160, 0.18);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s, box-shadow 0.3s, transform 0.18s;
-  animation: fabPopIn 0.7s cubic-bezier(.4,0,.2,1);
-}
-.fab-add-transaction:hover {
-  background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
-  box-shadow: 0 12px 36px rgba(80, 80, 160, 0.25);
-  transform: scale(1.08) rotate(12deg);
-}
-@keyframes fabPopIn {
-  0% { opacity: 0; transform: scale(0.5) translateY(60px);}
-  100% { opacity: 1; transform: scale(1) translateY(0);}
-}
-.transaction-item {
-  /* ...existing code... */
-  animation: slideInRight 0.7s cubic-bezier(.4,0,.2,1) forwards;
-  opacity: 0;
-}
-@keyframes slideInRight {
-  0% { opacity: 0; transform: translateX(60px) scale(0.97);}
-  100% { opacity: 1; transform: translateX(0) scale(1);}
-}
-.amount:hover {
-  animation: glowAmount 0.8s alternate infinite;
-  color: #38bdf8;
-}
-@keyframes glowAmount {
-  from { text-shadow: 0 0 0 #38bdf8; }
-  to { text-shadow: 0 0 16px #38bdf8, 0 0 8px #6366f1; }
-}
-.transaction-list-container h3::after {
-  /* ...existing code... */
-  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
-  background-size: 200% 200%;
-  animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1), gradientMove 2.5s linear infinite;
-}
-@keyframes gradientMove {
-  0% { background-position: 0% 50%;}
-  100% { background-position: 100% 50%;}
-}
-.fab-add-transaction {
-  /* ...existing code... */
-  animation: fabPopIn 0.7s cubic-bezier(.4,0,.2,1), fabPulse 2.2s infinite alternate;
-}
-@keyframes fabPulse {
-  0% { box-shadow: 0 8px 32px rgba(80, 80, 160, 0.18);}
-  100% { box-shadow: 0 12px 48px #38bdf855;}
-}
-/* --- Glassmorphism for Form and List --- */
-.formDiv, .transaction-list-container {
-  background: rgba(248, 250, 252, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1.5px solid rgba(99, 102, 241, 0.13);
-  box-shadow: 0 8px 32px rgba(80, 80, 160, 0.13), 0 1.5px 8px #38bdf855;
-}
-
-/* --- Animated Gradient Border for Form --- */
-.formDiv {
-  position: relative;
-  overflow: hidden;
-}
-.formDiv::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: 18px;
-  padding: 2px;
-  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
-  background-size: 400% 400%;
-  animation: borderGradientMove 5s linear infinite;
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-@keyframes borderGradientMove {
-  0% { background-position: 0% 50%;}
-  100% { background-position: 100% 50%;}
-}
-.formDiv > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* --- Ripple Effect for All Buttons --- */
-button, .BtnAT, .fab-add-transaction {
-  position: relative;
-  overflow: hidden;
-}
-button:active::after, .BtnAT:active::after, .fab-add-transaction:active::after {
-  content: '';
-  position: absolute;
-  left: 50%; top: 50%;
-  width: 10px; height: 10px;
-  background: rgba(56,189,248,0.18);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  animation: rippleTransactionHistory 0.5s linear;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* --- Animated Placeholder for Inputs --- */
-input::placeholder, textarea::placeholder {
-  opacity: 0.7;
-  transition: opacity 0.3s;
-}
-input:focus::placeholder, textarea:focus::placeholder {
-  opacity: 0.3;
-}
-
-/* --- Subtle Hover Lift for Transaction Items --- */
-.transaction-item {
-  transition: background 0.2s, box-shadow 0.2s, transform 0.18s;
-}
-.transaction-item:hover {
-  background: #e0e7ff;
-  box-shadow: 0 12px 36px rgba(80, 80, 160, 0.18);
-  transform: translateY(-4px) scale(1.025);
-}
-
-/* --- Accessibility: Focus Outlines --- */
-input:focus, select:focus, textarea:focus, button:focus {
-  outline: 2px solid #38bdf8;
-  outline-offset: 2px;
-}
-
-/* --- Larger Clickable Delete Button --- */
-.delete-btn {
-  min-width: 36px;
-  min-height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-}
-
-/* --- Responsive FAB for Mobile --- */
-@media (max-width: 600px) {
-  .fab-add-transaction {
-    bottom: 16px;
-    right: 16px;
-    width: 52px;
-    height: 52px;
-    font-size: 1.7rem;
-  }
-}
-
-/* --- Animated Gradient Underline for Header (already present, but improved) --- */
-.transaction-list-container h3::after {
-  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
-  background-size: 200% 200%;
-  animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1), gradientMove 2.5s linear infinite;
-}
-@keyframes gradientMove {
-  0% { background-position: 0% 50%;}
-  100% { background-position: 100% 50%;}
-}
-
-/* --- End Modern UI & Animations --- */

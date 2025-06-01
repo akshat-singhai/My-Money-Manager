@@ -15,10 +15,6 @@ body {
 /* -------------------- Animations -------------------- */
 
 /* Parallax 3D Hover */
-@keyframes parallaxHover {
-  0% { transform: perspective(600px) rotateY(0deg); }
-  100% { transform: perspective(600px) rotateY(2deg) scale(1.03); }
-}
 
 /* Button Ripple Effect */
 @keyframes ripple {
@@ -43,10 +39,6 @@ body {
 }
 
 /* Animated Underline for Headings */
-@keyframes underline {
-  from { width: 0; }
-  to { width: 60%; }
-}
 
 /* Gradient Border Glow */
 @keyframes gradientBorder {
@@ -64,14 +56,10 @@ body {
   width: 100%;
   padding: 1rem 0.5rem;
   background: transparent;
-  animation: fadeInDash 0.8s ease-out;
   transition: background 0.4s ease;
 }
 
-@keyframes fadeInDash {
-  0% { opacity: 0; transform: translateY(40px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
+
 
 /* -------------------- Cards & Sections -------------------- */
 .expense-chart, .pie-chart-container, .bar-chart-section, .chart-box {
@@ -252,7 +240,6 @@ body {
   padding: 2px;
   background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
   background-size: 400% 400%;
-  animation: borderGradientMoveDash 6s linear infinite;
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
     linear-gradient(#fff 0 0);
@@ -261,10 +248,7 @@ body {
   pointer-events: none;
   opacity: 0.6;
 }
-@keyframes borderGradientMoveDash {
-  0% { background-position: 0% 50%;}
-  100% { background-position: 100% 50%;}
-}
+
 .expense-chart > *, .pie-chart-container > *, .bar-chart-section > *, .chart-box > *, .recent-transactions > * {
   position: relative;
   z-index: 1;
@@ -281,12 +265,9 @@ body {
   background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
   width: 60%;
   background-size: 200% 200%;
-  animation: underline 1s ease forwards, gradientMoveDash 2.5s linear infinite;
+
 }
-@keyframes gradientMoveDash {
-  0% { background-position: 0% 50%;}
-  100% { background-position: 100% 50%;}
-}
+
 
 /* --- Animated Pulse for Badges --- */
 .badge {
@@ -301,13 +282,9 @@ body {
   color: #fff;
   font-size: 1em;
   box-shadow: 0 2px 8px #38bdf822;
-  animation: badgePulse 1.8s infinite alternate;
   transition: transform 0.2s;
 }
-@keyframes badgePulse {
-  0% { box-shadow: 0 0 0 0 #38bdf855; }
-  100% { box-shadow: 0 0 12px 4px #38bdf822; }
-}
+
 .badge-income {
   background: #10b981;
 }
