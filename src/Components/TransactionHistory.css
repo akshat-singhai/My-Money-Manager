@@ -392,6 +392,7 @@ body.dark-mode .transaction-list-container h3::after {
     gap: 6px;
     padding: 10px 4px;
     font-size: 0.65rem;
+    height: 10rem;
   }
   .filters {
     flex-direction: column;
@@ -421,9 +422,9 @@ body.dark-mode .transaction-list-container h3::after {
     font-size: 13px;
     margin-left: 21rem;
     width: 2.9rem;
-    margin-top: -3rem;
+    margin-top:-3rem;
     margin-bottom: 0.2rem;
-    top:-3rem;
+    top:-6rem;
 
   }
   .no-transactions {
@@ -497,6 +498,7 @@ body.dark-mode .transaction-list-container h3::after {
     gap: 2px;
     padding: 4px 1px;
     font-size: 0.5rem;
+    height: 8rem;
   }
   .filters {
     flex-direction: column;
@@ -523,10 +525,10 @@ body.dark-mode .transaction-list-container h3::after {
   .delete-btn {
     font-size: 9px;
     margin-left: 16rem;
-    width: 1.5rem;
-    margin-top: -2.2rem;
-    margin-bottom: 0.05rem;
-    top: -2.2rem;
+    width: 2.7rem;
+
+ 
+    top: -5.2rem;
   }
   .no-transactions {
     padding: 6px;

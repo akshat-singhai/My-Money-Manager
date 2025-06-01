@@ -199,6 +199,8 @@
   box-shadow: 0 2px 8px rgba(80, 80, 160, 0.04);
   transition: background 2.5s, box-shadow 5.6s;
   width: calc(100% - 10px);
+  align-items: center;
+  justify-content: center;
 }
       .Add Transaction{
         background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
@@ -216,6 +218,7 @@
         letter-spacing: 1px;
         font-family: 'Times New Roman', Times, serif;
       }
+      
 .filters select {
   min-width: 130px;
 }
@@ -304,6 +307,7 @@
   font-size: 11px;
   color: #888;
   margin-top: 4px;
+  
 }
 
 /* Amount & Delete */
@@ -368,7 +372,8 @@
   font-size: 1.08rem;
   box-shadow: 0 2px 8px rgba(80, 80, 160, 0.06);
   border: 1px solid #d1d5db;
-  width: 90%;
+  width: 100%;
+ 
   min-height: 48px;
   margin-top: 0.7rem;
   margin-bottom: 1rem;
@@ -772,6 +777,7 @@ body.dark-mode .transaction-item.expense {
 body.dark-mode .amount {
   color: #f4f4f4;
   text-shadow: 0 0 8px #38bdf855;
+
 }
 body.dark-mode .category {
   color: #a5b4fc;
@@ -851,6 +857,7 @@ body.dark-mode .formDiv select {
   background: #232946;
   color: #e0e7ef;
   border: 1.5px solid #6366f1;
+  margin: 6px;
 }
 body.dark-mode .formDiv input[type="text"]:focus,
 body.dark-mode .formDiv input[type="number"]:focus,
@@ -863,5 +870,84 @@ body.dark-mode .formDiv h3 {
   color: #38bdf8;
   text-shadow: 0 2px 8px #23294655;
 }
+/* Add this at the top of your file or after :root if you have one */
+* {
+  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s, transform 0.2s;
+}
 
+/* For specific elements, add or enhance transitions for smoother effects */
+.formDiv,
+.transaction-list-container,
+.transaction-item,
+.filters,
+.notesBox,
+.BtnAT,
+.delete-btn {
+  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s, transform 0.2s;
+}
 /* --- End Modern UI & Dark Mode --- */
+/* Floating Add Transaction Button */
+.fab-add-transaction {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
+  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 62px;
+  height: 62px;
+  font-size: 2.2rem;
+  box-shadow: 0 8px 32px rgba(80, 80, 160, 0.18);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.18s;
+  animation: fabPopIn 0.7s cubic-bezier(.4,0,.2,1);
+}
+.fab-add-transaction:hover {
+  background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
+  box-shadow: 0 12px 36px rgba(80, 80, 160, 0.25);
+  transform: scale(1.08) rotate(12deg);
+}
+@keyframes fabPopIn {
+  0% { opacity: 0; transform: scale(0.5) translateY(60px);}
+  100% { opacity: 1; transform: scale(1) translateY(0);}
+}
+.transaction-item {
+  /* ...existing code... */
+  animation: slideInRight 0.7s cubic-bezier(.4,0,.2,1) forwards;
+  opacity: 0;
+}
+@keyframes slideInRight {
+  0% { opacity: 0; transform: translateX(60px) scale(0.97);}
+  100% { opacity: 1; transform: translateX(0) scale(1);}
+}
+.amount:hover {
+  animation: glowAmount 0.8s alternate infinite;
+  color: #38bdf8;
+}
+@keyframes glowAmount {
+  from { text-shadow: 0 0 0 #38bdf8; }
+  to { text-shadow: 0 0 16px #38bdf8, 0 0 8px #6366f1; }
+}
+.transaction-list-container h3::after {
+  /* ...existing code... */
+  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
+  background-size: 200% 200%;
+  animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1), gradientMove 2.5s linear infinite;
+}
+@keyframes gradientMove {
+  0% { background-position: 0% 50%;}
+  100% { background-position: 100% 50%;}
+}
+.fab-add-transaction {
+  /* ...existing code... */
+  animation: fabPopIn 0.7s cubic-bezier(.4,0,.2,1), fabPulse 2.2s infinite alternate;
+}
+@keyframes fabPulse {
+  0% { box-shadow: 0 8px 32px rgba(80, 80, 160, 0.18);}
+  100% { box-shadow: 0 12px 48px #38bdf855;}
+}

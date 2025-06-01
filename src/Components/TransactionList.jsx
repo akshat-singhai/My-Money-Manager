@@ -52,7 +52,7 @@ const AddTransaction = () => {
       <h3 className="Heading1">Add Transaction</h3>
 
       <select value={type} onChange={(e) => setType(e.target.value)} className="optionsDiv">
-        <option value="income">Income</option>
+        <option value="income"> Income</option>
         <option value="expense">Expense</option>
       </select>
 
@@ -72,7 +72,7 @@ const AddTransaction = () => {
           className="amountBox"
         />
       </div>
-
+         {/** category  */}
       <select value={category} onChange={(e) => setCategory(e.target.value)} className="categoryBox">
         <option value="">Select Category</option>
         {categories.map((cat, index) => (
@@ -82,6 +82,7 @@ const AddTransaction = () => {
         ))}
       </select>
 
+           {/** paymentMode  */}
       <label className="notesLabel">Payment Mode:</label>
       <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="categoryBox">
         <option value="cash">Cash</option>
@@ -89,7 +90,6 @@ const AddTransaction = () => {
         <option value="creditCard">Credit Card</option>
         <option value="debitCard">Debit Card</option>
       </select>
-
       {paymentMode === "account" && (
         <>
           <label className="notesLabel">Account Type:</label>
@@ -99,14 +99,14 @@ const AddTransaction = () => {
           </select>
         </>
       )}
-
+         {/** Date  */}
       <input
         type="date"
         value={date}
         onChange={(e) => setDate(e.target.value)}
         className="dateBox"
       />
-
+        {/** note  */}
       <label className="notesLabel">Notes (optional):</label>
       <textarea
         value={notes}
@@ -117,6 +117,7 @@ const AddTransaction = () => {
       />
 
       <button type="submit" className="BtnAT">Add Transaction</button>
+      <button className="fab-add-transaction" title="Add Transaction">+</button>
     </form>
   );
 };
