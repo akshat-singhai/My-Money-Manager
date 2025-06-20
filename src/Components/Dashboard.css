@@ -318,7 +318,50 @@ li{
   align-items: center;
   height: 300px; /* Adjust if needed */
 }
+/* Loading Spinner Styles */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+margin-top: 6rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
 
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Alternative Grid Spinner (if using the ldrs/Grid component) */
+.grid-spinner {
+  --grid-color: #6366f1;
+  --grid-size: 60px;
+  --grid-speed: 1.5s;
+}
+
+/* Fade-in animation for dashboard content */
+.dashboard-container {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 /* --- End Modern Dashboard Improvements --- */
 /* -------------------- Responsive (No Change Required) -------------------- */
 
