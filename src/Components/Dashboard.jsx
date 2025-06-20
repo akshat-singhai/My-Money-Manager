@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useMemo, lazy, Suspense } from "react";
+    import React, { useContext, useState, useEffect, useMemo, lazy, Suspense } from "react";
 import { TransactionContext } from "../Context/TransactionContext";
 import {
   PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, ResponsiveContainer
@@ -60,7 +60,7 @@ const getMonthlyData = (transactions) => {
   transactions.forEach(tx => {
     const date = new Date(tx.date);
     if (isNaN(date)) return;
-    const key = `${months[date.getMonth()]} ${date.getFullYear()}`;
+    const key = `${months[date.getMonth()]} ${date.getFullYear()}`; // ✅ Fixed
     if (!data[key]) data[key] = { month: key, Income: 0, Expense: 0 };
     if (tx.amount > 0) data[key].Income += Math.abs(tx.amount);
     else data[key].Expense += Math.abs(tx.amount);
@@ -90,6 +90,36 @@ const CustomPieChart = ({ data, title }) => (
       </PieChart>
     )}
   </motion.div>
+);
+
+const RecentTransactions = ({ transactions }) => (
+  <div className="recent-transactions">
+    <h3 className="heading2">Recent Transactions</h3>
+    {transactions.length === 0 ? (
+      <p>No recent transactions.</p>
+    ) : (
+      <ul>
+        {transactions.slice(-5).reverse().map((tx, index) => (
+          <motion.li
+            key={index}
+            initial={{ opacity: 0, rotateZ: 6 }}
+            animate={{ opacity: 1, rotateZ: 0 }}
+            transition={{ delay: index * 0.08, type: "spring", stiffness: 60 }}
+            whileHover={{ scale: 1.04, rotateZ: -2, rotateY: 2 }}
+          >
+            <span
+              className={`badge bumzi ${tx.amount > 0 ? "badge-income" : "badge-expense"}`}
+              aria-label={tx.amount > 0 ? "Income" : "Expense"}
+              title={tx.amount > 0 ? "Income" : "Expense"}
+            >
+              {tx.amount > 0 ? "+" : "-"}
+            </span>
+            <strong>{(tx.description || tx.text) ?? "No Description"}:</strong> ₹{Math.abs(tx.amount)} - {tx.category || "Other"}
+          </motion.li>
+        ))}
+      </ul>
+    )}
+  </div>
 );
 
 const Dashboard = () => {
@@ -134,7 +164,7 @@ const Dashboard = () => {
 
       <div className="balanceBox">
         <SummaryCard label="Total" value={animatedTotal} color="tomato" />
-        <SummaryCard label="Transactions" value={transactions.length} color="#38bdf8" />
+        <div className="TransactionsBox">Total Transactions: <span style={{ color: "#38bdf8" }}>{transactions.length}</span></div>
         <SummaryCard label="Income" value={animatedIncome} color="#10b981" />
         <SummaryCard label="Expense" value={animatedExpense} color="#ef4444" />
         <SummaryCard label="Inhand" value={animatedInhand} color="#fbbf24" />
@@ -146,6 +176,8 @@ const Dashboard = () => {
           data={[{ name: "Income", value: Number(income) }, { name: "Expense", value: Math.abs(Number(expense)) }]}
           title="Income vs Expense"
         />
+
+        <RecentTransactions transactions={transactions} />
 
         <div className="chart-box">
           <button className="OpenBtn" onClick={() => setShowExpenseChart(prev => !prev)} style={{ background: "#ef4444", color: "white" }}>
