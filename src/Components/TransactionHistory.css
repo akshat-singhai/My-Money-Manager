@@ -189,16 +189,7 @@
 }
 
 /* Animation */
-@keyframes fadeInTransaction {
-  from {
-    opacity: 0;
-    transform: translateY(30px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
+
 /* --- Modern Advanced Animations --- */
 
 /* 3D Card Hover Effect for Transactions */
@@ -209,32 +200,14 @@
 }
 
 /* Animated Gradient Border on Focus */
-@keyframes gradientBorderTransactionHistory {
-  0% {
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 0 #38bdf880;
-  }
-  50% {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 6px #6366f133;
-  }
-  100% {
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 0 #38bdf880;
-  }
-}
+
 .transaction-item:focus-within {
   animation: gradientBorderTransactionHistory 1.2s infinite;
   outline: none;
 }
 
 /* Button Ripple Animation */
-@keyframes rippleTransactionHistory {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
+
 .delete-btn:active::after {
   content: '';
   position: absolute;
@@ -259,25 +232,6 @@
 .transaction-list li:nth-child(4) { animation-delay: 0.26s; }
 .transaction-list li:nth-child(5) { animation-delay: 0.33s; }
 
-@keyframes fadeInUpStaggerTransactionHistory {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Pulse Animation for Amount */
-.amount {
-  animation: pulseAmountHistory 2.2s infinite alternate;
-}
-@keyframes pulseAmountHistory {
-  0% {
-    text-shadow: 0 0 0 #38bdf855;
-  }
-  100% {
-    text-shadow: 0 0 8px #38bdf822;
-  }
-}
 
 /* Animated underline for section header */
 .transaction-list-container h3 {
@@ -294,10 +248,7 @@
   border-radius: 2px;
   animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1);
 }
-@keyframes underlineGrowTransactionHistory {
-  from { width: 0; opacity: 0.2; }
-  to { width: 60px; opacity: 1; }
-}
+
 /* --- Dark Mode Support --- */
 body.dark-mode .transaction-list-container {
   background: #232946;
@@ -566,10 +517,7 @@ body.dark-mode .transaction-list-container h3::after {
   pointer-events: none;
   opacity: 0.6;
 }
-@keyframes borderGradientMoveTH {
-  0% { background-position: 0% 50%;}
-  100% { background-position: 100% 50%;}
-}
+
 .transaction-list-container > * {
   position: relative;
   z-index: 1;
@@ -599,6 +547,7 @@ body.dark-mode .transaction-list-container h3::after {
   border-radius: 2px;
   background-size: 200% 200%;
 }
+/* Add rotation animation on hover for .transaction-item */
 
 
 /* --- Ripple Effect for All Buttons --- */
@@ -802,6 +751,13 @@ input, select, button, .delete-btn, .transaction-item, .amount {
     font-size: 0.7rem;
     padding: 4px 4px;
   }
+}
+/* Inside TransactionHistory.css */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
 }
 
 /* --- End Modern Transaction History Improvements --- */

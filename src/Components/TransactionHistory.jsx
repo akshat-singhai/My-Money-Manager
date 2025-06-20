@@ -1,9 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { TransactionContext } from "../Context/TransactionContext";
 import { incomeCategories, expenseCategories } from "../data/categories";
 import "./TransactionHistory.css";
 import { FaSearch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { Grid } from 'ldrs/react';
+import 'ldrs/react/Grid.css';
 
 const highlightText = (text, highlight) => {
   if (!highlight) return text;
@@ -23,8 +25,14 @@ const TransactionList = () => {
   const [filterType, setFilterType] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const categories = [...incomeCategories, ...expenseCategories].map(c => c.label);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setLoading(false), 2000); // 2 seconds
+    return () => clearTimeout(timeout);
+  }, []);
 
   const filtered = transactions.filter((tx) => {
     const matchType = filterType === "all" || tx.type === filterType;
@@ -32,6 +40,18 @@ const TransactionList = () => {
     const matchSearch = tx.text.toLowerCase().includes(search.toLowerCase());
     return matchType && matchCategory && matchSearch;
   });
+
+  if (loading) {
+    return (
+      <div className="spinner-container">
+        <Grid
+          size="60"
+          speed="1.5"
+          color="black"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="transaction-list-container">

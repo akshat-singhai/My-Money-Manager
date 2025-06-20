@@ -12,40 +12,15 @@ body {
   overflow-x: hidden;
 }
 
-/* -------------------- Animations -------------------- */
+
 
 /* Parallax 3D Hover */
 
 /* Button Ripple Effect */
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
-/* Pulse for Total Balance */
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 0 0 #38bdf855; }
-  100% { box-shadow: 0 0 16px 8px #38bdf822; }
-}
-
-/* Fade-in Up Stagger */
-@keyframes fadeInUpStagger {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* Animated Underline for Headings */
 
 /* Gradient Border Glow */
-@keyframes gradientBorder {
-  0% { border-color: #38bdf8; box-shadow: 0 0 0 0 #38bdf880; }
-  50% { border-color: #6366f1; box-shadow: 0 0 0 6px #6366f133; }
-  100% { border-color: #38bdf8; box-shadow: 0 0 0 0 #38bdf880; }
-}
 
 /* -------------------- Dashboard Container -------------------- */
 .dashboard {
@@ -329,6 +304,19 @@ button, .OpenBtn, .CloseBtn, .nivLink, .badge, .recent-transactions li {
 }
 li{
   color: black;
+}
+.InhandBalanceBox, .OnlineBalanceBox {
+  font-size: 1.1rem;
+  margin: 0.3rem 0;
+  font-weight: 600;
+  color: #ffbb0e	;
+
+}
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px; /* Adjust if needed */
 }
 
 /* --- End Modern Dashboard Improvements --- */
