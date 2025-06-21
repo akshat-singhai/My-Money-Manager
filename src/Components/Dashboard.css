@@ -1,62 +1,65 @@
+
+
 /* -------------------- Base Reset & Background -------------------- */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
   font-family: 'Segoe UI', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
   color: #232946;
   overflow-x: hidden;
 }
 
-
-
-/* Parallax 3D Hover */
-
-/* Button Ripple Effect */
-
-/* Animated Underline for Headings */
-
-/* Gradient Border Glow */
-
-/* -------------------- Dashboard Container -------------------- */
+/* -------------------- Layout Containers -------------------- */
 .dashboard {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  width: 100%;
-  padding: 1rem 0.5rem;
-  background: transparent;
-  transition: background 0.4s ease;
+  padding: 1rem;
+}
+
+.dashboard-container {
+  animation: fadeIn 0.5s ease-in;
 }
 
 
 
-/* -------------------- Cards & Sections -------------------- */
-.expense-chart, .pie-chart-container, .bar-chart-section, .chart-box {
+/* -------------------- Chart Cards -------------------- */
+.expense-chart,
+.pie-chart-container,
+.bar-chart-section,
+.chart-box {
   position: relative;
   width: 100%;
   max-width: 440px;
   margin: 2rem 0;
   padding: 1.5rem 1.2rem;
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 10px 36px rgba(80, 80, 160, 0.16), 0 1.5px 6px rgba(80, 80, 160, 0.08);
-  backdrop-filter: blur(12px);
-  border: 1.5px solid rgba(99, 102, 241, 0.10);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(99, 102, 241, 0.13);
+  box-shadow: 0 10px 36px rgba(80, 80, 160, 0.16), 0 2px 8px #38bdf855;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
+  overflow: hidden;
 }
 
-.expense-chart:hover, .pie-chart-container:hover, .bar-chart-section:hover, .chart-box:hover {
+.expense-chart:hover,
+.pie-chart-container:hover,
+.bar-chart-section:hover,
+.chart-box:hover {
   transform: perspective(600px) rotateY(2deg) scale(1.03);
   box-shadow: 0 20px 60px rgba(56, 189, 248, 0.22), 0 2px 8px rgba(80, 80, 160, 0.10);
 }
 
-.expense-chart:focus-within, .pie-chart-container:focus-within, .bar-chart-section:focus-within, .chart-box:focus-within {
+.expense-chart:focus-within,
+.pie-chart-container:focus-within,
+.bar-chart-section:focus-within,
+.chart-box:focus-within {
   animation: gradientBorder 1.5s infinite;
   outline: none;
 }
@@ -66,7 +69,7 @@ body {
   font-size: 1.7rem;
   font-weight: 800;
   color: #3730a3;
-  margin: 0.7rem 0 1.2rem 0;
+  margin: 0.7rem 0 1.2rem;
   text-align: center;
   letter-spacing: 0.5px;
   position: relative;
@@ -79,75 +82,221 @@ body {
   left: 50%;
   transform: translateX(-50%);
   height: 3px;
-  background: linear-gradient(90deg, #38bdf8, #6366f1);
   width: 60%;
-  animation: underline 1s ease forwards;
+  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
+  background-size: 200% 200%;
 }
 
 /* -------------------- Balance Boxes -------------------- */
+/* ===== Enhanced Discord-Inspired Balance Boxes ===== */
 .balanceBox {
   display: flex;
-  gap: 1.2rem;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  margin: 1.5rem 0;
+  align-items: stretch; /* Make all boxes equal height */
+  gap: 1.5rem;
+  margin: 2.5rem 0;
+  padding: 0 1.5rem;
 }
 
 .balanceBox > div {
-  min-width: 130px;
-  padding: 18px 22px;
-  border-radius: 16px;
-  font-size: 1.08rem;
-  font-weight: 700;
-  background: linear-gradient(120deg, #e0e7ff 60%, #f1f5f9 100%);
-  color: #3730a3;
+  flex: 1 1 160px; /* Better flex behavior */
+  min-width: 160px;
+  max-width: 220px;
+  padding: 1.5rem 1.5rem;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
-  box-shadow: 0 4px 16px rgba(80, 80, 160, 0.10);
-  border: 1.5px solid #c7d2fe;
+  color: #e4e4e7;
+  background: linear-gradient(145deg, #1e1f24 30%, #2b2d31 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  transition: 
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.4s ease,
+    box-shadow 0.4s ease,
+    color 0.3s ease;
+  backdrop-filter: blur(6px);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Gradient border effect */
+.balanceBox > div::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1px;
+  background: linear-gradient(135deg, 
+    rgba(99, 102, 241, 0.4) 0%, 
+    rgba(56, 189, 248, 0.3) 50%,
+    rgba(99, 102, 241, 0.4) 100%);
+  background-size: 200% 200%;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: gradientFlow 6s linear infinite;
+}
+
+.balanceBox > div:hover::after {
+  opacity: 1;
+}
+
+/* Inner glow effect */
+.balanceBox > div::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center, 
+    rgba(99, 102, 241, 0.2) 0%, 
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.balanceBox > div:hover::before {
+  opacity: 0.8;
 }
 
 .balanceBox > div:hover {
-  transform: scale(1.06);
-  box-shadow: 0 12px 36px rgba(99, 102, 241, 0.18);
-  background: linear-gradient(120deg, #6366f1 60%, #38bdf8 100%);
-  color: #fff;
+  transform: scale(1.06) translateY(-4px);
+  box-shadow: 
+    0 8px 32px rgba(99, 102, 241, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, #2c2e34 30%, #3a3d45 100%);
+  color: #ffffff;
 }
 
+/* Value styling */
+.balanceBox > div .value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  letter-spacing: -0.5px;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Label styling */
+.balanceBox > div .label {
+  display: block;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Highlighted Total Box */
 .TotalBox {
-  animation: pulseGlow 2.2s infinite alternate;
+  animation: pulseGlowDiscord 3s ease-in-out infinite alternate;
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+.TotalBox::before {
+  background: radial-gradient(
+    circle at center, 
+    rgba(99, 102, 241, 0.3) 0%, 
+    transparent 70%
+  );
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .balanceBox {
+    gap: 1.2rem;
+    padding: 0 1rem;
+  }
+  
+  .balanceBox > div {
+    min-width: 140px;
+    padding: 1.2rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .balanceBox > div .value {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .balanceBox {
+    gap: 1rem;
+  }
+  
+  .balanceBox > div {
+    min-width: 120px;
+    padding: 1rem 0.8rem;
+    font-size: 0.95rem;
+  }
+  
+  .balanceBox > div .value {
+    font-size: 1.4rem;
+  }
+  
+  .TotalBox {
+    animation: none; /* Remove animation on small screens */
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.3) !important;
+  }
 }
 
 /* -------------------- Buttons -------------------- */
-.OpenBtn, .CloseBtn, .nivLink {
+.OpenBtn,
+.CloseBtn,
+.nivLink {
   position: relative;
-  overflow: hidden;
-  border: none;
-  color: #fff;
+  display: inline-block;
   padding: 14px 28px;
   font-size: 1.08rem;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
   font-weight: 700;
-  letter-spacing: 0.7px;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.13);
+  color: #fff;
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  border: none;
+  border-radius: 20px;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.13);
+  transition: all 0.3s;
   text-decoration: none;
-  display: inline-block;
+  letter-spacing: 0.7px;
 }
 
-.OpenBtn:hover, .CloseBtn:hover, .nivLink:hover {
+.OpenBtn:hover,
+.CloseBtn:hover,
+.nivLink:hover {
   transform: translateY(-4px) scale(1.03);
   box-shadow: 0 12px 36px rgba(99, 102, 241, 0.18);
 }
 
-.OpenBtn:active::after, .CloseBtn:active::after {
+.OpenBtn:active::after,
+.CloseBtn:active::after {
   content: '';
   position: absolute;
-  left: 50%; top: 50%;
-  width: 10px; height: 10px;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
   background: rgba(56,189,248,0.25);
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(1);
@@ -155,177 +304,54 @@ body {
   pointer-events: none;
 }
 
-/* -------------------- Lists & Transactions -------------------- */
-.pie-chart-container li, .recent-transactions li {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInUpStagger 0.7s forwards;
-}
-
-.pie-chart-container li:nth-child(1),
-.recent-transactions li:nth-child(1) { animation-delay: 0.05s; }
-.pie-chart-container li:nth-child(2),
-.recent-transactions li:nth-child(2) { animation-delay: 0.12s; }
-.pie-chart-container li:nth-child(3),
-.recent-transactions li:nth-child(3) { animation-delay: 0.19s; }
-.pie-chart-container li:nth-child(4),
-.recent-transactions li:nth-child(4) { animation-delay: 0.26s; }
-
+/* -------------------- Transaction List -------------------- */
 .recent-transactions {
-  margin-top: 1.5rem;
   background: rgba(236, 254, 255, 0.7);
   border-radius: 14px;
   padding: 1rem 1.2rem;
   box-shadow: 0 4px 16px rgba(80, 80, 160, 0.09);
 }
 
-.badge {
-  display: inline-block;
-  width: 1.3em;
-  height: 1.3em;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 1.3em;
-  margin-right: 0.5em;
-  font-weight: bold;
-  color: #fff;
-  font-size: 1em;
-}
-.badge-income {
-  background: #10b981;
-}
-.badge-expense {
-  background: #ef4444;
-}
-/* --- Glassmorphism & Animated Border for Cards & Recent Transactions --- */
-.expense-chart, .pie-chart-container, .bar-chart-section, .chart-box, .recent-transactions {
-  background: rgba(255,255,255,0.82);
-  backdrop-filter: blur(14px);
-  border: 1.5px solid rgba(99, 102, 241, 0.13);
-  box-shadow: 0 10px 36px rgba(80, 80, 160, 0.16), 0 1.5px 8px #38bdf855;
-  position: relative;
-  overflow: hidden;
-}
-.expense-chart::before, .pie-chart-container::before, .bar-chart-section::before, .chart-box::before, .recent-transactions::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: 22px;
-  padding: 2px;
-  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
-  background-size: 400% 400%;
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-.expense-chart > *, .pie-chart-container > *, .bar-chart-section > *, .chart-box > *, .recent-transactions > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* --- Animated Gradient Underline for Headings --- */
-.heading2::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 3px;
-  background: linear-gradient(270deg, #38bdf8, #6366f1, #38bdf8);
-  width: 60%;
-  background-size: 200% 200%;
-
-}
-
-
-/* --- Animated Pulse for Badges --- */
-.badge {
-  display: inline-block;
-  width: 1.3em;
-  height: 1.3em;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 1.3em;
-  margin-right: 0.5em;
-  font-weight: bold;
-  color: #fff;
-  font-size: 1em;
-  box-shadow: 0 2px 8px #38bdf822;
-  transition: transform 0.2s;
-}
-
-.badge-income {
-  background: #10b981;
-}
-.badge-expense {
-  background: #ef4444;
-}
-
-/* --- Animated Hover for Recent Transaction Items --- */
 .recent-transactions li {
-  transition: background 0.2s, box-shadow 0.2s, transform 0.18s;
+  transition: all 0.18s ease;
   border-radius: 8px;
   padding: 0.3em 0.5em;
+  color: black;
 }
+
 .recent-transactions li:hover {
   background: #e0e7ff;
   box-shadow: 0 4px 16px #38bdf822;
   transform: translateY(-2px) scale(1.03);
 }
 
-/* --- Focus Outlines for Accessibility --- */
-button:focus, .OpenBtn:focus, .CloseBtn:focus, .nivLink:focus {
-  outline: 2px solid #38bdf8;
-  outline-offset: 2px;
+/* -------------------- Badges -------------------- */
+.badge {
+  display: inline-block;
+  width: 1.3em;
+  height: 1.3em;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 1.3em;
+  font-weight: bold;
+  font-size: 1em;
+  color: #fff;
+  margin-right: 0.5em;
+  box-shadow: 0 2px 8px #38bdf822;
+  transition: transform 0.2s;
 }
 
-/* --- Smoother Transitions --- */
-button, .OpenBtn, .CloseBtn, .nivLink, .badge, .recent-transactions li {
-  transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s, transform 0.18s;
-}
+.badge-income { background: #10b981; }
+.badge-expense { background: #ef4444; }
 
-/* --- Responsive Badge Scaling --- */
-@media (max-width: 500px) {
-  .badge {
-    width: 1em;
-    height: 1em;
-    font-size: 0.85em;
-    margin-right: 0.3em;
-  }
-  .recent-transactions {
-    padding: 0.7rem 0.5rem;
-  }
-}
-li{
-  color: black;
-}
-.InhandBalanceBox, .OnlineBalanceBox {
-  font-size: 1.1rem;
-  margin: 0.3rem 0;
-  font-weight: 600;
-  color: #ffbb0e	;
-
-}
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px; /* Adjust if needed */
-}
-/* Loading Spinner Styles */
+/* -------------------- Spinner -------------------- */
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100%;
-margin-top: 6rem;
+  margin-top: 6rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -346,23 +372,34 @@ margin-top: 6rem;
   100% { transform: rotate(360deg); }
 }
 
-/* Alternative Grid Spinner (if using the ldrs/Grid component) */
-.grid-spinner {
-  --grid-color: #6366f1;
-  --grid-size: 60px;
-  --grid-speed: 1.5s;
+/* -------------------- Responsive Styles -------------------- */
+@media (max-width: 500px) {
+  .badge {
+    width: 1em;
+    height: 1em;
+    font-size: 0.85em;
+    margin-right: 0.3em;
+  }
+
+  .recent-transactions {
+    padding: 0.7rem 0.5rem;
+  }
 }
 
-/* Fade-in animation for dashboard content */
-.dashboard-container {
-  animation: fadeIn 0.5s ease-in;
+/* -------------------- Utility -------------------- */
+.InhandBalanceBox,
+.OnlineBalanceBox {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0.3rem 0;
+  color: #ffbb0e;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-/* --- End Modern Dashboard Improvements --- */
-/* -------------------- Responsive (No Change Required) -------------------- */
+/* -------------------- Animations -------------------- */
 
-/* -------------------- Done! -------------------- */
+
+
+
+
+
+/* -------------------- Done -------------------- */

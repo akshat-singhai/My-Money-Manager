@@ -78,9 +78,9 @@
   cursor: pointer;
   color: #a5b4fc;
   margin-left: 12px;
-  transition: color 0.2s, transform 0.15s;
+  
   width: 50px;
-
+  
 }
 
 .delete-btn:hover {
@@ -188,66 +188,9 @@
   }
 }
 
-/* Animation */
-
-/* --- Modern Advanced Animations --- */
-
-/* 3D Card Hover Effect for Transactions */
-.transaction-item:hover {
-  transform: perspective(600px) rotateY(2deg) scale(1.03);
-  box-shadow: 0 20px 60px 0 rgba(56, 189, 248, 0.18), 0 2px 8px rgba(80, 80, 160, 0.10);
-  transition: transform 0.35s cubic-bezier(.4,0,.2,1), box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.2s;
-}
-
-/* Animated Gradient Border on Focus */
-
-.transaction-item:focus-within {
-  animation: gradientBorderTransactionHistory 1.2s infinite;
-  outline: none;
-}
-
-/* Button Ripple Animation */
-
-.delete-btn:active::after {
-  content: '';
-  position: absolute;
-  left: 50%; top: 50%;
-  width: 10px; height: 10px;
-  background: rgba(239,68,68,0.18);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  animation: rippleTransactionHistory 0.5s linear;
-  pointer-events: none;
-}
-
-/* Fade-in Up for List Items with Stagger */
-.transaction-list li {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInUpStaggerTransactionHistory 0.7s forwards;
-}
-.transaction-list li:nth-child(1) { animation-delay: 0.05s; }
-.transaction-list li:nth-child(2) { animation-delay: 0.12s; }
-.transaction-list li:nth-child(3) { animation-delay: 0.19s; }
-.transaction-list li:nth-child(4) { animation-delay: 0.26s; }
-.transaction-list li:nth-child(5) { animation-delay: 0.33s; }
 
 
-/* Animated underline for section header */
-.transaction-list-container h3 {
-  position: relative;
-  overflow: visible;
-}
-.transaction-list-container h3::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 4px;
-  margin: 0.5rem auto 0 auto;
-  background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
-  border-radius: 2px;
-  animation: underlineGrowTransactionHistory 1.2s cubic-bezier(.4,0,.2,1);
-}
+
 
 /* --- Dark Mode Support --- */
 body.dark-mode .transaction-list-container {
@@ -477,7 +420,6 @@ body.dark-mode .transaction-list-container h3::after {
     font-size: 9px;
     margin-left: 16rem;
     width: 2.7rem;
-
  
     top: -5.2rem;
   }
@@ -637,10 +579,10 @@ input, select, button, .delete-btn, .transaction-item, .amount {
   .delete-btn {
     font-size: 13px;
     margin-left: 21rem;
-    width: 2.9rem;
-    margin-top:-3rem;
+    width: 2.5rem;
+   
     margin-bottom: 0.2rem;
-    top:-6rem;
+    top:-4rem;
   }
   .no-transactions {
     padding: 14px;
@@ -738,10 +680,12 @@ input, select, button, .delete-btn, .transaction-item, .amount {
     font-size: 0.6rem;
   }
   .delete-btn {
-    font-size: 9px;
+   
     margin-left: 16rem;
     width: 2.7rem;
-    top: -5.2rem;
+    height: 6.7rem;
+    top: -3.2rem;
+    
   }
   .no-transactions {
     padding: 6px;

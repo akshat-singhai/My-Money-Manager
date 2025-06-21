@@ -4,12 +4,30 @@ import {
   PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, ResponsiveContainer
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
-import { LinearProgress, CircularProgress } from "@mui/material";
+import { Grid } from 'ldrs/react';
+import 'ldrs/react/Grid.css';
 import "./Dashboard.css";
+
+const ExpenseChart = lazy(() => import("./ExpenseChart"));
 
 const COLORS = ["#38bdf8", "#6366f1", "#fbbf24", "#ef4444", "#10b981", "#a21caf", "#f472b6", "#f59e42"];
 
-// Utility functions
+function useAnimatedNumber(target, duration = 800) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    const startTime = performance.now();
+    function animate(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      setValue((target * progress).toFixed(2));
+      if (progress < 1) requestAnimationFrame(animate);
+      else setValue(Number(target).toFixed(2));
+    }
+    animate(startTime);
+  }, [target]);
+  return value;
+}
+
 const getIncomeData = (transactions) => {
   return transactions.filter(tx => tx.amount > 0).reduce((acc, tx) => {
     const category = tx.category || "Other";
@@ -42,7 +60,7 @@ const getMonthlyData = (transactions) => {
   transactions.forEach(tx => {
     const date = new Date(tx.date);
     if (isNaN(date)) return;
-    const key = `${months[date.getMonth()]} ${date.getFullYear()}`;
+    const key = `${months[date.getMonth()]} ${date.getFullYear()}`; // 
     if (!data[key]) data[key] = { month: key, Income: 0, Expense: 0 };
     if (tx.amount > 0) data[key].Income += Math.abs(tx.amount);
     else data[key].Expense += Math.abs(tx.amount);
@@ -50,47 +68,10 @@ const getMonthlyData = (transactions) => {
   return Object.values(data);
 };
 
-// Custom hook for animated numbers with progress
-function useAnimatedNumber(target, duration = 800) {
-  const [value, setValue] = useState(0);
-  const [progress, setProgress] = useState(0);
-  
-  useEffect(() => {
-    const startTime = performance.now();
-    function animate(now) {
-      const elapsed = now - startTime;
-      const prog = Math.min(elapsed / duration, 1);
-      setProgress(prog * 100);
-      setValue((target * prog).toFixed(2));
-      if (prog < 1) requestAnimationFrame(animate);
-      else {
-        setValue(Number(target).toFixed(2));
-        setProgress(100);
-      }
-    }
-    animate(startTime);
-  }, [target, duration]);
-  
-  return { value, progress };
-}
-
-// Components
-const SummaryCard = ({ label, value, color, progress }) => (
+const SummaryCard = ({ label, value, color }) => (
   <div className="summary-card">
     <span className="label">{label}:</span>
     <span className="value" style={{ color }}>₹{value}</span>
-    <LinearProgress 
-      variant="determinate" 
-      value={progress} 
-      sx={{ 
-        height: 6,
-        borderRadius: 3,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        '& .MuiLinearProgress-bar': {
-          backgroundColor: color,
-        }
-      }} 
-    />
   </div>
 );
 
@@ -141,7 +122,6 @@ const RecentTransactions = ({ transactions }) => (
   </div>
 );
 
-// Main Dashboard Component
 const Dashboard = () => {
   const { transactions } = useContext(TransactionContext);
   const [loading, setLoading] = useState(true);
@@ -160,11 +140,11 @@ const Dashboard = () => {
   const inhand = useMemo(() => transactions.filter(tx => tx.paymentMode === "cash").reduce((a, tx) => a + tx.amount, 0), [transactions]);
   const online = useMemo(() => transactions.filter(tx => tx.paymentMode === "online" || tx.paymentMode === "account").reduce((a, tx) => a + tx.amount, 0), [transactions]);
 
-  const { value: animatedTotal, progress: totalProgress } = useAnimatedNumber(total);
-  const { value: animatedIncome, progress: incomeProgress } = useAnimatedNumber(income);
-  const { value: animatedExpense, progress: expenseProgress } = useAnimatedNumber(Math.abs(expense));
-  const { value: animatedInhand, progress: inhandProgress } = useAnimatedNumber(inhand);
-  const { value: animatedOnline, progress: onlineProgress } = useAnimatedNumber(online);
+  const animatedTotal = useAnimatedNumber(total);
+  const animatedIncome = useAnimatedNumber(income);
+  const animatedExpense = useAnimatedNumber(Math.abs(expense));
+  const animatedInhand = useAnimatedNumber(inhand);
+  const animatedOnline = useAnimatedNumber(online);
 
   const incomeData = useMemo(() => getIncomeData(transactions), [transactions]);
   const expenseData = useMemo(() => getExpenseData(transactions), [transactions]);
@@ -173,15 +153,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="spinner-container">
-        <CircularProgress 
-          size={40}
-          className="spinner"
-          thickness={5}
-          sx={{
-            color: '#6366f1',
-            animationDuration: '1000ms',
-          }}
-        />
+        <Grid size="60" speed="1.5" color="black" />
       </div>
     );
   }
@@ -191,26 +163,12 @@ const Dashboard = () => {
       <h2 className="heading2">Dashboard</h2>
 
       <div className="balanceBox">
-        <SummaryCard label="Total" value={animatedTotal} color="tomato" progress={totalProgress} />
-        <div className="TransactionsBox">
-          Total Transactions: <span style={{ color: "#38bdf8" }}>{transactions.length}</span>
-          <LinearProgress 
-            variant="determinate" 
-            value={(transactions.length / 100) * 100}
-            sx={{ 
-              height: 6,
-              borderRadius: 3,
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              '& .MuiLinearProgress-bar': {
-                backgroundColor: '#38bdf8',
-              }
-            }} 
-          />
-        </div>
-        <SummaryCard label="Income" value={animatedIncome} color="#10b981" progress={incomeProgress} />
-        <SummaryCard label="Expense" value={animatedExpense} color="#ef4444" progress={expenseProgress} />
-        <SummaryCard label="Inhand" value={animatedInhand} color="#fbbf24" progress={inhandProgress} />
-        <SummaryCard label="Online" value={animatedOnline} color="#7c24e7" progress={onlineProgress} />
+        <SummaryCard label="Total" className="TotalBox" value={animatedTotal} color="tomato" />
+       <div className="TransactionsBox">Total Transactions: <span style={{ color: "#38bdf8" }}>{transactions.length}</span></div>   
+        <SummaryCard label="Income" value={animatedIncome} color="#10b981" />
+        <SummaryCard label="Expense" value={animatedExpense} color="#ef4444" />
+        <SummaryCard label="Inhand" value={animatedInhand} color="#fbbf24" />
+        <SummaryCard label="Online" value={animatedOnline} color="#7c24e7" />
       </div>
 
       <div className="chart-container-box responsive-charts">
