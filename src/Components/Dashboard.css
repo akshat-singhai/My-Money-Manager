@@ -492,78 +492,199 @@ body {
   color: #ffbb0e;
 }
 /* -------------------- Dark Mode Support -------------------- */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(120deg, #1e1e2f 0%, #2c2e3e 100%);
-    color: #e0e0f0;
-  }
-
-  .chart-box,
-  .expense-chart,
-  .pie-chart-container,
-  .bar-chart-section {
-    background: rgba(40, 40, 55, 0.9);
-    border: 1.5px solid rgba(99, 102, 241, 0.1);
-    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(99, 102, 241, 0.1);
-  }
-
-  .heading2 {
-    color: #c7d2fe;
-  }
-
-  .balanceBox > div {
-    background: linear-gradient(145deg, #242634 30%, #1e1f27 100%);
-    color: #d1d5db;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6),
-                inset 0 1px 1px rgba(255, 255, 255, 0.05);
-  }
-
-  .balanceBox > div .value {
-    color: #ffffff;
-  }
-
-  .recent-transactions {
-    background: rgba(35, 38, 55, 0.85);
-    color: #e2e8f0;
-    border: 1px solid rgba(99, 102, 241, 0.15);
-  }
-
-  .recent-transactions li {
-    background: rgba(50, 55, 75, 0.7);
-    color: #f1f5f9;
-  }
-
-  .recent-transactions li:hover {
-    background: rgba(70, 76, 110, 0.8);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.2),
-                0 2px 4px rgba(99, 102, 241, 0.08);
-  }
-
-  .transaction-category,
-  .transaction-date {
-    color: #a5b4fc;
-  }
-
-  .badge-income { background: #34d399; }
-  .badge-expense { background: #f87171; }
-
-  .OpenBtn,
-  .CloseBtn,
-  .nivLink {
-    background: linear-gradient(90deg, #1e40af, #6366f1);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
-  }
-
-  .spinner {
-    border: 5px solid #444;
-    border-top: 5px solid #38bdf8;
-  }
+/* -------------------- Base Styles (Improved) -------------------- */
+body.dark-mode {
+  background: linear-gradient(120deg, #181a2e 0%, #22243a 100%); /* Slightly darker, richer gradient */
+  color: #e0e0f0; /* Good base text color */
+  transition: background 0.5s ease, color 0.5s ease; /* Slightly slower, smoother transition */
+  font-family: 'Inter', sans-serif; /* Example: Use a modern font */
 }
-/* -------------------- Animations -------------------- */
 
+/* -------------------- Cards & Charts (Improved) -------------------- */
+body.dark-mode .chart-box,
+body.dark-mode .expense-chart,
+body.dark-mode .pie-chart-container,
+body.dark-mode .bar-chart-section {
+  background: rgba(30, 32, 48, 0.95); /* Deeper, less transparent background */
+  border: 1.5px solid rgba(99, 102, 241, 0.15); /* Slightly stronger border */
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.4), /* More pronounced shadow */
+    0 3px 10px rgba(99, 102, 241, 0.12); /* Sharper, secondary shadow */
+  border-radius: 12px; /* Add rounded corners for a softer look */
+  transition: all 0.4s ease-in-out; /* Smoother ease-in-out transition */
+}
 
+body.dark-mode .chart-box:hover,
+body.dark-mode .expense-chart:hover,
+body.dark-mode .pie-chart-container:hover,
+body.dark-mode .bar-chart-section:hover {
+  transform: translateY(-3px); /* Subtle lift on hover */
+  box-shadow:
+    0 15px 45px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(99, 102, 241, 0.15);
+}
 
+/* -------------------- Headings (Improved) -------------------- */
+body.dark-mode .heading2 {
+  color: #a78bfa; /* A more vibrant, but still dark-mode friendly purple */
+  font-weight: 600; /* Make headings slightly bolder */
+  letter-spacing: 0.5px; /* Add a little letter spacing for readability */
+}
 
+/* -------------------- Balance Box (Improved) -------------------- */
+body.dark-mode .balanceBox > div {
+  background: linear-gradient(145deg, #2a2c40 30%, #202230 100%); /* Richer, deeper gradient */
+  color: #d1d5db;
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.7), /* More intense shadow */
+    inset 0 1px 2px rgba(255, 255, 255, 0.07); /* Slightly stronger inner shadow */
+  border-radius: 10px; /* Consistent rounded corners */
+  transition: background 0.4s ease-out, color 0.4s ease-out, box-shadow 0.4s ease-out, transform 0.3s ease;
+}
+
+body.dark-mode .balanceBox > div:hover {
+  background: linear-gradient(145deg, #383a50 30%, #404258 100%); /* Lighter hover state for better feedback */
+  color: #ffffff;
+  box-shadow:
+    0 10px 38px rgba(99, 102, 241, 0.4), /* More prominent hover shadow */
+    inset 0 1px 2px rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px); /* Gentle lift on hover */
+}
+
+body.dark-mode .balanceBox > div .value {
+  color: #ffffff;
+  font-weight: 700; /* Make the value stand out */
+}
+
+/* -------------------- Recent Transactions (Improved) -------------------- */
+body.dark-mode .recent-transactions {
+  background: rgba(28, 30, 45, 0.9); /* Darker, less transparent background */
+  color: #e2e8f0;
+  border: 1px solid rgba(99, 102, 241, 0.18); /* Slightly more visible border */
+  border-radius: 12px; /* Consistent rounded corners */
+  padding: 20px; /* Add some padding */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+  transition: all 0.4s ease;
+}
+
+body.dark-mode .recent-transactions li {
+  background: rgba(40, 44, 60, 0.8); /* Darker list item background */
+  color: #f1f5f9;
+  border-radius: 8px; /* Rounded corners for list items */
+  padding: 12px 15px; /* Adjust padding */
+  margin-bottom: 10px; /* Space between list items */
+  display: flex; /* Use flexbox for better alignment */
+  justify-content: space-between; /* Space out content */
+  align-items: center; /* Vertically align items */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Subtle shadow for items */
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode .recent-transactions li:last-child {
+  margin-bottom: 0; /* No margin for the last item */
+}
+
+body.dark-mode .recent-transactions li:hover {
+  background: rgba(60, 65, 90, 0.85); /* More distinct hover state */
+  box-shadow:
+    0 8px 25px rgba(99, 102, 241, 0.25),
+    0 3px 6px rgba(99, 102, 241, 0.1);
+  transform: translateY(-2px) scale(1.01); /* Slight lift and scale for emphasis */
+}
+
+body.dark-mode .transaction-details {
+  display: flex;
+  flex-direction: column;
+}
+
+body.dark-mode .transaction-amount {
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+body.dark-mode .transaction-category,
+body.dark-mode .transaction-date {
+  color: #a5b4fc;
+  font-size: 0.85em; /* Slightly smaller font for secondary info */
+  opacity: 0.9; /* Slightly less opaque for better hierarchy */
+}
+
+/* -------------------- Badges (Improved) -------------------- */
+body.dark-mode .badge-income {
+  background: #10b981; /* A more vibrant green */
+  color: #e0f2f7; /* Light text for better contrast */
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+body.dark-mode .badge-expense {
+  background: #ef4444; /* A more vibrant red */
+  color: #fee2e2; /* Light text for better contrast */
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+/* -------------------- Buttons (Improved) -------------------- */
+body.dark-mode .OpenBtn,
+body.dark-mode .CloseBtn,
+body.dark-mode .nivLink {
+  background: linear-gradient(90deg, #4f46e5, #8b5cf6); /* More distinct and vibrant purple gradient */
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3); /* Stronger shadow */
+  color: #fff;
+  border: none; /* Ensure no default border */
+  padding: 12px 25px; /* Adjust padding */
+  border-radius: 8px; /* Rounded corners */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .OpenBtn:hover,
+body.dark-mode .CloseBtn:hover,
+body.dark-mode .nivLink:hover {
+  background: linear-gradient(90deg, #6366f1, #a78bfa); /* Lighter gradient on hover */
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4); /* Enhanced shadow on hover */
+  transform: translateY(-2px); /* Subtle lift */
+}
+
+/* -------------------- Spinner (Improved) -------------------- */
+body.dark-mode .spinner {
+  border: 5px solid rgba(68, 68, 68, 0.3); /* Lighter base border for contrast */
+  border-top: 5px solid #38bdf8;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite; /* Add spin animation */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* -------------------- Scrollbar (Optional but Recommended) -------------------- */
+body.dark-mode::-webkit-scrollbar {
+  width: 10px;
+}
+
+body.dark-mode::-webkit-scrollbar-track {
+  background: #2c2e3e; /* Dark track */
+  border-radius: 10px;
+}
+
+body.dark-mode::-webkit-scrollbar-thumb {
+  background-color: #6366f1; /* Purple thumb */
+  border-radius: 10px;
+  border: 2px solid #2c2e3e; /* Border to match track */
+}
+
+body.dark-mode::-webkit-scrollbar-thumb:hover {
+  background-color: #8b5cf6; /* Lighter purple on hover */
+}
 
 
 /* -------------------- Done -------------------- */
