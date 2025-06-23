@@ -30,7 +30,7 @@ const TransactionList = () => {
   const categories = [...incomeCategories, ...expenseCategories].map(c => c.label);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setLoading(false), 1000); // 2 seconds
+    const timeout = setTimeout(() => setLoading(false), 1000); // 1000ms
     return () => clearTimeout(timeout);
   }, []);
 

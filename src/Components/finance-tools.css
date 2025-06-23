@@ -233,7 +233,6 @@ body.dark-mode .result {
   padding: 2px;
   background: linear-gradient(270deg, #38a169, #2563eb, #38a169);
   background-size: 400% 400%;
-  animation: borderGradientMoveTools 5s linear infinite;
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
     linear-gradient(#fff 0 0);
@@ -241,14 +240,8 @@ body.dark-mode .result {
   mask-composite: exclude;
   pointer-events: none;
 }
-@keyframes borderGradientMoveTools {
-  0% { background-position: 0% 50%;}
-  100% { background-position: 100% 50%;}
-}
-.container > * {
-  position: relative;
-  z-index: 1;
-}
+
+
 
 /* --- Ripple Effect for All Buttons --- */
 button {
@@ -256,23 +249,17 @@ button {
   overflow: hidden;
 }
 button:active::after {
-  content: '';
+  
   position: absolute;
   left: 50%; top: 50%;
   width: 10px; height: 10px;
   background: rgba(56,161,105,0.18);
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(1);
-  animation: rippleTools 0.5s linear;
   pointer-events: none;
   z-index: 2;
 }
-@keyframes rippleTools {
-  to {
-    transform: scale(8);
-    opacity: 0;
-  }
-}
+
 
 /* --- Animated Placeholder for Inputs --- */
 input::placeholder, select::placeholder {
@@ -404,16 +391,7 @@ input, select, button, .result {
   background: linear-gradient(90deg, #2563eb 0%, #38a169 100%);
   transform: translateY(-2px) scale(1.03);
 }
-.tool-btn-reset {
-  background: #f1f5f9;
-  color: #2563eb;
-  border: 1px solid #2563eb;
-}
-.tool-btn-reset:hover {
-  background: #2563eb;
-  color: #fff;
-  transform: translateY(-2px) scale(1.03);
-}
+
 
 .result {
   margin-top: 1rem;
@@ -424,7 +402,7 @@ input, select, button, .result {
   color: #166534;
   box-shadow: 0 2px 8px #38a16922;
   font-weight: 500;
-  transition: box-shadow 0.2s, transform 0.18s;
+
 }
 .result.info {
   background: #f0f9ff;
@@ -434,13 +412,7 @@ input, select, button, .result {
   background: #f0fdf4;
   color: #166534;
 }
-.animated-result {
-  animation: fadeInScale 0.6s cubic-bezier(.4,0,.2,1);
-}
-@keyframes fadeInScale {
-  0% { opacity: 0; transform: scale(0.85);}
-  100% { opacity: 1; transform: scale(1);}
-}
+
 
 /* Responsive improvements */
 @media (max-width: 600px) {
@@ -503,6 +475,20 @@ body.dark-mode .tool-btn {
   background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
   color: #fff;
   box-shadow: 0 2px 8px rgba(56, 189, 248, 0.13);
+  font-weight: 600;
+  transition: background 0.2s, transform 0.15s;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;  
+  margin-top: 0.5rem;
+  display: inline-block;
+    text-align: center;
+      width: 100%;
+        box-sizing: border-box;
+          transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+                      
 }
 body.dark-mode .tool-btn:hover {
   background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);

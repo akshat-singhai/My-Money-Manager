@@ -8,76 +8,25 @@ import { Grid } from 'ldrs/react';
 import 'ldrs/react/Grid.css';
 import "./Dashboard.css";
 
-const ExpenseChart = lazy(() => import("./ExpenseChart"));
-
-const COLORS = ["#38bdf8", "#6366f1", "#fbbf24", "#ef4444", "#10b981", "#a21caf", "#f472b6", "#f59e42"];
-
-function useAnimatedNumber(target, duration = 800) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    const startTime = performance.now();
-    function animate(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      setValue((target * progress).toFixed(2));
-      if (progress < 1) requestAnimationFrame(animate);
-      else setValue(Number(target).toFixed(2));
-    }
-    animate(startTime);
-  }, [target]);
-  return value;
-}
-
-const getIncomeData = (transactions) => {
-  return transactions.filter(tx => tx.amount > 0).reduce((acc, tx) => {
-    const category = tx.category || "Other";
-    const existing = acc.find((item) => item.name === category);
-    if (existing) {
-      existing.value += Math.abs(tx.amount);
-    } else {
-      acc.push({ name: category, value: Math.abs(tx.amount) });
-    }
-    return acc;
-  }, []);
-};
-
-const getExpenseData = (transactions) => {
-  return transactions.filter(tx => tx.amount < 0).reduce((acc, tx) => {
-    const category = tx.category || "Other";
-    const existing = acc.find((item) => item.name === category);
-    if (existing) {
-      existing.value += Math.abs(tx.amount);
-    } else {
-      acc.push({ name: category, value: Math.abs(tx.amount) });
-    }
-    return acc;
-  }, []);
-};
-
-const getMonthlyData = (transactions) => {
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const data = {};
-  transactions.forEach(tx => {
-    const date = new Date(tx.date);
-    if (isNaN(date)) return;
-    const key = `${months[date.getMonth()]} ${date.getFullYear()}`; // 
-    if (!data[key]) data[key] = { month: key, Income: 0, Expense: 0 };
-    if (tx.amount > 0) data[key].Income += Math.abs(tx.amount);
-    else data[key].Expense += Math.abs(tx.amount);
-  });
-  return Object.values(data);
-};
-
-const SummaryCard = ({ label, value, color }) => (
+const SummaryCard = React.memo(({ label, value, color }) => (
   <div className="summary-card">
     <span className="label">{label}:</span>
     <span className="value" style={{ color }}>₹{value}</span>
   </div>
-);
+));
 
-const CustomPieChart = ({ data, title }) => (
-  <motion.div className="chart-box" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ duration: 0.5 }}>
-    <h3>{title}</h3>
+const CustomPieChart = React.memo(({ data, title, chartId }) => (
+  <motion.div
+    id={chartId}
+    className="chart-box"
+    role="region"
+    aria-labelledby={`${chartId}-title`}
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 30 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h3 id={`${chartId}-title`}>{title}</h3>
     {data.length === 0 ? <p>No data available.</p> : (
       <PieChart width={300} height={300}>
         <Pie data={data} cx="50%" cy="50%" outerRadius={100} dataKey="value" label={({ percent }) => `${(percent * 100).toFixed(0)}%`}>
@@ -90,17 +39,19 @@ const CustomPieChart = ({ data, title }) => (
       </PieChart>
     )}
   </motion.div>
-);
+));
 
-const RecentTransactions = ({ transactions }) => (
+const RecentTransactions = React.memo(({ transactions }) => (
   <div className="recent-transactions">
     <h3 className="heading2">Recent Transactions</h3>
     {transactions.length === 0 ? (
-      <p>No recent transactions.</p>
+      <p className="transaction-title">No recent transactions.</p>
     ) : (
-      <ul>
+      <ul role="list" aria-label="Recent transactions">
         {transactions.slice(-5).reverse().map((tx, index) => (
           <motion.li
+            role="listitem"
+            tabIndex="0"
             key={index}
             initial={{ opacity: 0, rotateZ: 6 }}
             animate={{ opacity: 1, rotateZ: 0 }}
@@ -109,18 +60,19 @@ const RecentTransactions = ({ transactions }) => (
           >
             <span
               className={`badge bumzi ${tx.amount > 0 ? "badge-income" : "badge-expense"}`}
-              aria-label={tx.amount > 0 ? "Income" : "Expense"}
-              title={tx.amount > 0 ? "Income" : "Expense"}
+              aria-label={tx.amount > 0 ? "Income transaction" : "Expense transaction"}
             >
-              {tx.amount > 0 ? "+" : "-"}
+              {tx.amount > 0 ? "+" : "-"} <span className="badge-amount">₹{Math.abs(tx.amount)}</span>
             </span>
-            <strong>{(tx.description || tx.text) ?? "No Description"}:</strong> ₹{Math.abs(tx.amount)} - {tx.category || "Other"}
+            <strong>{tx.description || tx.text || "No Description"}:</strong> <b className={`transaction-amount ${tx.amount > 0 ? "income" : "expense"}`}> ₹{Math.abs(tx.amount)}</b> -<b className="transaction-category"> {tx.category || "Other"}</b>
           </motion.li>
         ))}
       </ul>
     )}
   </div>
-);
+));
+
+const COLORS = ["#38bdf8", "#6366f1", "#fbbf24", "#ef4444", "#10b981", "#a21caf", "#f472b6", "#f59e42"];
 
 const Dashboard = () => {
   const { transactions } = useContext(TransactionContext);
@@ -129,78 +81,111 @@ const Dashboard = () => {
   const [showIncomeChart, setShowIncomeChart] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
+    const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
 
-  const amounts = useMemo(() => transactions.map(tx => tx.amount), [transactions]);
-  const total = useMemo(() => amounts.reduce((a, b) => a + b, 0), [amounts]);
-  const income = useMemo(() => amounts.filter(a => a > 0).reduce((a, b) => a + b, 0), [amounts]);
-  const expense = useMemo(() => amounts.filter(a => a < 0).reduce((a, b) => a + b, 0), [amounts]);
-  const inhand = useMemo(() => transactions.filter(tx => tx.paymentMode === "cash").reduce((a, tx) => a + tx.amount, 0), [transactions]);
-  const online = useMemo(() => transactions.filter(tx => tx.paymentMode === "online" || tx.paymentMode === "account").reduce((a, tx) => a + tx.amount, 0), [transactions]);
+  const computed = useMemo(() => {
+    let income = 0, expense = 0, inhand = 0, online = 0;
+    const amounts = transactions.map(tx => {
+      const amt = tx.amount;
+      if (amt > 0) income += amt;
+      else expense += amt;
 
-  const animatedTotal = useAnimatedNumber(total);
-  const animatedIncome = useAnimatedNumber(income);
-  const animatedExpense = useAnimatedNumber(Math.abs(expense));
-  const animatedInhand = useAnimatedNumber(inhand);
-  const animatedOnline = useAnimatedNumber(online);
+      if (tx.paymentMode === "cash") inhand += amt;
+      else if (["online", "account"].includes(tx.paymentMode)) online += amt;
+      return amt;
+    });
+    const total = amounts.reduce((a, b) => a + b, 0);
+    return { amounts, income, expense, inhand, online, total };
+  }, [transactions]);
 
-  const incomeData = useMemo(() => getIncomeData(transactions), [transactions]);
-  const expenseData = useMemo(() => getExpenseData(transactions), [transactions]);
-  const monthlyData = useMemo(() => getMonthlyData(transactions), [transactions]);
+  const { income, expense, inhand, online, total } = computed;
+
+  const getBreakdownData = (type) => transactions.filter(tx => type === 'income' ? tx.amount > 0 : tx.amount < 0).reduce((acc, tx) => {
+    const category = tx.category || "Other";
+    const value = Math.abs(tx.amount);
+    const existing = acc.find(item => item.name === category);
+    existing ? existing.value += value : acc.push({ name: category, value });
+    return acc;
+  }, []);
+
+  const monthlyData = useMemo(() => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const data = {};
+    transactions.forEach(tx => {
+      const date = new Date(tx.date);
+      if (isNaN(date)) return;
+      const key = `${months[date.getMonth()]} ${date.getFullYear()}`;
+      if (!data[key]) data[key] = { month: key, Income: 0, Expense: 0 };
+      tx.amount > 0 ? data[key].Income += tx.amount : data[key].Expense += Math.abs(tx.amount);
+    });
+    return Object.values(data);
+  }, [transactions]);
+
+  const chartData = useMemo(() => [
+    { name: "Income", value: income },
+    { name: "Expense", value: Math.abs(expense) }
+  ], [income, expense]);
 
   if (loading) {
-    return (
-      <div className="spinner-container">
-        <Grid size="60" speed="1.5" color="black" />
-      </div>
-    );
+    return <div className="spinner-container" role="status" aria-label="Loading dashboard data"><Grid size="60" speed="1.5" color="black" /></div>;
   }
 
   return (
-    <motion.div className="dashboard" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}>
+    <motion.main
+      className="dashboard"
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6 }}
+      role="main"
+      aria-label="Dashboard overview with charts and summary"
+    >
       <h2 className="heading2">Dashboard</h2>
 
-      <div className="balanceBox">
-        <SummaryCard label="Total" className="TotalBox" value={animatedTotal} color="tomato" />
-       <div className="TransactionsBox">Total Transactions: <span style={{ color: "#38bdf8" }}>{transactions.length}</span></div>   
-        <SummaryCard label="Income" value={animatedIncome} color="#10b981" />
-        <SummaryCard label="Expense" value={animatedExpense} color="#ef4444" />
-        <SummaryCard label="Inhand" value={animatedInhand} color="#fbbf24" />
-        <SummaryCard label="Online" value={animatedOnline} color="#7c24e7" />
+      <div className="balanceBox" aria-live="polite">
+        <SummaryCard label="Total" value={total.toFixed(2)} color="tomato" />
+        <div className="TransactionsBox">Total Transactions: <span style={{ color: "#38bdf8" }}>{transactions.length}</span></div>
+        <SummaryCard label="Income" value={income.toFixed(2)} color="#10b981" />
+        <SummaryCard label="Expense" value={Math.abs(expense).toFixed(2)} color="#ef4444" />
+        <SummaryCard label="Inhand" value={inhand.toFixed(2)} color="#fbbf24" />
+        <SummaryCard label="Online" value={online.toFixed(2)} color="#7c24e7" />
       </div>
 
       <div className="chart-container-box responsive-charts">
-        <CustomPieChart
-          data={[{ name: "Income", value: Number(income) }, { name: "Expense", value: Math.abs(Number(expense)) }]}
-          title="Income vs Expense"
-        />
-
+        <CustomPieChart data={chartData} title="Income vs Expense" chartId="income-expense-chart" />
         <RecentTransactions transactions={transactions} />
 
         <div className="chart-box">
-          <button className="OpenBtn" onClick={() => setShowExpenseChart(prev => !prev)} style={{ background: "#ef4444", color: "white" }}>
+          <button
+            className="OpenBtn"
+            onClick={() => setShowExpenseChart(p => !p)}
+            aria-expanded={showExpenseChart}
+            aria-controls="expense-chart"
+            style={{ background: "#ef4444", color: "white" }}
+          >
             {showExpenseChart ? "Close Expense Chart" : "Open Expense Chart"}
           </button>
           <AnimatePresence>
             {showExpenseChart && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ duration: 0.5 }}>
-                <CustomPieChart data={expenseData} title="Expense Breakdown" />
-              </motion.div>
+              <CustomPieChart data={getBreakdownData("expense")} title="Expense Breakdown" chartId="expense-chart" />
             )}
           </AnimatePresence>
         </div>
 
         <div className="chart-box">
-          <button className="OpenBtn" onClick={() => setShowIncomeChart(prev => !prev)} style={{ background: "#10b981", color: "white" }}>
+          <button
+            className="OpenBtn"
+            onClick={() => setShowIncomeChart(p => !p)}
+            aria-expanded={showIncomeChart}
+            aria-controls="income-chart"
+            style={{ background: "#10b981", color: "white" }}
+          >
             {showIncomeChart ? "Close Income Chart" : "Open Income Chart"}
           </button>
           <AnimatePresence>
             {showIncomeChart && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ duration: 0.5 }}>
-                <CustomPieChart data={incomeData} title="Income Breakdown" />
-              </motion.div>
+              <CustomPieChart data={getBreakdownData("income")} title="Income Breakdown" chartId="income-chart" />
             )}
           </AnimatePresence>
         </div>
@@ -219,7 +204,7 @@ const Dashboard = () => {
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </motion.div>
+    </motion.main>
   );
 };
 
