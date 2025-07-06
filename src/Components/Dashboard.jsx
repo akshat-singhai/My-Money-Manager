@@ -1,11 +1,12 @@
-import React, { useContext, useState, useEffect, useMemo, lazy, Suspense } from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import { TransactionContext } from "../Context/TransactionContext";
 import {
   PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, ResponsiveContainer
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
-import { Grid } from 'ldrs/react';
-import 'ldrs/react/Grid.css';
+
+import { Reuleaux } from 'ldrs/react'
+import 'ldrs/react/Reuleaux.css'
 import "./Dashboard.css";
 
 const SummaryCard = React.memo(({ label, value, color }) => (
@@ -41,36 +42,87 @@ const CustomPieChart = React.memo(({ data, title, chartId }) => (
   </motion.div>
 ));
 
-const RecentTransactions = React.memo(({ transactions }) => (
-  <div className="recent-transactions">
-    <h3 className="heading2">Recent Transactions</h3>
-    {transactions.length === 0 ? (
-      <p className="transaction-title">No recent transactions.</p>
-    ) : (
-      <ul role="list" aria-label="Recent transactions">
-        {transactions.slice(-5).reverse().map((tx, index) => (
-          <motion.li
-            role="listitem"
-            tabIndex="0"
-            key={index}
-            initial={{ opacity: 0, rotateZ: 6 }}
-            animate={{ opacity: 1, rotateZ: 0 }}
-            transition={{ delay: index * 0.08, type: "spring", stiffness: 60 }}
-            whileHover={{ scale: 1.04, rotateZ: -2, rotateY: 2 }}
-          >
-            <span
-              className={`badge bumzi ${tx.amount > 0 ? "badge-income" : "badge-expense"}`}
-              aria-label={tx.amount > 0 ? "Income transaction" : "Expense transaction"}
+const RecentTransactions = React.memo(({ transactions = [] }) => {
+  const recentTransactions = useMemo(() =>
+    [...transactions]
+      .slice(-5)
+      .reverse()
+      .map(tx => ({
+        ...tx,
+        id: tx.id || `${tx.date}-${tx.amount}-${tx.description}`.replace(/\s+/g, '-'),
+        displayAmount: Math.abs(tx.amount),
+        isIncome: tx.amount > 0,
+        displayDescription: tx.description || tx.text || "No Description",
+        displayCategory: tx.category || "Other",
+        formattedDate: tx.date ? new Date(tx.date).toLocaleDateString() : "No Date"
+      })),
+    [transactions]
+  );
+
+  return (
+    <div className="recent-transactions">
+      <h2 className="recent-transactions__heading">Recent Transactions</h2>
+      {recentTransactions.length === 0 ? (
+        <p className="recent-transactions__empty">No recent transactions.</p>
+      ) : (
+        <ul
+          role="list"
+          aria-label="Recent transactions"
+          className="recent-transactions__list"
+        >
+          {recentTransactions.map((tx, index) => (
+            <motion.li
+              role="listitem"
+              tabIndex={0}
+              key={tx.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: index * 0.05,
+                type: "spring",
+                stiffness: 100,
+                damping: 10
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="recent-transactions__item"
             >
-              {tx.amount > 0 ? "+" : "-"} <span className="badge-amount">₹{Math.abs(tx.amount)}</span>
-            </span>
-            <strong>{tx.description || tx.text || "No Description"}:</strong> <b className={`transaction-amount ${tx.amount > 0 ? "income" : "expense"}`}> ₹{Math.abs(tx.amount)}</b> -<b className="transaction-category"> {tx.category || "Other"}</b>
-          </motion.li>
-        ))}
-      </ul>
-    )}
-  </div>
-));
+              <div className="recent-transactions__header">
+                <span
+                  className={`recent-transactions__badge ${tx.isIncome ? "recent-transactions__badge--income" : "recent-transactions__badge--expense"
+                    }`}
+                  aria-label={tx.isIncome ? "Income transaction" : "Expense transaction"}
+                >
+                  {tx.isIncome ? "↑" : "↓"}
+                </span>
+                <div className="recent-transactions__info">
+                  <p className="recent-transactions__description">
+                    {tx.displayDescription}
+                  </p>
+                  <p className="recent-transactions__category">
+                    {tx.displayCategory}
+                  </p>
+                </div>
+                <div className="recent-transactions__amount-container">
+                  <span className={`recent-transactions__amount ${tx.isIncome ? "recent-transactions__amount--income" : "recent-transactions__amount--expense"
+                    }`}>
+                    {tx.isIncome ? "+" : "-"}₹{tx.displayAmount}
+                  </span>
+                  <span
+                    className="recent-transactions__date"
+                    aria-label={`Transaction date: ${tx.formattedDate}`}
+                  >
+                    {tx.formattedDate}
+                  </span>
+                </div>
+              </div>
+            </motion.li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+});
 
 const COLORS = ["#38bdf8", "#6366f1", "#fbbf24", "#ef4444", "#10b981", "#a21caf", "#f472b6", "#f59e42"];
 
@@ -79,6 +131,16 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showExpenseChart, setShowExpenseChart] = useState(false);
   const [showIncomeChart, setShowIncomeChart] = useState(false);
+
+  // Detect dark mode (using class on body)
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  useEffect(() => {
+    const checkDark = () => setIsDarkMode(document.body.classList.contains('dark-mode'));
+    checkDark();
+    window.addEventListener('classChange', checkDark);
+    // Optional: listen for manual toggles if you have a dark mode toggle
+    return () => window.removeEventListener('classChange', checkDark);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
@@ -129,7 +191,18 @@ const Dashboard = () => {
   ], [income, expense]);
 
   if (loading) {
-    return <div className="spinner-container" role="status" aria-label="Loading dashboard data"><Grid size="60" speed="1.5" color="black" /></div>;
+    return (
+      <div className="spinner-container" role="status" aria-label="Loading dashboard data">
+        <Reuleaux
+          size="60"
+          stroke="9"
+          strokeLength="0.55"
+          bgOpacity=".1"
+          speed="1.3"
+          color={isDarkMode ? "#38bdf8" : "black"}
+        />
+      </div>
+    );
   }
 
   return (
@@ -145,7 +218,7 @@ const Dashboard = () => {
 
       <div className="balanceBox" aria-live="polite">
         <SummaryCard label="Total" value={total.toFixed(2)} color="tomato" />
-        <div className="TransactionsBox">Total Transactions: <span style={{ color: "#38bdf8" }}>{transactions.length}</span></div>
+        <div className="TransactionsBox"> Transactions: <span style={{ color: "#38bdf8", fontSize: "2rem" }}>{transactions.length}</span></div>
         <SummaryCard label="Income" value={income.toFixed(2)} color="#10b981" />
         <SummaryCard label="Expense" value={Math.abs(expense).toFixed(2)} color="#ef4444" />
         <SummaryCard label="Inhand" value={inhand.toFixed(2)} color="#fbbf24" />

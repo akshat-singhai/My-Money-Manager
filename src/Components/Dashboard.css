@@ -302,113 +302,8 @@ body {
   pointer-events: none;
 }
 
-/* -------------------- Transaction List -------------------- */
-.recent-transactions {
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 16px;
-  padding: 1.25rem;
-  box-shadow: 
-    0 4px 20px rgba(80, 80, 160, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(224, 231, 255, 0.6);
-  backdrop-filter: blur(8px);
-}
-
-.recent-transactions h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #3730a3;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-}
-
-.recent-transactions ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.recent-transactions li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  margin: 0.5rem 0;
-  border-radius: 12px;
-  color: #232946;
-  background: rgba(255, 255, 255, 0.6);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.recent-transactions li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 4px;
-  background: linear-gradient(to bottom, #38bdf8, #6366f1);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.recent-transactions li.income::before {
-  background: linear-gradient(to bottom, #10b981, #34d399);
-}
-
-.recent-transactions li.expense::before {
-  background: linear-gradient(to bottom, #ef4444, #f87171);
-}
-
-.recent-transactions li:hover {
-  background: rgba(224, 231, 255, 0.8);
-  box-shadow: 
-    0 6px 20px rgba(56, 189, 248, 0.15),
-    0 2px 4px rgba(56, 189, 248, 0.05);
-  transform: translateY(-2px);
-}
-
-.recent-transactions li:hover::before {
-  opacity: 1;
-}
 
 
-
-.transaction-title {
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.transaction-category {
-  font-size: 0.8rem;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.transaction-amount {
-  font-weight: 700;
-  font-size: 1.05rem;
-  margin-left: 1rem;
-}
-
-.income .transaction-amount {
-  color: #10b981;
-}
-
-.expense .transaction-amount {
-  color: #ef4444;
-}
-
-.transaction-date {
-  font-size: 0.75rem;
-  color: #64748b;
-  margin-top: 0.25rem;
-}
 
 /* For touch devices */
 @media (pointer: coarse) {
@@ -653,12 +548,13 @@ body.dark-mode .nivLink:hover {
 
 /* -------------------- Spinner (Improved) -------------------- */
 body.dark-mode .spinner {
-  border: 5px solid rgba(68, 68, 68, 0.3); /* Lighter base border for contrast */
+  border: 5px solid rgb(249, 236, 236); /* Lighter base border for contrast */
   border-top: 5px solid #38bdf8;
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  animation: spin 1s linear infinite; /* Add spin animation */
+  animation: spin 1s linear infinite;
+  color: white; /* Add spin animation */
 }
 
 @keyframes spin {
@@ -685,6 +581,121 @@ body.dark-mode::-webkit-scrollbar-thumb {
 body.dark-mode::-webkit-scrollbar-thumb:hover {
   background-color: #8b5cf6; /* Lighter purple on hover */
 }
+.recent-transactions {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
 
+.recent-transactions__heading {
+  color: #2d3748;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
 
+.recent-transactions__empty {
+  color: #718096;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1rem;
+}
+
+.recent-transactions__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.recent-transactions__item {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.recent-transactions__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.recent-transactions__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.recent-transactions__badge--income {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.recent-transactions__badge--expense {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.recent-transactions__info {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.recent-transactions__description {
+  font-weight: 500;
+  color: #1a202c;
+  margin: 0 0 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recent-transactions__category {
+  color: #718096;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.recent-transactions__amount-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: auto;
+}
+
+.recent-transactions__amount {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.recent-transactions__amount--income {
+  color: #16a34a;
+}
+
+.recent-transactions__amount--expense {
+  color: #dc2626;
+}
+
+.recent-transactions__date {
+  color: #a0aec0;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+.spinner{
+  color:white;
+}
 /* -------------------- Done -------------------- */

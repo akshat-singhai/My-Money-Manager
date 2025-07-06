@@ -4,7 +4,8 @@ import { incomeCategories, expenseCategories } from "../data/categories";
 import "./TransactionHistory.css";
 import { FaSearch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { Grid } from 'ldrs/react';
+import { Reuleaux } from 'ldrs/react'
+import 'ldrs/react/Reuleaux.css'
 import 'ldrs/react/Grid.css';
 
 const highlightText = (text, highlight) => {
@@ -33,6 +34,15 @@ const TransactionList = () => {
     const timeout = setTimeout(() => setLoading(false), 1000); // 1000ms
     return () => clearTimeout(timeout);
   }, []);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  useEffect(() => {
+    const checkDark = () => setIsDarkMode(document.body.classList.contains('dark-mode'));
+    checkDark();
+    window.addEventListener('classChange', checkDark);
+    // Optional: listen for manual toggles if you have a dark mode toggle
+    return () => window.removeEventListener('classChange', checkDark);
+  }, []);
+
 
   const filtered = transactions.filter((tx) => {
     const matchType = filterType === "all" || tx.type === filterType;
@@ -43,11 +53,14 @@ const TransactionList = () => {
 
   if (loading) {
     return (
-      <div className="spinner-container">
-        <Grid
+      <div className="spinner-container" role="status" aria-label="Loading dashboard data">
+        <Reuleaux
           size="60"
-          speed="1.5"
-          color="black"
+          stroke="9"
+          strokeLength="0.55"
+          bgOpacity=".1"
+          speed="1.3"
+          color={isDarkMode ? "#38bdf8" : "black"}
         />
       </div>
     );
