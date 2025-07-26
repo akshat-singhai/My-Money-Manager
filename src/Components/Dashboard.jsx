@@ -131,8 +131,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showExpenseChart, setShowExpenseChart] = useState(false);
   const [showIncomeChart, setShowIncomeChart] = useState(false);
-
-  // Detect dark mode (using class on body)
+ // Detect dark mode (using class on body)
   const [isDarkMode, setIsDarkMode] = useState(false);
   useEffect(() => {
     const checkDark = () => setIsDarkMode(document.body.classList.contains('dark-mode'));
