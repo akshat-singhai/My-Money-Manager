@@ -565,3 +565,87 @@ body.dark-mode .date-tag {
     font-size: 1rem;
   }
 }
+/* 🔹 NEW Badge */
+.new-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  margin-left: 6px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.3);
+  animation: pulseNew 1.5s infinite;
+}
+
+/* 🔹 Pulsing glow animation */
+@keyframes pulseNew {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 8px 4px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+/* 💎 PREMIUM Badge */
+.premium-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #facc15, #eab308);
+  color: #111;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  margin-left: 6px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(250, 204, 21, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ✨ Shimmer effect inside the premium badge */
+.premium-badge::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  transform: skewX(-20deg);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 140%;
+  }
+}
+/* 🔄 RECURRING Badge */
+.recurring-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  margin-left: 6px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+  animation: rotateRecurrence 2s linear infinite;
+}

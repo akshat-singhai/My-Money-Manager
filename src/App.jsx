@@ -5,6 +5,7 @@ import Dashboard from "./Components/Dashboard";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import TransactionHistory from "./Components/TransactionHistory";
 import FinanceTools from "./Components/finance-tools";
+import "./Components/TransactionList.jsx";
 import NavBar from "./Components/NavBar";
 import "./App.css";
 
@@ -17,8 +18,9 @@ function App() {
           <NavBar />
           <Suspense fallback={<div style={{textAlign: "center", margin: "2rem"}}>Loading...</div>}>
             <Routes>
-              <Route path="/" element={<TransactionList />} />
-              <Route path="/Dashboard" element={<Dashboard />} />
+             
+              <Route path="/" element={<Dashboard />} />
+               <Route path="/add-transaction" element={<TransactionList />} /> 
               <Route path="/history" element={<TransactionHistory />} />
               <Route path="/finance-tools" element={<FinanceTools />} />
               <Route path="*" element={<h2>Page Not Found</h2>} />

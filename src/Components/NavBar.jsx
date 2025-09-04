@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import "./NavBar.css";
 
 const navLinks = [
-  { to: "/", label: "Home", icon: <Home size={20} /> },
-  { to: "/Dashboard", label: "Dashboard", icon: <BarChart2 size={20} /> },
+
+  { to: "/", label: "Dashboard", icon: <BarChart2 size={20} /> },
   { to: "/history", label: "History", icon: <Clock size={20} /> },
   { to: "/finance-tools", label: "Finance Tools", icon: <Wrench size={20} /> },
 ];

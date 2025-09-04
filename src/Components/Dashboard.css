@@ -698,4 +698,44 @@ body.dark-mode::-webkit-scrollbar-thumb:hover {
 .spinner{
   color:white;
 }
+/* ...existing code... */
+
+.add-transaction-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#6366f1,#38bdf8);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(56,189,248,0.15);
+  z-index: 1050;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s;
+}
+.add-transaction-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(56,189,248,0.22);
+}
+.add-transaction-btn:active {
+  transform: translateY(0);
+}
+.add-transaction-btn svg {
+  display: block;
+  color: #fff;
+}
+@media (max-width: 520px) {
+  .add-transaction-btn { right: 14px; bottom: 14px; width: 48px; height: 48px; }
+}
+
+/* Dark mode support */
+body.dark-mode .add-transaction-btn {
+  background: linear-gradient(135deg,#4f46e5,#06b6d4) !important;
+}
+
+/*
 /* -------------------- Done -------------------- */
