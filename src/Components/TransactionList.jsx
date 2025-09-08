@@ -78,6 +78,7 @@ const AddTransaction = () => {
   };
 
   return (
+    
     <form onSubmit={handleSubmit} className="formDiv">
       <Toaster 
         position="top-right"
