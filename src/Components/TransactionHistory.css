@@ -649,3 +649,18 @@ body.dark-mode .date-tag {
   box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
   animation: rotateRecurrence 2s linear infinite;
 }
+
+@keyframes rotateRecurrence {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+/* --- Accessibility Improvements --- */
+.transaction-item:focus-within {
+  outline: 3px solid #6366f1;
+  outline-offset: 4px;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+}
