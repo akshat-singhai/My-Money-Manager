@@ -1,7 +1,7 @@
 // Enhanced Dashboard.jsx
 import React, { useContext, useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { FaPlus, FaFilter, FaDownload, FaSync, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaPlus, FaDownload, FaSync, FaEye, FaEyeSlash } from "react-icons/fa";
 import { TransactionContext } from "../Context/TransactionContext";
 import {
   PieChart, Pie, Cell, Tooltip, Legend,
@@ -9,7 +9,6 @@ import {
   CartesianGrid, LabelList, AreaChart, Area
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
-import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 
 import { Reuleaux } from "ldrs/react";
@@ -19,7 +18,6 @@ import "./Dashboard.css";
 // Constants
 const COLORS = ["#38bdf8", "#6366f1", "#fbbf24", "#ef4444", "#10b981", "#a21caf", "#f472b6", "#f59e42"];
 const PAYMENT_MODES = ['cash', 'online', 'account', 'card', 'upi'];
-const CATEGORIES = ['Food', 'Shopping', 'Transport', 'Entertainment', 'Utilities', 'Healthcare', 'Education', 'Other'];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 // Helper functions
@@ -32,20 +30,24 @@ const formatCurrency = (value, hideValue = false) => {
 const formatDate = (dateString) => {
   if (!dateString) return { date: "No Date", time: "No Time" };
   
-  const date = new Date(dateString);
-  if (isNaN(date)) return { date: "Invalid Date", time: "Invalid Time" };
-  
-  return {
-    date: date.toLocaleDateString('en-IN', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
-    }),
-    time: date.toLocaleTimeString('en-IN', { 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    })
-  };
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return { date: "Invalid Date", time: "Invalid Time" };
+    
+    return {
+      date: date.toLocaleDateString('en-IN', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      }),
+      time: date.toLocaleTimeString('en-IN', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      })
+    };
+  } catch (error) {
+    return { date: "Invalid Date", time: "Invalid Time" };
+  }
 };
 
 // Custom Tooltip Component for Charts
@@ -110,6 +112,9 @@ const CustomPieChart = React.memo(({ data = [], title, chartId, onSegmentClick }
     }
   }, [onSegmentClick]);
 
+  // Check if data is valid
+  const isValidData = data && Array.isArray(data) && data.length > 0 && data.some(item => item.value > 0);
+
   return (
     <motion.div
       id={chartId}
@@ -122,7 +127,7 @@ const CustomPieChart = React.memo(({ data = [], title, chartId, onSegmentClick }
       transition={{ duration: 0.45 }}
     >
       <h3 id={`${chartId}-title`}>{title}</h3>
-      {(!data || data.length === 0) ? (
+      {!isValidData ? (
         <p className="empty-chart">No data available.</p>
       ) : (
         <PieChart width={300} height={300}>
@@ -201,7 +206,7 @@ const CustomPieChart = React.memo(({ data = [], title, chartId, onSegmentClick }
 const RecentTransactions = React.memo(({ transactions = [], onTransactionClick }) => {
   const recentTransactions = useMemo(() =>
     (Array.isArray(transactions) ? [...transactions] : [])
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
       .slice(0, 5)
       .map(tx => {
         const amount = Math.abs(Number(tx.amount) || 0);
@@ -246,7 +251,7 @@ const RecentTransactions = React.memo(({ transactions = [], onTransactionClick }
             <motion.li
               role="listitem"
               tabIndex={0}
-              key={tx.id}
+              key={tx.id || index}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.04, type: "spring", stiffness: 100, damping: 12 }}
@@ -281,9 +286,6 @@ const RecentTransactions = React.memo(({ transactions = [], onTransactionClick }
                     <span className="recent-transactions__date" aria-label={`Transaction date: ${tx.formattedDate}`}>
                       {tx.formattedDate}
                     </span>
-                    <span className="recent-transactions__time" aria-label={`Transaction time: ${tx.formattedTime}`}>
-                      {tx.formattedTime}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -295,101 +297,101 @@ const RecentTransactions = React.memo(({ transactions = [], onTransactionClick }
   );
 });
 
-// Filter Component
-const FilterPanel = ({ filters, onFilterChange, onClearFilters }) => {
-  const [isOpen, setIsOpen] = useState(false);
+// Enhanced ChartSection Component
+const ChartSection = ({ type, showChart, setShowChart, getBreakdownData, handleSegmentClick }) => {
+  const isExpense = type === "expense";
+  const bgColor = isExpense ? "#ef4444" : "#10b981";
+  const title = isExpense ? "Expense Breakdown" : "Income Breakdown";
+  const chartId = `${type}-chart`;
+  const icon = isExpense ? "📉" : "📈";
   
+  // Get data for the chart
+  const chartData = getBreakdownData(type);
+  const isEmpty = !chartData || chartData.length === 0 || !chartData.some(item => item.value > 0);
+
   return (
-    <div className="filter-panel">
-      <button 
-        className="filter-toggle"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-        aria-controls="filter-content"
-      >
-        <FaFilter /> {isOpen ? 'Hide Filters' : 'Show Filters'}
-      </button>
-      
-      <AnimatePresence>
-        {isOpen && (
+    <motion.div 
+      className="chart-section"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="chart-section-header">
+        <div className="chart-section-title">
+          <span className="chart-icon" aria-hidden="true">{icon}</span>
+          <h3>{title}</h3>
+          <span className="data-count" aria-label={`${chartData.length} categories`}>
+            ({chartData.length})
+          </span>
+        </div>
+        
+        <motion.button
+          className="chart-toggle-btn"
+          onClick={() => setShowChart(p => !p)}
+          aria-expanded={showChart}
+          aria-controls={chartId}
+          style={{ 
+            background: bgColor, 
+            color: "white",
+            '--hover-bg': isExpense ? '#dc2626' : '#059669'
+          }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          disabled={isEmpty}
+          aria-disabled={isEmpty}
+        >
+          <span className="btn-content">
+            {showChart ? (
+              <>
+                <span className="btn-icon" aria-hidden="true">−</span>
+                <span>Collapse</span>
+              </>
+            ) : (
+              <>
+                <span className="btn-icon" aria-hidden="true">+</span>
+                <span>Expand</span>
+              </>
+            )}
+          </span>
+        </motion.button>
+      </div>
+
+      <AnimatePresence mode="wait">
+        {showChart && (
           <motion.div
-            id="filter-content"
-            className="filter-content"
+            id={chartId}
+            className="chart-container"
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            animate={{ 
+              opacity: 1, 
+              height: "auto",
+              transition: { duration: 0.4, ease: "easeOut" }
+            }}
+            exit={{ 
+              opacity: 0, 
+              height: 0,
+              transition: { duration: 0.3, ease: "easeIn" }
+            }}
+            role="region"
+            aria-labelledby={`${chartId}-title`}
           >
-            <div className="filter-group">
-              <label htmlFor="date-from">From Date:</label>
-              <input
-                id="date-from"
-                type="date"
-                value={filters.dateFrom || ''}
-                onChange={(e) => onFilterChange('dateFrom', e.target.value)}
+            {isEmpty ? (
+              <div className="empty-state">
+                <p>No {type} data available</p>
+                <small>Add {type} transactions to see the breakdown</small>
+              </div>
+            ) : (
+              <CustomPieChart
+                data={chartData}
+                title={title}
+                chartId={chartId}
+                onSegmentClick={handleSegmentClick}
               />
-            </div>
-            
-            <div className="filter-group">
-              <label htmlFor="date-to">To Date:</label>
-              <input
-                id="date-to"
-                type="date"
-                value={filters.dateTo || ''}
-                onChange={(e) => onFilterChange('dateTo', e.target.value)}
-              />
-            </div>
-            
-            <div className="filter-group">
-              <label htmlFor="payment-mode">Payment Mode:</label>
-              <select
-                id="payment-mode"
-                value={filters.paymentMode || ''}
-                onChange={(e) => onFilterChange('paymentMode', e.target.value)}
-              >
-                <option value="">All</option>
-                {PAYMENT_MODES.map(mode => (
-                  <option key={mode} value={mode}>{mode.charAt(0).toUpperCase() + mode.slice(1)}</option>
-                ))}
-              </select>
-            </div>
-            
-            <div className="filter-group">
-              <label htmlFor="category">Category:</label>
-              <select
-                id="category"
-                value={filters.category || ''}
-                onChange={(e) => onFilterChange('category', e.target.value)}
-              >
-                <option value="">All</option>
-                {CATEGORIES.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
-            </div>
-            
-            <div className="filter-group">
-              <label htmlFor="type">Transaction Type:</label>
-              <select
-                id="type"
-                value={filters.type || ''}
-                onChange={(e) => onFilterChange('type', e.target.value)}
-              >
-                <option value="">All</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-              </select>
-            </div>
-            
-            <div className="filter-actions">
-              <button onClick={onClearFilters} className="clear-filters">
-                Clear Filters
-              </button>
-            </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 
@@ -434,12 +436,12 @@ const Dashboard = () => {
     if (!transactions || !Array.isArray(transactions)) return [];
     
     return transactions.filter(tx => {
-      if (filters.dateFrom && new Date(tx.date) < new Date(filters.dateFrom)) return false;
-      if (filters.dateTo && new Date(tx.date) > new Date(filters.dateTo)) return false;
+      if (filters.dateFrom && new Date(tx.date || 0) < new Date(filters.dateFrom)) return false;
+      if (filters.dateTo && new Date(tx.date || 0) > new Date(filters.dateTo)) return false;
       if (filters.paymentMode && tx.paymentMode !== filters.paymentMode) return false;
       if (filters.category && tx.category !== filters.category) return false;
-      if (filters.type === 'income' && Number(tx.amount) <= 0) return false;
-      if (filters.type === 'expense' && Number(tx.amount) >= 0) return false;
+      if (filters.type === 'income' && Number(tx.amount || 0) <= 0) return false;
+      if (filters.type === 'expense' && Number(tx.amount || 0) >= 0) return false;
       
       return true;
     });
@@ -465,7 +467,7 @@ const Dashboard = () => {
   // Get breakdown data for charts
   const getBreakdownData = useCallback((type) => {
     const list = (Array.isArray(filteredTransactions) ? filteredTransactions : []).filter(tx => 
-      type === 'income' ? Number(tx.amount) > 0 : Number(tx.amount) < 0
+      type === 'income' ? Number(tx.amount || 0) > 0 : Number(tx.amount || 0) < 0
     );
     
     const acc = [];
@@ -486,13 +488,13 @@ const Dashboard = () => {
     const data = {};
     
     (Array.isArray(filteredTransactions) ? filteredTransactions : []).forEach(tx => {
-      const date = new Date(tx?.date);
-      if (isNaN(date)) return;
+      const date = new Date(tx?.date || 0);
+      if (isNaN(date.getTime())) return;
       
       const key = `${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
       if (!data[key]) data[key] = { month: key, Income: 0, Expense: 0, Net: 0 };
       
-      const amount = Number(tx.amount);
+      const amount = Number(tx.amount || 0);
       if (amount > 0) {
         data[key].Income += amount;
         data[key].Net += amount;
@@ -547,8 +549,8 @@ const Dashboard = () => {
         Date: tx.date,
         Description: tx.description || tx.text || "No Description",
         Category: tx.category || "Other",
-        Amount: Number(tx.amount),
-        Type: Number(tx.amount) > 0 ? "Income" : "Expense",
+        Amount: Number(tx.amount || 0),
+        Type: Number(tx.amount || 0) > 0 ? "Income" : "Expense",
         'Payment Mode': tx.paymentMode || "Not specified"
       })));
       
@@ -579,7 +581,6 @@ const Dashboard = () => {
 
   // Handle transaction click
   const handleTransactionClick = useCallback((transaction) => {
-    // Removed navigation code
     console.log("Transaction clicked:", transaction);
   }, []);
 
@@ -636,11 +637,10 @@ const Dashboard = () => {
         </div>
       </div>
 
-
       <div className="balanceBox" aria-live="polite">
         <SummaryCard 
           label="Total Balance" 
-          value={"₹" + total} 
+          value={total} 
           color={total >= 0 ? "#10b981" : "#ef4444"} 
           isInteractive={true}
           hideValue={!showBalance}
@@ -654,7 +654,7 @@ const Dashboard = () => {
         />
         <SummaryCard 
           label="Income" 
-          value={"₹" + income} 
+          value={income} 
           color="#10b981" 
           isInteractive={true}
           hideValue={!showBalance}
@@ -662,7 +662,7 @@ const Dashboard = () => {
         />
         <SummaryCard 
           label="Expense" 
-          value={"₹" + Math.abs(expense)} 
+          value={Math.abs(expense)} 
           color="#ef4444" 
           isInteractive={true}
           hideValue={!showBalance}
@@ -670,7 +670,7 @@ const Dashboard = () => {
         />
         <SummaryCard 
           label="In Hand" 
-          value={"₹" + inhand} 
+          value={inhand} 
           color="#fbbf24" 
           isInteractive={true}
           hideValue={!showBalance}
@@ -678,7 +678,7 @@ const Dashboard = () => {
         />
         <SummaryCard 
           label="Online" 
-          value={"₹" + online} 
+          value={online} 
           color="#7c24e7" 
           isInteractive={true}
           hideValue={!showBalance}
@@ -699,51 +699,21 @@ const Dashboard = () => {
           onTransactionClick={handleTransactionClick}
         />
 
-        <div className="chart-box">
-          <button
-            className="OpenBtn"
-            onClick={() => setShowExpenseChart(p => !p)}
-            aria-expanded={showExpenseChart}
-            aria-controls="expense-chart"
-            style={{ background: "#ef4444", color: "white" }}
-            type="button"
-          >
-            {showExpenseChart ? "Close Expense Breakdown" : "View Expense Breakdown"}
-          </button>
-          <AnimatePresence>
-            {showExpenseChart && (
-              <CustomPieChart 
-                data={getBreakdownData("expense")} 
-                title="Expense Breakdown" 
-                chartId="expense-chart" 
-                onSegmentClick={handleSegmentClick}
-              />
-            )}
-          </AnimatePresence>
-        </div>
+        <ChartSection
+          type="expense"
+          showChart={showExpenseChart}
+          setShowChart={setShowExpenseChart}
+          getBreakdownData={getBreakdownData}
+          handleSegmentClick={handleSegmentClick}
+        />
 
-        <div className="chart-box">
-          <button
-            className="OpenBtn"
-            onClick={() => setShowIncomeChart(p => !p)}
-            aria-expanded={showIncomeChart}
-            aria-controls="income-chart"
-            style={{ background: "#10b981", color: "white" }}
-            type="button"
-          >
-            {showIncomeChart ? "Close Income Breakdown" : "View Income Breakdown"}
-          </button>
-          <AnimatePresence>
-            {showIncomeChart && (
-              <CustomPieChart 
-                data={getBreakdownData("income")} 
-                title="Income Breakdown" 
-                chartId="income-chart" 
-                onSegmentClick={handleSegmentClick}
-              />
-            )}
-          </AnimatePresence>
-        </div>
+        <ChartSection
+          type="income"
+          showChart={showIncomeChart}
+          setShowChart={setShowIncomeChart}
+          getBreakdownData={getBreakdownData}
+          handleSegmentClick={handleSegmentClick}
+        />
       </div>
 
       <div className="bar-chart-section" aria-live="polite">
@@ -803,7 +773,6 @@ const Dashboard = () => {
         <Link to="/add-transaction" className="fab-add" aria-label="Add transaction" title="Add Transaction">
           <FaPlus size={18} />
         </Link>
-       
       </div>
     </motion.main>
   );
