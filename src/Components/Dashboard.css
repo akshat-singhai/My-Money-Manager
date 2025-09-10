@@ -318,6 +318,7 @@ body.dark-mode {
   color: var(--text-mut);
   font-size: var(--font-size-sm);
 }
+
 /* ================================
    Chart Toggle Button
    ================================ */

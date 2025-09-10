@@ -1,0 +1,704 @@
+/* ================================
+   BorrowLend.css
+   Luxury UI + Dark Mode + Responsive
+   ================================ */
+
+:root {
+  /* Light Theme */
+  --bg: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --text: #1f2937;
+  --subtext: #6b7280;
+  --border: rgba(0, 0, 0, 0.08);
+
+  --primary: #3b82f6;
+  --success: #10b981;
+  --danger: #ef4444;
+
+  /* Shadows */
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] {
+  /* Dark Theme */
+  --bg: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.75);
+  --text: #f3f4f6;
+  --subtext: #9ca3af;
+  --border: rgba(255, 255, 255, 0.08);
+
+  --shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 8px 28px rgba(0, 0, 0, 0.5);
+}
+
+/* ================================
+   Layout
+   ================================ */
+.borrow-lend-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+}
+
+.borrow-lend-container h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+/* ================================
+   Summary Cards
+   ================================ */
+.summary-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.8rem;
+}
+
+.summary-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px) saturate(160%);
+  border-radius: 1.2rem;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+}
+
+.summary-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.summary-card h3 {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.summary-card p {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.summary-card.borrowed {
+  border-left: 4px solid var(--danger);
+}
+.summary-card.lent {
+  border-left: 4px solid var(--success);
+}
+
+/* ================================
+   Records List
+   ================================ */
+.records-list h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.record-item {
+  display: flex;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.8rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.record-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+  flex-shrink: 0;
+}
+
+.record-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.record-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.record-note {
+  font-size: 1rem;
+  color: var(--subtext);
+}
+
+.record-meta {
+  text-align: right;
+  margin-left: 1rem;
+}
+
+.record-amount {
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-right: 0.9rem;
+  text-align: right;
+}
+
+.record-amount.red {
+  color: var(--danger);
+}
+.record-amount.green {
+  color: var(--success);
+}
+
+.record-date {
+  font-size: 0.8rem;
+  color: var(--subtext);
+}
+
+.record-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.record-actions button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--subtext);
+  font-size: 1rem;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.record-actions button:hover {
+  transform: scale(1.1);
+  color: var(--primary);
+}
+.record-actions .delete-btn:hover {
+  color: var(--danger);
+  transform: scale(1.1);
+}
+
+/* ================================
+   Floating Action Button
+   ================================ */
+.bl-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  z-index: 50;
+}
+
+.bl-fab:hover {
+  transform: scale(1.08);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ================================
+   Modal
+   ================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-hover);
+}
+
+.modal h3 {
+  margin-top: 0;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.modal form {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.modal input,
+.modal select {
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--border);
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--text);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.modal-actions button {
+  padding: 0.6rem 1rem;
+  border-radius: 0.6rem;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.modal-actions button[type="button"] {
+  background: #e5e7eb;
+  color: #111827;
+}
+[data-theme="dark"] .modal-actions button[type="button"] {
+  background: #374151;
+  color: #f9fafb;
+}
+
+.modal-actions button[type="submit"] {
+  background: var(--primary);
+  color: white;
+}
+.modal-actions button[type="submit"]:hover {
+  background: #2563eb;
+}
+.modal-actions button[type="button"]:hover {
+  background: #d1d5db;
+}
+
+/* ================================
+   Responsive Design
+   ================================ */
+@media (max-width: 768px) {
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .borrow-lend-container {
+    padding: 1rem;
+  }
+
+  .borrow-lend-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .record-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .record-meta,
+  .record-actions {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .record-amount {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .borrow-lend-container {
+    padding: 0.8rem;
+  }
+
+  .borrow-lend-container h2 {
+    font-size: 1.3rem;
+  }
+
+  .summary-card {
+    padding: 0.8rem;
+  }
+
+  .summary-card h3 {
+    font-size: 1rem;
+  }
+
+  .summary-card p {
+    font-size: 0.9rem;
+  }
+
+  .record-item {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .record-name {
+    font-size: 0.9rem;
+  }
+
+  .record-note {
+    font-size: 0.75rem;
+  }
+
+  .record-amount {
+    font-size: 1.1rem;
+  }
+
+  .bl-fab {
+    width: 48px;
+    height: 48px;
+    font-size: 1.1rem;
+    bottom: 1.2rem;
+    right: 1.2rem;
+  }
+
+  .modal {
+    padding: 1rem;
+    border-radius: 0.8rem;
+  }
+
+  .modal h3 {
+    font-size: 1.1rem;
+  }
+}
+/* ...existing code... */
+
+/* Dark mode styles using body.dark-mode (matches other files using body.dark-mode) */
+/* 🌙 Dark Mode Base */
+body.dark-mode {
+  background: radial-gradient(circle at top, #0b1220 0%, #050810 100%);
+  color: var(--text, #e6eefc);
+  --bl-card-bg: rgba(20, 24, 36, 0.6);
+  --bl-border: rgba(255, 255, 255, 0.05);
+  --bl-shadow: 0 8px 26px rgba(2, 6, 23, 0.55);
+  --bl-shadow-hover: 0 12px 34px rgba(2, 6, 23, 0.65);
+  font-family: "Inter", "Segoe UI", sans-serif;
+  letter-spacing: 0.3px;
+  transition: background 0.4s ease;
+}
+
+/* 📦 Cards / Containers */
+body.dark-mode .borrow-lend-container,
+body.dark-mode .summary-card,
+body.dark-mode .record-item,
+body.dark-mode .modal {
+  position: relative;
+  background: linear-gradient(160deg, rgba(20, 24, 36, 0.78), rgba(10, 12, 20, 0.55));
+  backdrop-filter: blur(16px) saturate(160%);
+  color: var(--text, #e6eefc);
+  border: 1px solid var(--bl-border);
+  box-shadow: var(--bl-shadow);
+  border-radius: 18px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+body.dark-mode .summary-card:hover,
+body.dark-mode .record-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--bl-shadow-hover);
+}
+
+/* ✨ Card sheen effect */
+body.dark-mode .summary-card::before,
+body.dark-mode .record-item::before,
+body.dark-mode .modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.06), transparent 60%);
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+
+/* 🔍 SearchBox */
+body.dark-mode .SearchBox {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 8px rgba(56, 189, 248, 0.1);
+  border-radius: 14px;
+  transition: box-shadow 0.3s ease;
+}
+body.dark-mode .SearchBox:focus-within {
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4);
+}
+body.dark-mode .SearchBox input {
+  color: var(--text, #e6eefc);
+}
+body.dark-mode .SearchBox svg {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 📥 Export / Download button */
+body.dark-mode .bl-export-btn,
+body.dark-mode .download-btn {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(56, 189, 248, 0.18));
+  color: #eef2ff;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  font-weight: 500;
+  padding: 10px 16px;
+  transition: all 0.3s ease;
+}
+body.dark-mode .bl-export-btn:hover,
+body.dark-mode .download-btn:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.28), rgba(56, 189, 248, 0.24));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(56, 189, 248, 0.3);
+}
+
+/* 📋 Record items */
+body.dark-mode .record-item {
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.012), rgba(255, 255, 255, 0.006));
+  border-radius: 16px;
+  padding: 14px;
+}
+body.dark-mode .avatar {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(56, 189, 248, 0.18));
+  color: #e6eefc;
+  border-radius: 50%;
+  font-weight: 600;
+}
+body.dark-mode .record-name {
+  font-weight: 500;
+  color:#5f7daa;
+}
+body.dark-mode .record-note {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+body.dark-mode .record-amount {
+  font-weight: 600;
+  font-size: 15px;
+  color: #eef2ff;
+}
+body.dark-mode .record-amount.red {
+  color: #fca5a5;
+  text-shadow: 0 0 6px rgba(239, 68, 68, 0.25);
+}
+body.dark-mode .record-amount.green {
+  color: #86efac;
+  text-shadow: 0 0 6px rgba(16, 185, 129, 0.25);
+}
+body.dark-mode .record-date {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* 🎛 Action buttons */
+body.dark-mode .record-actions button {
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+}
+body.dark-mode .record-actions button:hover {
+  color: #fff;
+  transform: translateY(-3px) scale(1.05);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+}
+body.dark-mode .record-actions .delete-btn,
+body.dark-mode .record-delete-btn {
+  color: #f87171;
+}
+body.dark-mode .record-actions .delete-btn:hover,
+body.dark-mode .record-delete-btn:hover {
+  color: #fca5a5;
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+}
+
+/* ➕ Floating Add Button */
+body.dark-mode .bl-fab,
+body.dark-mode .fab-add {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(99, 102, 241, 0.18));
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  box-shadow: 0 20px 48px rgba(2, 6, 23, 0.75);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+body.dark-mode .bl-fab:hover {
+  transform: translateY(-4px) scale(1.07);
+  box-shadow: 0 24px 54px rgba(2, 6, 23, 0.85);
+}
+
+/* 📝 Modal elements */
+body.dark-mode .modal input,
+body.dark-mode .modal select,
+body.dark-mode .modal textarea {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text, #e6eefc);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px;
+}
+body.dark-mode .modal input:focus,
+body.dark-mode .modal select:focus,
+body.dark-mode .modal textarea:focus {
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
+/* ✅ Accessibility focus */
+body.dark-mode :focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.18);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* 🖱 Scrollbars */
+body.dark-mode ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+body.dark-mode ::-webkit-scrollbar-track {
+  background: transparent;
+}
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.summary-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  margin-bottom: 1.5rem;
+  transition: background 0.3s;
+}
+
+.summary-card p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+
+
+.net-balance.green {
+  color: var(--color-success); /* e.g. #10b981 */
+}
+
+.net-balance.red {
+  color: var(--color-danger); /* e.g. #ef4444 */
+}
+
+.net-balance.neutral {
+  color: var(--color-gray-400); /* balanced */
+}
+/* Payback button + settled badge styles */
+
+.payback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(180deg,#10b981,#059669);
+  color: #fff;
+  cursor: pointer;
+  margin-left: 6px;
+  box-shadow: 0 6px 18px rgba(16,185,129,0.12);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.payback-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(16,185,129,0.16); }
+.payback-btn:active { transform: translateY(0); }
+
+.record-details .settled-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* settled appearance */
+.record-item .settled-badge { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.08); }
+
+/* dark mode tweak */
+body.dark-mode .payback { background: linear-gradient(180deg,#059669,#047857); box-shadow: 0 10px 30px rgba(2,6,23,0.6); }
+```/* filepath: c:\Users\Dell\Desktop\My money-manager\money-manager\src\Components\BorrowLend.css */
+/* Payback button + settled badge styles */
+
+
+.record-details .settled-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* settled appearance */
+.record-item .settled-badge { background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.08); }
+
+/* dark mode tweak */
+body.dark-mode .payback { background: linear-gradient(180deg,#059669,#047857); box-shadow: 0 10px 30px rgba(2,6,23,0.6); }
+strong{
+  font-size: 4rem;
+}
+b{
+  font-size: 4rem;
+}
+.bl-export-btn{
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(56, 189, 248, 0.18));
+  color: #111113;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  font-weight: 500;
+  padding: 10px 16px;
+  transition: all 0.3s ease;
+
+}
+.record-name{
+  text-decoration: none;
+  color: var(--primary);
+  font-weight:bolder;
+  font-size: 1.3rem;
+}

@@ -68,7 +68,7 @@ const CustomTooltip = ({ active, payload, label, formatter }) => {
 };
 
 // Summary Card Component
-const SummaryCard = React.memo(({ label, value, color, icon, onClick, isInteractive, hideValue }) => {
+const SummaryCard = React.memo(({ label, value, color, onClick, isInteractive, hideValue }) => {
   const cardContent = (
     <div 
       className={`summary-card ${isInteractive ? 'interactive' : ''}`} 
@@ -76,7 +76,6 @@ const SummaryCard = React.memo(({ label, value, color, icon, onClick, isInteract
       aria-label={`${label} summary`}
       tabIndex={isInteractive ? 0 : -1}
     >
-      {icon && <span className="summary-icon">{icon}</span>}
       <span className="label">{label}:</span>
       <span className="value" style={{ color }}>{formatCurrency(value, hideValue)}</span>
     </div>
@@ -94,26 +93,15 @@ const SummaryCard = React.memo(({ label, value, color, icon, onClick, isInteract
   ) : cardContent;
 });
 
-// Enhanced Pie Chart Component
+// Enhanced Pie Chart Component with Different Radius
 const CustomPieChart = React.memo(({ data = [], title, chartId, onSegmentClick }) => {
-  const [activeIndex, setActiveIndex] = useState(null);
-
-  const onPieEnter = useCallback((_, index) => {
-    setActiveIndex(index);
-  }, []);
-
-  const onPieLeave = useCallback(() => {
-    setActiveIndex(null);
-  }, []);
-
-  const handleClick = useCallback((data, index) => {
-    if (onSegmentClick) {
-      onSegmentClick(data, index);
-    }
-  }, [onSegmentClick]);
-
   // Check if data is valid
   const isValidData = data && Array.isArray(data) && data.length > 0 && data.some(item => item.value > 0);
+
+  // Calculate total for percentage-based radius
+  const total = useMemo(() => {
+    return data.reduce((sum, item) => sum + item.value, 0);
+  }, [data]);
 
   return (
     <motion.div
@@ -123,64 +111,41 @@ const CustomPieChart = React.memo(({ data = [], title, chartId, onSegmentClick }
       aria-labelledby={`${chartId}-title`}
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 12 }}
       transition={{ duration: 0.45 }}
     >
       <h3 id={`${chartId}-title`}>{title}</h3>
       {!isValidData ? (
         <p className="empty-chart">No data available.</p>
       ) : (
-        <PieChart width={300} height={300}>
+        <PieChart width={550} height={200}>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
-            outerRadius={80}
-            innerRadius={activeIndex !== null ? 60 : 50}
             dataKey="value"
             label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-            onMouseEnter={onPieEnter}
-            onMouseLeave={onPieLeave}
-            onClick={handleClick}
-            activeIndex={activeIndex}
-            activeShape={(props) => {
-              const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
-              return (
-                <g>
-                  <path
-                    d={`
-                      M${cx},${cy}
-                      L${cx + outerRadius * Math.cos(-startAngle * Math.PI / 180)},${cy + outerRadius * Math.sin(-startAngle * Math.PI / 180)}
-                      A${outerRadius},${outerRadius} 0 0,1 ${cx + outerRadius * Math.cos(-endAngle * Math.PI / 180)},${cy + outerRadius * Math.sin(-endAngle * Math.PI / 180)}
-                      L${cx},${cy}
-                      Z
-                    `}
-                    fill={fill}
-                    opacity={0.8}
-                  />
-                  <path
-                    d={`
-                      M${cx},${cy}
-                      L${cx + innerRadius * Math.cos(-startAngle * Math.PI / 180)},${cy + innerRadius * Math.sin(-startAngle * Math.PI / 180)}
-                      A${innerRadius},${innerRadius} 0 0,0 ${cx + innerRadius * Math.cos(-endAngle * Math.PI / 180)},${cy + innerRadius * Math.sin(-endAngle * Math.PI / 180)}
-                      L${cx},${cy}
-                      Z
-                    `}
-                    fill={fill}
-                    opacity={0.8}
-                  />
-                </g>
-              );
-            }}
+            onClick={onSegmentClick}
           >
-            {data.map((entry, index) => (
-              <Cell 
-                key={`cell-${index}`} 
-                fill={COLORS[index % COLORS.length]} 
-                stroke="#fff"
-                strokeWidth={2}
-              />
-            ))}
+            {data.map((entry, index) => {
+              // Calculate different radius based on percentage of total
+              const percentage = (entry.value / total) * 100;
+              const baseRadius = 60;
+              const radiusMultiplier = 0.4;
+              const radiusAdjustment = (percentage / 100) * radiusMultiplier * baseRadius;
+              const outerRadius = baseRadius + radiusAdjustment;
+              const innerRadius = outerRadius - 20;
+              
+              return (
+                <Cell 
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                  stroke="#fff"
+                  strokeWidth={3}
+                  outerRadius={outerRadius}
+                  innerRadius={innerRadius}
+                />
+              );
+            })}
           </Pie>
           <Tooltip 
             formatter={(value) => `₹${Number(value).toLocaleString('en-IN')}`}
@@ -191,7 +156,7 @@ const CustomPieChart = React.memo(({ data = [], title, chartId, onSegmentClick }
             verticalAlign="middle" 
             align="right"
             formatter={(value, entry, index) => (
-              <span style={{ color: '#333', fontSize: '12px' }}>
+              <span style={{ color: '#ffe6e6ff', fontSize: '12px' }} className="intext" >
                 {value}: ₹{data[index]?.value.toLocaleString('en-IN')}
               </span>
             )}
@@ -211,7 +176,7 @@ const RecentTransactions = React.memo(({ transactions = [], onTransactionClick }
       .map(tx => {
         const amount = Math.abs(Number(tx.amount) || 0);
         const isIncome = Number(tx.amount) > 0;
-        const { date: formattedDate, time: formattedTime } = formatDate(tx.date);
+        const { date: formattedDate } = formatDate(tx.date);
         
         return {
           ...tx,
@@ -222,7 +187,6 @@ const RecentTransactions = React.memo(({ transactions = [], onTransactionClick }
           displayDescription: tx.description || tx.text || "No Description",
           displayCategory: tx.category || "Other",
           formattedDate,
-          formattedTime,
           paymentMode: tx.paymentMode || 'Not specified'
         };
       }),
@@ -246,52 +210,110 @@ const RecentTransactions = React.memo(({ transactions = [], onTransactionClick }
       {recentTransactions.length === 0 ? (
         <p className="recent-transactions__empty">No recent transactions.</p>
       ) : (
-        <ul role="list" aria-label="Recent transactions" className="recent-transactions__list">
-          {recentTransactions.map((tx, index) => (
-            <motion.li
-              role="listitem"
-              tabIndex={0}
-              key={tx.id || index}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.04, type: "spring", stiffness: 100, damping: 12 }}
-              whileHover={{ scale: 1.01 }}
-              className="recent-transactions__item"
-              onClick={() => handleClick(tx)}
-              onKeyPress={(e) => e.key === 'Enter' && handleClick(tx)}
-              aria-label={`Transaction: ${tx.displayDescription}, Amount: ₹${tx.displayAmountFormatted}, Date: ${tx.formattedDate}`}
+       <ul role="list" aria-label="Recent transactions" className="recent-transactions__list">
+  {recentTransactions.map((tx, index) => (
+    <motion.li
+      role="listitem"
+      tabIndex={0}
+      key={tx.id || index}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.04 }}
+      className="recent-transactions__item"
+      onClick={() => handleClick(tx)}
+      onKeyPress={(e) => e.key === 'Enter' && handleClick(tx)}
+      aria-label={`Transaction: ${tx.displayDescription}, Amount: ₹${tx.displayAmountFormatted}, Date: ${tx.formattedDate}, Category: ${tx.displayCategory}, Payment Mode: ${tx.paymentMode}`}
+    >
+      <div className="recent-transactions__content">
+        <div className="recent-transactions__icon-container">
+          <span
+            className={`recent-transactions__badge ${tx.isIncome ? "recent-transactions__badge--income" : "recent-transactions__badge--expense"}`}
+            aria-label={tx.isIncome ? "Income transaction" : "Expense transaction"}
+          >
+            {tx.isIncome ? "↑" : "↓"}
+          </span>
+          {tx.paymentMode && (
+            <span 
+              className="recent-transactions__payment-indicator"
+              title={`Payment method: ${tx.paymentMode}`}
+              aria-label={`Payment method: ${tx.paymentMode}`}
             >
-              <div className="recent-transactions__content">
-                <span
-                  className={`recent-transactions__badge ${tx.isIncome ? "recent-transactions__badge--income" : "recent-transactions__badge--expense"}`}
-                  aria-label={tx.isIncome ? "Income transaction" : "Expense transaction"}
-                >
-                  {tx.isIncome ? "↑" : "↓"}
-                </span>
+              {tx.paymentMode === 'cash' ? '💵' : 
+               tx.paymentMode === 'online' ? '🌐' : 
+               tx.paymentMode === 'card' ? '💳' : 
+               tx.paymentMode === 'upi' ? '📱' : 
+               tx.paymentMode === 'account' ? '🏦' : '💰'}
+            </span>
+          )}
+        </div>
 
-                <div className="recent-transactions__info">
-                  <p className="recent-transactions__description">{tx.displayDescription}</p>
-                  <p className="recent-transactions__category">{tx.displayCategory}</p>
-                  <p className="recent-transactions__payment-mode">{tx.paymentMode}</p>
-                </div>
+        <div className="recent-transactions__info">
+          <p className="recent-transactions__description" title={tx.displayDescription}>
+            {tx.displayDescription}
+          </p>
+          <div className="recent-transactions__meta">
+            <span className="recent-transactions__category" aria-label={`Category: ${tx.displayCategory}`}>
+              {tx.displayCategory}
+            </span>
+            {tx.paymentMode && (
+              <span className="recent-transactions__payment-mode" aria-label={`Payment method: ${tx.paymentMode}`}>
+                {tx.paymentMode}
+              </span>
+            )}
+            {tx.date && (
+              <span className="recent-transactions__time" aria-label={`Time: ${tx.formattedTime}`}>
+                {tx.formattedTime}
+              </span>
+            )}
+          </div>
+        </div>
 
-                <div className="recent-transactions__amount-container">
-                  <span
-                    className={`recent-transactions__amount ${tx.isIncome ? "recent-transactions__amount--income" : "recent-transactions__amount--expense"}`}
-                    aria-label={`${tx.isIncome ? 'Income' : 'Expense'} amount`}
-                  >
-                    {tx.isIncome ? "+" : "-"} ₹{tx.displayAmountFormatted}
-                  </span>
-                  <div className="recent-transactions__date-time">
-                    <span className="recent-transactions__date" aria-label={`Transaction date: ${tx.formattedDate}`}>
-                      {tx.formattedDate}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </motion.li>
-          ))}
-        </ul>
+        <div className="recent-transactions__amount-container">
+          <span
+            className={`recent-transactions__amount ${tx.isIncome ? "recent-transactions__amount--income" : "recent-transactions__amount--expense"}`}
+            aria-label={`${tx.isIncome ? 'Income' : 'Expense'} amount: ₹${tx.displayAmountFormatted}`}
+          >
+            {tx.isIncome ? "+" : "-"} ₹{tx.displayAmountFormatted}
+          </span>
+          <div className="recent-transactions__date-container">
+            <span className="recent-transactions__date" aria-label={`Transaction date: ${tx.formattedDate}`}>
+              {tx.formattedDate}
+            </span>
+            {tx.id && (
+              <span className="recent-transactions__id" title={`Transaction ID: ${tx.id}`}>
+                #{tx.id.slice(-4)}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      {/* Additional details that appear on hover/focus */}
+      <div className="recent-transactions__additional-info">
+        <div className="recent-transactions__detail-row">
+          <span className="recent-transactions__detail-label">Full Amount:</span>
+          <span className="recent-transactions__detail-value">₹{formatCurrency(tx.displayAmount)}</span>
+        </div>
+        {tx.originalAmount && tx.originalAmount !== tx.displayAmount && (
+          <div className="recent-transactions__detail-row">
+            <span className="recent-transactions__detail-label">Original Amount:</span>
+            <span className="recent-transactions__detail-value">₹{formatCurrency(tx.originalAmount)}</span>
+          </div>
+        )}
+        {tx.tags && tx.tags.length > 0 && (
+          <div className="recent-transactions__detail-row">
+            <span className="recent-transactions__detail-label">Tags:</span>
+            <span className="recent-transactions__tags">
+              {tx.tags.map(tag => (
+                <span key={tag} className="recent-transactions__tag">{tag}</span>
+              ))}
+            </span>
+          </div>
+        )}
+      </div>
+    </motion.li>
+  ))}
+</ul>
       )}
     </div>
   );
@@ -310,88 +332,73 @@ const ChartSection = ({ type, showChart, setShowChart, getBreakdownData, handleS
   const isEmpty = !chartData || chartData.length === 0 || !chartData.some(item => item.value > 0);
 
   return (
-    <motion.div 
-      className="chart-section"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+   <motion.div 
+  className="chart-section"
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.3 }}
+>
+  <div className="chart-section-header">
+    <div className="chart-section-title">
+      <span className="chart-icon" aria-hidden="true">
+        {icon}
+      </span>
+      <h3 id={`${chartId}-title`}>{title}</h3>
+    </div>
+    
+    <motion.button
+      className="chart-toggle-btn"
+      onClick={() => setShowChart(p => !p)}
+      aria-expanded={showChart}
+      aria-controls={chartId}
+      aria-label={showChart ? `Collapse ${title}` : `Expand ${title}`}
+      style={{ background: bgColor, color: "white" }}
+      whileTap={{ scale: 0.95 }}
+      disabled={isEmpty}
+      aria-disabled={isEmpty}
     >
-      <div className="chart-section-header">
-        <div className="chart-section-title">
-          <span className="chart-icon" aria-hidden="true">{icon}</span>
-          <h3>{title}</h3>
-          <span className="data-count" aria-label={`${chartData.length} categories`}>
-            ({chartData.length})
-          </span>
-        </div>
-        
-        <motion.button
-          className="chart-toggle-btn"
-          onClick={() => setShowChart(p => !p)}
-          aria-expanded={showChart}
-          aria-controls={chartId}
-          style={{ 
-            background: bgColor, 
-            color: "white",
-            '--hover-bg': isExpense ? '#dc2626' : '#059669'
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          disabled={isEmpty}
-          aria-disabled={isEmpty}
-        >
-          <span className="btn-content">
-            {showChart ? (
-              <>
-                <span className="btn-icon" aria-hidden="true">−</span>
-                <span>Collapse</span>
-              </>
-            ) : (
-              <>
-                <span className="btn-icon" aria-hidden="true">+</span>
-                <span>Expand</span>
-              </>
-            )}
-          </span>
-        </motion.button>
-      </div>
+      {showChart ? "Collapse" : "Expand"}
+    </motion.button>
+  </div>
 
-      <AnimatePresence mode="wait">
-        {showChart && (
-          <motion.div
-            id={chartId}
-            className="chart-container"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ 
-              opacity: 1, 
-              height: "auto",
-              transition: { duration: 0.4, ease: "easeOut" }
-            }}
-            exit={{ 
-              opacity: 0, 
-              height: 0,
-              transition: { duration: 0.3, ease: "easeIn" }
-            }}
-            role="region"
-            aria-labelledby={`${chartId}-title`}
-          >
-            {isEmpty ? (
-              <div className="empty-state">
-                <p>No {type} data available</p>
-                <small>Add {type} transactions to see the breakdown</small>
-              </div>
-            ) : (
-              <CustomPieChart
-                data={chartData}
-                title={title}
-                chartId={chartId}
-                onSegmentClick={handleSegmentClick}
-              />
-            )}
-          </motion.div>
+  <AnimatePresence mode="wait">
+    {showChart && (
+      <motion.div
+        id={chartId}
+        className="chart-container"
+        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+        animate={{ 
+          opacity: 1, 
+          height: "5rem",
+          marginTop: "1rem",
+          transition: { duration: 0.2 }
+        }}
+        exit={{ 
+          opacity: 0, 
+          height: 0,
+          marginTop: 0,
+          transition: { duration: 0.3 }
+        }}
+        role="region"
+        aria-labelledby={`${chartId}-title`}
+      >
+        {isEmpty ? (
+          <div className="empty-state">
+            <div className="empty-state-icon">📊</div>
+            <p>No {type} data available</p>
+          </div>
+        ) : (
+          <CustomPieChart
+            data={chartData}
+            title={title}
+            chartId={chartId}
+            onSegmentClick={handleSegmentClick}
+          />
         )}
-      </AnimatePresence>
-    </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</motion.div>
   );
 };
 
@@ -535,12 +542,6 @@ const Dashboard = () => {
     setSearchParams(params);
   }, [filters, setSearchParams]);
 
-  // Clear all filters
-  const handleClearFilters = useCallback(() => {
-    setFilters({});
-    setSearchParams({});
-  }, [setSearchParams]);
-
   // Export data to Excel
   const handleExport = useCallback(async () => {
     setExportLoading(true);
@@ -578,11 +579,6 @@ const Dashboard = () => {
     const category = data.name;
     handleFilterChange('category', category);
   }, [handleFilterChange]);
-
-  // Handle transaction click
-  const handleTransactionClick = useCallback((transaction) => {
-    console.log("Transaction clicked:", transaction);
-  }, []);
 
   if (loading) {
     return (
@@ -658,7 +654,6 @@ const Dashboard = () => {
           color="#10b981" 
           isInteractive={true}
           hideValue={!showBalance}
-          onClick={() => console.log("Navigate to income transactions")}
         />
         <SummaryCard 
           label="Expense" 
@@ -666,7 +661,6 @@ const Dashboard = () => {
           color="#ef4444" 
           isInteractive={true}
           hideValue={!showBalance}
-          onClick={() => console.log("Navigate to expense transactions")}
         />
         <SummaryCard 
           label="In Hand" 
@@ -674,7 +668,6 @@ const Dashboard = () => {
           color="#fbbf24" 
           isInteractive={true}
           hideValue={!showBalance}
-          onClick={() => console.log("Navigate to cash transactions")}
         />
         <SummaryCard 
           label="Online" 
@@ -682,11 +675,11 @@ const Dashboard = () => {
           color="#7c24e7" 
           isInteractive={true}
           hideValue={!showBalance}
-          onClick={() => console.log("Navigate to online transactions")}
         />
       </div>
 
       <div className="chart-container-box responsive-charts">
+        
         <CustomPieChart 
           data={chartData} 
           title="Income vs Expense" 
@@ -696,7 +689,6 @@ const Dashboard = () => {
         
         <RecentTransactions 
           transactions={filteredTransactions} 
-          onTransactionClick={handleTransactionClick}
         />
 
         <ChartSection
@@ -723,19 +715,18 @@ const Dashboard = () => {
         ) : (
           <ResponsiveContainer width="100%" height={350}>
             <BarChart data={monthlyData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }} barCategoryGap="20%">
-              <CartesianGrid strokeDasharray="3 3" opacity={0.4} />
+              <CartesianGrid strokeDasharray="8 3" opacity={0.9} />
               <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#555" }} />
               <YAxis tick={{ fontSize: 12, fill: "#555" }} />
               <Tooltip 
                 formatter={(value) => `₹${Number(value).toLocaleString('en-IN')}`} 
                 contentStyle={{ borderRadius: 8, padding: '8px 12px' }}
-                content={<CustomTooltip formatter={(value) => `₹${Number(value).toLocaleString('en-IN')}`} />}
               />
-              <Legend verticalAlign="top" height={36} />
-              <Bar dataKey="Income" fill="#10b981" radius={[6,6,0,0]}>
+              <Legend verticalAlign="top" height={26} />
+              <Bar dataKey="Income" fill="#10b981" radius={[9, 9, 0, 0]}>
                 <LabelList dataKey="Income" position="top" formatter={(val) => `₹${Number(val).toLocaleString('en-IN')}`} />
               </Bar>
-              <Bar dataKey="Expense" fill="#ef4444" radius={[6,6,0,0]}>
+              <Bar dataKey="Expense" fill="#ef4444" radius={[9, 9, 0, 0]}>
                 <LabelList dataKey="Expense" position="top" formatter={(val) => `₹${Number(val).toLocaleString('en-IN')}`} />
               </Bar>
             </BarChart>
@@ -754,7 +745,6 @@ const Dashboard = () => {
               <YAxis />
               <Tooltip 
                 formatter={(value) => [`₹${Number(value).toLocaleString('en-IN')}`, "Net Cash Flow"]}
-                content={<CustomTooltip formatter={(value) => `₹${Number(value).toLocaleString('en-IN')}`} />}
               />
               <Area 
                 type="monotone" 

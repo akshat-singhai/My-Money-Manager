@@ -78,8 +78,7 @@ const AddTransaction = () => {
   };
 
   return (
-    
-    <form onSubmit={handleSubmit} className="formDiv">
+    <>
       <Toaster 
         position="top-right"
         toastOptions={{
@@ -105,6 +104,7 @@ const AddTransaction = () => {
           },
         }}
       />
+    <form onSubmit={handleSubmit} className="formDiv">
       
       <div className="form-header">
         <h3 className="Heading1">Add New Transaction</h3>
@@ -295,6 +295,7 @@ const AddTransaction = () => {
         )}
       </button>
     </form>
+    </>
   );
 };
 

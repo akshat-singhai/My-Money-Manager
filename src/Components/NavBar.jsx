@@ -3,11 +3,13 @@ import { NavLink } from "react-router-dom";
 import { Menu, Sun, Moon, Home, BarChart2, Clock, Wrench } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./NavBar.css";
+import { FaRegFileCode } from "react-icons/fa";
 
 const navLinks = [
 
   { to: "/", label: "Dashboard", icon: <BarChart2 size={20} /> },
   { to: "/history", label: "History", icon: <Clock size={20} /> },
+  { to: "/borrow-lend", label: "Udhar", icon: <FaRegFileCode size={20} /> },
   { to: "/finance-tools", label: "Finance Tools", icon: <Wrench size={20} /> },
 ];
 

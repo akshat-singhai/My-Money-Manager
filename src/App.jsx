@@ -1,35 +1,62 @@
 import React, { Suspense } from "react";
-import { TransactionProvider } from "./Context/TransactionContext";
-import TransactionList from "./Components/TransactionList";
-import Dashboard from "./Components/Dashboard";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { TransactionProvider } from "./Context/TransactionContext";
+import NavBar from "./Components/NavBar";
+import Dashboard from "./Components/Dashboard";
+import TransactionList from "./Components/TransactionList";
 import TransactionHistory from "./Components/TransactionHistory";
 import FinanceTools from "./Components/finance-tools";
-import "./Components/TransactionList.jsx";
-import NavBar from "./Components/NavBar";
+import BorrowLend from "./Components/BorrowLend";
+import PersonRecords from "./Components/PersonRecords";
+
 import "./App.css";
 
 function App() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <TransactionProvider>
       <Router>
         <div className="app-container">
-          <h1 className="heading3">Money Manager 💰</h1>
+          {/* --- App Header --- */}
+          <header className="app-header">
+            <h1 className="heading3">💰 Money Manager</h1>
+            <p className="tagline">Track, Save & Manage Your Finances</p>
+          </header>
+
+          {/* --- Navigation Bar --- */}
           <NavBar />
-          <Suspense fallback={<div style={{textAlign: "center", margin: "2rem"}}>Loading...</div>}>
-            <Routes>
-             
-              <Route path="/" element={<Dashboard />} />
-               <Route path="/add-transaction" element={<TransactionList />} /> 
-              <Route path="/history" element={<TransactionHistory />} />
-              <Route path="/finance-tools" element={<FinanceTools />} />
-              <Route path="*" element={<h2>Page Not Found</h2>} />
-            </Routes>
-          </Suspense>
-          <div className="footer">
-            <p>Made with ❤️ by [Akshat Singhai]</p>
-            <p>© 2025 Money Manager</p>
-          </div>
+
+          {/* --- Main Content --- */}
+          <main className="app-main">
+            <Suspense
+              fallback={
+                <div className="loading-container">
+                  <div className="spinner"></div>
+                  <p>Loading your dashboard...</p>
+                </div>
+              }
+            >
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/add-transaction" element={<TransactionList />} />
+                <Route path="/history" element={<TransactionHistory />} />
+                <Route path="/finance-tools" element={<FinanceTools />} />
+                <Route path="/borrow-lend" element={<BorrowLend />} />
+                 <Route path="/person/:name" element={<PersonRecords />} />
+                <Route path="*" element={<h2>404 - Page Not Found</h2>} />
+              </Routes>
+            </Suspense>
+          </main>
+
+          {/* --- Footer --- */}
+          <footer className="footer">
+            <p>
+              Made with <span style={{ color: "red" }}>❤️</span> by{" "}
+              <strong>Akshat Singhai</strong>
+            </p>
+            <p>© {currentYear} Money Manager. All Rights Reserved.</p>
+          </footer>
         </div>
       </Router>
     </TransactionProvider>
