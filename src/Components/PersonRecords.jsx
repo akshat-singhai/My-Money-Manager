@@ -143,13 +143,13 @@ const PersonRecords = () => {
         {/* Summary Cards */}
         <div className="summary-cards">
           <motion.div className="summary-card borrowed" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-            <h3>{borrowed.length} Borrowed</h3>
-            <p>{formatINR(borrowedTotal)}</p>
+            <h3 className="summary-cards-text">{borrowed.length} Udhar Liya </h3>
+            <p className="summary-cards-text">{formatINR(borrowedTotal)}</p>
           </motion.div>
 
           <motion.div className="summary-card lent" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-            <h3>{lent.length} Lent</h3>
-            <p>{formatINR(lentTotal)}</p>
+            <h3 className="summary-cards-text">{lent.length} Udhar Diya </h3>
+            <p className="summary-cards-text">{formatINR(lentTotal)}</p>
           </motion.div>
         </div>
 
@@ -185,7 +185,7 @@ const PersonRecords = () => {
             className="records-section-header"
             onClick={() => setCollapsed((prev) => ({ ...prev, borrowed: !prev.borrowed }))}
           >
-            <h3>Borrowed ({borrowed.length})</h3>
+            <h3 className="summary-cards-text">Udhar Liya ({borrowed.length})</h3>
             {collapsed.borrowed ? <FaChevronUp /> : <FaChevronDown />}
           </div>
           {!collapsed.borrowed && (
@@ -232,7 +232,7 @@ const PersonRecords = () => {
             className="records-section-header"
             onClick={() => setCollapsed((prev) => ({ ...prev, lent: !prev.lent }))}
           >
-            <h3>Lent ({lent.length})</h3>
+            <h3 className="summary-cards-text">Udhar Diya ({lent.length})</h3>
             {collapsed.lent ? <FaChevronUp /> : <FaChevronDown />}
           </div>
           {!collapsed.lent && (
@@ -299,8 +299,8 @@ const PersonRecords = () => {
                   <input type="text" placeholder="Note (optional)" value={formData.note} onChange={(e) => setFormData({ ...formData, note: e.target.value })} />
                   <input type="date" value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />
                   <select value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })}>
-                    <option value="borrowed">Borrowed</option>
-                    <option value="lent">Lent</option>
+                    <option value="borrowed">Udhar Liya</option>
+                    <option value="lent">Udhar Diya</option>
                   </select>
 
                   <div className="modal-actions">

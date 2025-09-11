@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
-import { Menu, Sun, Moon, Home, BarChart2, Clock, Wrench } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Menu, Sun, Moon, Clock, BarChart3 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FaHandHoldingUsd, FaWallet, FaPiggyBank, FaCoins, FaBalanceScale, FaReceipt, FaSignOutAlt } from "react-icons/fa";
+
 import "./NavBar.css";
-import { FaRegFileCode } from "react-icons/fa";
 
 const navLinks = [
-
-  { to: "/", label: "Dashboard", icon: <BarChart2 size={20} /> },
-  { to: "/history", label: "History", icon: <Clock size={20} /> },
-  { to: "/borrow-lend", label: "Udhar", icon: <FaRegFileCode size={20} /> },
-  { to: "/finance-tools", label: "Finance Tools", icon: <Wrench size={20} /> },
+  { to: "/", label: "Dashboard", icon: <FaWallet size={20} /> },            // Wallet = Overview
+  { to: "/history", label: "History", icon: <FaReceipt size={20} /> },      // Transaction history
+  { to: "/borrow-lend", label: "Udhari", icon: <FaBalanceScale size={20} /> }, // Borrow/Lend
+  { to: "/finance-tools", label: "Finance Tools", icon: <FaCoins size={20} /> }, // Coins = Tools/Savings
 ];
 
 const isMobile = () => window.innerWidth <= 768;
 
 const NavBar = () => {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dark, setDark] = useState(() => localStorage.getItem("darkMode") === "true");
   const [mobile, setMobile] = useState(isMobile());
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", dark);
@@ -31,10 +33,22 @@ const NavBar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Close menu on route change or resize to desktop
   useEffect(() => {
     if (!mobile) setMenuOpen(false);
   }, [mobile]);
+
+  // Get logged-in username
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser?.username) {
+      setUsername(storedUser.username);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    navigate("/login");
+  };
 
   return (
     <nav className="nav-container">
@@ -55,6 +69,7 @@ const NavBar = () => {
               </motion.span>
             </button>
           )}
+          {username && <span className="welcome-text">👋 Welcome, {username}</span>}
         </div>
         <button
           className="theme-toggle"
@@ -64,6 +79,7 @@ const NavBar = () => {
           {dark ? <Sun size={20} /> : <Moon size={20} />}
         </button>
       </div>
+
       <AnimatePresence>
         {(!mobile || menuOpen) && (
           <motion.div
@@ -82,10 +98,17 @@ const NavBar = () => {
                 end={link.to === "/"}
                 onClick={() => setMenuOpen(false)}
               >
-                <span style={{ verticalAlign: "middle", marginRight: 8 }}>{link.icon}</span>
+                <span style={{ verticalAlign: "middle", marginRight: 8 }}>
+                  {link.icon}
+                </span>
                 {link.label}
               </NavLink>
             ))}
+
+            {/* Logout Button with Icon */}
+            <button className="logout-btn" onClick={handleLogout}>
+              <FaSignOutAlt style={{ marginRight: 6 }} /> Logout
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

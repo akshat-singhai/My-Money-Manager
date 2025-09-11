@@ -1,0 +1,152 @@
+/* ===== Container ===== */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Auth Card ===== */
+.auth-form {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.auth-form h2 {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+/* ===== Inputs ===== */
+.auth-form input {
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.auth-form input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* ===== Button ===== */
+.auth-form-button {
+  padding: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  background: #3b82f6;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.auth-form-button:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.25);
+}
+
+.auth-form button:active {
+  transform: scale(0.97);
+}
+
+/* ===== Switch (Login/Register link) ===== */
+.auth-switch {
+  color: #2563eb;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.auth-switch:hover {
+  text-decoration: underline;
+  color: #1d4ed8;
+}
+
+/* ===== Password Field ===== */
+.password-field {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+   border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.password-field input {
+  width: 90%;
+  padding: 0.9rem 2.8rem 0.9rem 1rem; /* space for eye icon */
+  border-radius: 10px;
+ border: none;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+  margin-left: 9px;
+}
+
+.password-field:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.show-pass-btn{
+    height: 90%;
+    width: 50px;
+     border-radius: 10px;
+    background: transparent;
+    color: #6b7280;
+    border: none;
+    margin-bottom: 1px;
+    margin-top: 3px;
+    cursor: pointer;
+    
+}
+.show-pass-btn:hover {
+  color: #111827;
+}
+
+.show-pass-btn:focus {
+  outline: none;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

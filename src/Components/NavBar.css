@@ -253,6 +253,12 @@
     height: 15px;
     margin-top: 2rem;
   }
+  .menu-toggle {
+    width: 45px;
+    height: 45px;
+    font-size: 1.6rem;
+  }
+ 
 }
 /* Dark Mode */
 body.dark-mode .nav-container {
@@ -315,4 +321,37 @@ body.dark-mode .navBox.active {
   100% {
     background-position: 200% 50%;
   }
+}
+.welcome-text {
+  margin-left: 1rem;
+  font-weight: 500;
+  color: #374151;
+  font-size: 1.1rem;
+  user-select: none;
+  transition: color 0.3s ease;
+  flex-grow: 1;
+  text-align: center;
+
+}
+
+.dark-mode .welcome-text {
+  color: #e5e7eb;
+}
+
+.logout-btn {
+  height: 40px;
+  width: 10%;
+  margin-top: 0.8rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #ef4444;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
 }

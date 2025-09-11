@@ -656,9 +656,10 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 
 /* dark mode tweak */
 body.dark-mode .payback { background: linear-gradient(180deg,#059669,#047857); box-shadow: 0 10px 30px rgba(2,6,23,0.6); }
-```/* filepath: c:\Users\Dell\Desktop\My money-manager\money-manager\src\Components\BorrowLend.css */
-/* Payback button + settled badge styles */
-
+body.dark-mode .summary-cards-text {
+  color:#cbd5e1;
+  font-weight: 600;
+}
 
 .record-details .settled-badge {
   display: inline-block;

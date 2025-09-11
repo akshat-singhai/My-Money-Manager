@@ -176,7 +176,7 @@ const BorrowLend = () => {
     <>
       <Toaster position="top-right" />
       <div className="borrow-lend-container">
-        <h2>🏦Udhar</h2>
+        <h2>Udhari</h2>
 
         {/* Search + Controls */}
         <div className="records-controls">
@@ -196,7 +196,7 @@ const BorrowLend = () => {
 
         {/* Accounts List */}
         <div className="records-list">
-          <h3>Accounts</h3>
+          <h3 className="summary-cards-text">Accounts</h3>
           {filtered.length === 0 ? (
             <p className="empty-msg">No accounts found. Add one!</p>
           ) : (
@@ -223,7 +223,7 @@ const BorrowLend = () => {
                         {acc.name}
                       </Link>
                       <span className="record-note">
-                        Borrowed: {formatINR(acc.totalBorrowed)} | Lent:{" "}
+                        Udhar Liya: {formatINR(acc.totalBorrowed)} | Udhar Diya:{" "}
                         {formatINR(acc.totalLent)}
                       </span>
                     </div>
@@ -329,8 +329,8 @@ const BorrowLend = () => {
                       })
                     }
                   >
-                    <option value="borrowed">Borrowed</option>
-                    <option value="lent">Lent</option>
+                    <option value="borrowed">Udhar Liya</option>
+                    <option value="lent">Udhar Diya</option>
                   </select>
 
                   <div className="modal-actions">
