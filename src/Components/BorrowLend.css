@@ -703,3 +703,155 @@ b{
   font-weight:bolder;
   font-size: 1.3rem;
 }
+/* ================================
+   🌟 Luxury Enhancements
+   ================================ */
+
+/* Fonts & Luxury Feel */
+body {
+  font-family: "Inter", "Segoe UI", "Poppins", sans-serif;
+  letter-spacing: 0.3px;
+  line-height: 1.6;
+}
+
+/* Premium gradient accents */
+:root {
+  --lux-gold: linear-gradient(135deg, #facc15, #eab308, #f59e0b);
+  --lux-silver: linear-gradient(135deg, #f3f4f6, #d1d5db, #9ca3af);
+  --lux-emerald: linear-gradient(135deg, #34d399, #10b981, #059669);
+  --lux-royal: linear-gradient(135deg, #6366f1, #4f46e5, #4338ca);
+}
+
+/* Luxurious Headings */
+.borrow-lend-container h2 {
+  font-size: 2rem;
+  background: var(--lux-royal);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.borrow-lend-container h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  margin: 0.8rem auto 0;
+  background: var(--lux-gold);
+  border-radius: 999px;
+}
+
+/* Luxury Summary Cards */
+.summary-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--card-bg);
+  border-radius: 1.4rem;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+.summary-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255,255,255,0.12), transparent 70%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.summary-card h3 {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 1.2rem;
+  letter-spacing: 0.4px;
+}
+
+.summary-card.borrowed {
+  border-left: 5px solid #ef4444;
+  background: linear-gradient(160deg, rgba(239,68,68,0.06), rgba(255,255,255,0.7));
+}
+
+.summary-card.lent {
+  border-left: 5px solid #10b981;
+  background: linear-gradient(160deg, rgba(16,185,129,0.06), rgba(255,255,255,0.7));
+}
+
+/* Record Items - Luxury Look */
+.record-item {
+  border-radius: 1.2rem;
+  background: linear-gradient(160deg, rgba(255,255,255,0.78), rgba(243,244,246,0.6));
+  backdrop-filter: blur(18px);
+  transition: all 0.3s ease;
+}
+
+.record-item:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.15);
+}
+
+/* Luxury Avatars */
+.avatar {
+  background: var(--lux-royal);
+  box-shadow: 0 6px 16px rgba(79,70,229,0.35);
+}
+
+/* Floating Button - Premium Glow */
+.bl-fab {
+  background: var(--lux-gold);
+  box-shadow: 0 20px 40px rgba(250,204,21,0.35);
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+}
+.bl-fab:hover {
+  transform: translateY(-5px) scale(1.12);
+  box-shadow: 0 24px 60px rgba(250,204,21,0.45);
+}
+
+/* Payback Button - Luxury Emerald */
+.payback {
+  background: var(--lux-emerald);
+  box-shadow: 0 12px 28px rgba(16,185,129,0.25);
+}
+.payback:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 18px 40px rgba(16,185,129,0.35);
+}
+
+/* Settled Badge */
+.record-item .settled-badge {
+  background: var(--lux-silver);
+  color: #1f2937;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.6);
+}
+
+/* Dark Mode Luxury */
+body.dark-mode {
+  background: radial-gradient(circle at top, #0b1220 0%, #050810 100%);
+  color: #e5e7eb;
+}
+
+/* Dark Mode Cards */
+body.dark-mode .summary-card,
+body.dark-mode .record-item,
+body.dark-mode .modal {
+  background: linear-gradient(160deg, rgba(20,24,36,0.9), rgba(10,12,20,0.65));
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+}
+
+/* Dark Mode Floating Button */
+body.dark-mode .bl-fab {
+  background: var(--lux-gold);
+  box-shadow: 0 20px 48px rgba(250,204,21,0.4);
+}
+
+/* Dark Mode Payback */
+body.dark-mode .payback {
+  background: var(--lux-emerald);
+  box-shadow: 0 14px 36px rgba(16,185,129,0.35);
+}

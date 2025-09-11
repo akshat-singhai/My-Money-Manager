@@ -59,6 +59,7 @@ const Register = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
+          className="auth-input"
         />
         <div className="password-field">
           <input
@@ -67,6 +68,8 @@ const Register = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            minLength={6}
+            className="auth-input"
           />
           <button
             type="button"

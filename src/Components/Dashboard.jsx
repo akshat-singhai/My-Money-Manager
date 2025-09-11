@@ -636,7 +636,7 @@ const Dashboard = () => {
       <div className="balanceBox" aria-live="polite">
         <SummaryCard 
           label="Total Balance" 
-          value={total} 
+          value={`₹${total}`} 
           color={total >= 0 ? "#10b981" : "#ef4444"} 
           isInteractive={true}
           hideValue={!showBalance}
@@ -644,34 +644,34 @@ const Dashboard = () => {
         />
         <SummaryCard 
           label="Transactions" 
-          value={filteredTransactions.length} 
+          value={filteredTransactions.length}
           color="#38bdf8" 
           hideValue={!showBalance}
         />
         <SummaryCard 
           label="Income" 
-          value={income} 
+          value={`₹${income}`} 
           color="#10b981" 
           isInteractive={true}
           hideValue={!showBalance}
         />
         <SummaryCard 
           label="Expense" 
-          value={Math.abs(expense)} 
+          value={`₹${Math.abs(expense)}`} 
           color="#ef4444" 
           isInteractive={true}
           hideValue={!showBalance}
         />
         <SummaryCard 
           label="In Hand" 
-          value={inhand} 
+          value={`₹${inhand}`} 
           color="#fbbf24" 
           isInteractive={true}
           hideValue={!showBalance}
         />
         <SummaryCard 
           label="Online" 
-          value={online} 
+          value={`₹${online}` } 
           color="#7c24e7" 
           isInteractive={true}
           hideValue={!showBalance}

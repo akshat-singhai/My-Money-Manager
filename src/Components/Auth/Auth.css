@@ -5,23 +5,55 @@
   align-items: center;
   min-height: 100vh;
   padding: 1rem;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: transparent;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* ===== Auth Card ===== */
 .auth-form {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.08); /* transparent glossy effect */
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   padding: 2rem;
   border-radius: 1.25rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3); /* glossy shine inside */
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  animation: fadeIn 0.4s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
+  border: 1px solid rgba(88, 72, 255, 0.5); /* glowing purple border */
+  position: relative;
+  overflow: hidden;
 }
+
+/* Add subtle glossy gradient overlay */
+.auth-form::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.05) 30%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  transform: skewX(-20deg);
+  animation: glossyMove 5s linear infinite;
+}
+
+/* Glossy shine animation */
+@keyframes glossyMove {
+  0% { left: -50%; }
+  100% { left: 150%; }
+}
+
 
 .auth-form h2 {
   text-align: center;
@@ -38,6 +70,7 @@
   border: 1.5px solid #e5e7eb;
   font-size: 0.95rem;
   transition: all 0.25s ease;
+  background: transparent;
 }
 
 .auth-form input:focus {
@@ -89,7 +122,7 @@
   width: 100%;
   display: grid;
   grid-template-columns: 1fr auto;
-   border: 1.5px solid #e5e7eb;
+   border: 1.5px solid #f8f8f9;
     border-radius: 10px;
 }
 
@@ -101,12 +134,9 @@
   font-size: 0.95rem;
   transition: all 0.25s ease;
   margin-left: 9px;
-}
-
-.password-field:focus {
-  border-color: #3b82f6;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  background: transparent;
+.auth-input{
+  
 }
 
 .show-pass-btn{
@@ -114,15 +144,21 @@
     width: 50px;
      border-radius: 10px;
     background: transparent;
-    color: #6b7280;
+    color: #062f81;
     border: none;
-    margin-bottom: 1px;
+    
     margin-top: 3px;
     cursor: pointer;
     
 }
+body.dark-mode .show-pass-btn{
+    color: #9ca3af;
+    background: transparent;
+    border: none;
+    margin-top: 3px;
+}
 .show-pass-btn:hover {
-  color: #111827;
+  color: #022d8a;
 }
 
 .show-pass-btn:focus {
