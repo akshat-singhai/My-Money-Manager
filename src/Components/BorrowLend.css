@@ -725,9 +725,8 @@ body {
 /* Luxurious Headings */
 .borrow-lend-container h2 {
   font-size: 2rem;
-  background: var(--lux-royal);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
   font-weight: 800;
   letter-spacing: 0.5px;
   text-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
@@ -834,8 +833,39 @@ body.dark-mode {
   background: radial-gradient(circle at top, #0b1220 0%, #050810 100%);
   color: #e5e7eb;
 }
+body.dark-mode .borrow-lend-container {
+  background: radial-gradient(circle at top, #0b1220 0%, #050810 100%);
+  color: #e5e7eb;
+}
+body .dark-mode .SearchBox {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 8px rgba(56,189,248,0.1);
+}
+body.dark-mode .SearchBox:focus-within {
+  box-shadow: 0 0 0 2px rgba(56,189,248,0.4);
+}
+body.dark-mode .SearchBox input {
+  color: #e5e7eb;
+}
+body.dark-mode .SearchBox svg {
+  color: rgba(255,255,255,0.7);
+}
+body .dark-mode .bl-export-btn,
+body .dark-mode .download-btn {
+  background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(56,189,248,0.18));
+  color: #eef2ff;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  font-weight: 500;
+  padding: 10px 16px;
+  transition: all 0.3s ease;
+}
+body .dark-mode .summary-card-title {
+  color:#f8fafc;
+}
 
-/* Dark Mode Cards */
+/* Dark Mode Cards */}
 body.dark-mode .summary-card,
 body.dark-mode .record-item,
 body.dark-mode .modal {

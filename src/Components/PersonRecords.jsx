@@ -218,7 +218,7 @@ const PersonRecords = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h3>{borrowed.length} Udhar Liya</h3>
+            <h3 >{borrowed.length} Udhar Liya</h3>
             <p>{formatINR(borrowedTotal)}</p>
           </motion.div>
 
