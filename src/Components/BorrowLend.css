@@ -849,9 +849,49 @@ body.dark-mode .bl-fab {
   background: var(--lux-gold);
   box-shadow: 0 20px 48px rgba(250,204,21,0.4);
 }
+body.dark-mode .bl-fab:hover {
+  box-shadow: 0 24px 60px rgba(250,204,21,0.5);
+}
+body.dark-mode .avatar {
+  background: var(--lux-royal);
+  box-shadow: 0 6px 16px rgba(79,70,229,0.5);
+}
+body.dark-mode .record-item {
+  border: 1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));
+}
 
+body.dark-mode .modal input,
+body.dark-mode .modal textarea {
+
+  box-shadow: 0 6px 16px rgba(79,70,229,0.5);
+  color: #e5e7eb;
+}
+body.dark-mode .modal input:focus,
+body.dark-mode .modal textarea:focus {
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.4);
+}
+body.dark-mode .modal h3{
+  color: #9ca3af;
+}
 /* Dark Mode Payback */
 body.dark-mode .payback {
   background: var(--lux-emerald);
   box-shadow: 0 14px 36px rgba(16,185,129,0.35);
+}
+body.dark-mode .payback:hover {
+  box-shadow: 0 18px 40px rgba(16,185,129,0.45);
+}
+body.dark-mode .records-section-header h3{
+  color: #9ca3af;
+}
+body.dark-mode .summary-cards-text {
+  color:#9ca3af;
+  font-weight: 600;
+}
+body.dark-mode .record-name {
+  color:#60a5fa;
+}
+body.dark-mode .empty-msg {
+  color: #9ca3af;
 }

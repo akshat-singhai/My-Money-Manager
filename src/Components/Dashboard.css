@@ -869,3 +869,178 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
     border: 1px solid #ccc;
   }
 }/*///////////
+/* Dashboard summary card with neumorphism */
+.dashboard-summary-card {
+  background: #f0f0f0;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 
+    12px 12px 24px rgba(0, 0, 0, 0.1),
+    -12px -12px 24px rgba(255, 255, 255, 0.5);
+  transition: var(--transition-smooth);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    16px 16px 32px rgba(0, 0, 0, 0.12),
+    -16px -16px 32px rgba(255, 255, 255, 0.6);
+}
+
+/* Financial chart container */
+.chart-container {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid var(--glass-border-light);
+  box-shadow: var(--shadow-glass);
+  padding: 24px;
+}
+
+body.dark-mode .chart-container {
+  background: var(--glass-bg-dark);
+  border-color: var(--glass-border-dark);
+}
+/* ============================= */
+/* Global Design Tokens (Luxury) */
+/* ============================= */
+:root {
+  /* Colors */
+  --color-primary: #3b82f6;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #8b5cf6;
+
+  /* Neutrals */
+  --color-white: #ffffff;
+  --color-gray-50: #f9fafb;
+  --color-gray-200: #e5e7eb;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+
+  /* Text */
+  --text-primary: #111827;
+  --text-muted: #6b7280;
+
+  /* Spacing */
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+
+  /* Radius */
+  --radius-lg: 24px;
+
+  /* Effects */
+  --shadow-soft: 6px 6px 12px rgba(0, 0, 0, 0.12),
+                 -6px -6px 12px rgba(255, 255, 255, 0.6);
+  --shadow-hover: 10px 10px 20px rgba(0, 0, 0, 0.15),
+                  -10px -10px 20px rgba(255, 255, 255, 0.7);
+
+  /* Glassmorphism */
+  --glass-bg-light: rgba(255, 255, 255, 0.4);
+  --glass-bg-dark: rgba(30, 41, 59, 0.6);
+
+  /* Transitions */
+  --transition-smooth: 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================= */
+/* Luxury Summary Card Component */
+/* ============================= */
+.summary-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  background: linear-gradient(145deg, #ffffff, #f0f0f3);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-smooth),
+              box-shadow var(--transition-smooth);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Hover micro-interaction */
+.summary-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Glassmorphism overlay */
+.summary-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(16px);
+  z-index: 0;
+}
+
+.summary-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Typography */
+.summary-card .title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.summary-card .value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+/* Shimmer Loader */
+.summary-card.loading::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* Glow Pulse on Value Update */
+@keyframes glowPulse {
+  0% { text-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+  50% { text-shadow: 0 0 12px rgba(16, 185, 129, 0.8); }
+  100% { text-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.value.updated {
+  animation: glowPulse 0.8s ease;
+  color: var(--color-success);
+}
+
+/* ============================= */
+/* Dark Mode Styles */
+/* ============================= */
+body.dark-mode {
+  --text-primary: #f9fafb;
+  --text-muted: #9ca3af;
+}
+
+body.dark-mode .summary-card {
+  background: linear-gradient(145deg, var(--color-gray-800), var(--color-gray-900));
+  box-shadow: 
+    6px 6px 12px rgba(0, 0, 0, 0.7),
+    -6px -6px 12px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .summary-card::before {
+  background: var(--glass-bg-dark);
+  backdrop-filter: blur(12px);
+}

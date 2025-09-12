@@ -279,11 +279,8 @@ const RecentTransactions = React.memo(({ transactions = [], onTransactionClick }
             <span className="recent-transactions__date" aria-label={`Transaction date: ${tx.formattedDate}`}>
               {tx.formattedDate}
             </span>
-            {tx.id && (
-              <span className="recent-transactions__id" title={`Transaction ID: ${tx.id}`}>
-                #{tx.id.slice(-4)}
-              </span>
-            )}
+           
+            
           </div>
         </div>
       </div>
@@ -369,8 +366,9 @@ const ChartSection = ({ type, showChart, setShowChart, getBreakdownData, handleS
         initial={{ opacity: 0, height: 0, marginTop: 0 }}
         animate={{ 
           opacity: 1, 
-          height: "5rem",
-          marginTop: "1rem",
+        
+          height: "1rem",
+          marginTop: "0rem",
           transition: { duration: 0.2 }
         }}
         exit={{ 

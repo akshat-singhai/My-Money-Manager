@@ -3,12 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { TransactionContext } from "../Context/TransactionContext";
 import { incomeCategories, expenseCategories } from "../data/categories";
 import "./TransactionHistory.css";
-import { FaSearch, FaPlus, FaDownload, FaCopy, FaPaperclip } from "react-icons/fa";
+import {
+  FaSearch,
+  FaPlus,
+  FaDownload,
+  FaCopy,
+  FaPaperclip,
+} from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { Reuleaux } from "ldrs/react";
 import "ldrs/react/Reuleaux.css";
 
+// =============================
 // Highlight matching search text
+// =============================
 const highlightText = (text = "", highlight = "") => {
   if (!highlight) return text || "";
   try {
@@ -29,7 +37,8 @@ const highlightText = (text = "", highlight = "") => {
 };
 
 const TransactionList = () => {
-  const { transactions = [], deleteTransaction } = useContext(TransactionContext) || {};
+  const { transactions = [], deleteTransaction } =
+    useContext(TransactionContext) || {};
   const [filterType, setFilterType] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
   const [search, setSearch] = useState("");
@@ -40,40 +49,53 @@ const TransactionList = () => {
   const navigate = useNavigate();
 
   const categories = useMemo(
-    () => [...(incomeCategories || []), ...(expenseCategories || [])].map((c) => c.label),
+    () =>
+      [...(incomeCategories || []), ...(expenseCategories || [])].map(
+        (c) => c.label
+      ),
     []
   );
 
+  // Simulated loader
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 700);
     return () => clearTimeout(t);
   }, []);
 
+  // Dark mode observer
   useEffect(() => {
-    const checkDark = () => setIsDarkMode(document.body.classList.contains("dark-mode"));
+    const checkDark = () =>
+      setIsDarkMode(document.body.classList.contains("dark-mode"));
     checkDark();
     const obs = new MutationObserver(checkDark);
-    try {
-      obs.observe(document.body, { attributes: true, attributeFilter: ["class"] });
-    } catch {}
+    obs.observe(document.body, { attributes: true, attributeFilter: ["class"] });
     return () => obs.disconnect();
   }, []);
 
-  // Filter + sort
+  // =============================
+  // Filter + sort logic
+  // =============================
   const filtered = useMemo(() => {
     const q = (search || "").trim().toLowerCase();
-    const list = (Array.isArray(transactions) ? transactions : []).filter((tx = {}) => {
-      const type = tx.type || (Number(tx.amount) > 0 ? "income" : "expense");
-      let matchType = filterType === "all" || type === filterType;
+    const list = (Array.isArray(transactions) ? transactions : []).filter(
+      (tx = {}) => {
+        const type = tx.type || (Number(tx.amount) > 0 ? "income" : "expense");
+        let matchType = filterType === "all" || type === filterType;
 
-      if (filterType === "cash") matchType = tx.paymentMode === "cash";
-      if (filterType === "account") matchType = tx.paymentMode === "account";
+        if (filterType === "cash") matchType = tx.paymentMode === "cash";
+        if (filterType === "account") matchType = tx.paymentMode === "account";
 
-      const matchCategory = filterCategory === "all" || (tx.category || "Other") === filterCategory;
-      const hay = ((tx.text || tx.description || "") + " " + (tx.notes || "")).toLowerCase();
-      const matchSearch = !q || hay.includes(q);
-      return matchType && matchCategory && matchSearch;
-    });
+        const matchCategory =
+          filterCategory === "all" || (tx.category || "Other") === filterCategory;
+        const hay = (
+          (tx.text || tx.description || "") +
+          " " +
+          (tx.notes || "")
+        ).toLowerCase();
+        const matchSearch = !q || hay.includes(q);
+        return matchType && matchCategory && matchSearch;
+      }
+    );
 
     return list.slice().sort((a, b) => {
       const ta = a?.date ? new Date(a.date).getTime() : -Infinity;
@@ -82,7 +104,9 @@ const TransactionList = () => {
     });
   }, [transactions, filterType, filterCategory, search]);
 
-  // Download CSV
+  // =============================
+  // CSV download
+  // =============================
   const handleDownload = () => {
     if (!filtered.length) {
       alert("No transactions to download.");
@@ -97,7 +121,7 @@ const TransactionList = () => {
       "PaymentMode",
       "Notes",
       "Location",
-      "Tags"
+      "Tags",
     ];
     const rows = filtered.map((tx) => [
       tx.date ? new Date(tx.date).toLocaleDateString("en-IN") : "",
@@ -108,7 +132,7 @@ const TransactionList = () => {
       tx.paymentMode || "",
       tx.notes || "",
       tx.location || "",
-      (tx.tags || []).join(", ")
+      (tx.tags || []).join(", "),
     ]);
     const csvContent = [headers, ...rows]
       .map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","))
@@ -117,16 +141,21 @@ const TransactionList = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `transactions_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `transactions_${new Date()
+      .toISOString()
+      .slice(0, 10)}.csv`;
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
   };
 
+  // =============================
+  // Loading state
+  // =============================
   if (loading) {
     return (
-      <div className="spinner-container" role="status" aria-label="Loading transactions">
+      <div className="spinner-container" role="status">
         <Reuleaux
           size="60"
           stroke="9"
@@ -135,16 +164,20 @@ const TransactionList = () => {
           speed="1.3"
           color={isDarkMode ? "#38bdf8" : "black"}
         />
+        
       </div>
     );
   }
 
+  // =============================
+  // Render Component
+  // =============================
   return (
     <>
       <div className="transaction-list-container">
         <h3>Transaction History</h3>
 
-        {/* --- Filters --- */}
+        {/* Filters */}
         <div className="filters">
           <div className="SearchBox">
             <FaSearch className="search-icon" />
@@ -160,7 +193,6 @@ const TransactionList = () => {
 
           <button
             className="download-btn"
-            style={{ marginLeft: 8, display: "flex", alignItems: "center", gap: 6 }}
             onClick={handleDownload}
             title="Download filtered transactions as CSV"
           >
@@ -195,7 +227,7 @@ const TransactionList = () => {
           </select>
         </div>
 
-        {/* --- Transaction List --- */}
+        {/* Transaction List */}
         {filtered.length === 0 ? (
           <div className="no-transactions-container">
             <motion.p
@@ -208,8 +240,11 @@ const TransactionList = () => {
               <span className="hint">Try adjusting your search criteria</span>
             </motion.p>
 
-            <div className="empty-actions" style={{ marginTop: 12 }}>
-              <button className="add-btn" onClick={() => navigate("/add-transaction")}>
+            <div className="empty-actions">
+              <button
+                className="add-btn"
+                onClick={() => navigate("/add-transaction")}
+              >
                 ➕ Add Transaction
               </button>
               <Link to="/transactions" className="view-all-link">
@@ -236,7 +271,7 @@ const TransactionList = () => {
                   frequency = "",
                   location = "",
                   tags = [],
-                  attachments = []
+                  attachments = [],
                 } = tx || {};
 
                 const formattedDate = date
@@ -245,12 +280,14 @@ const TransactionList = () => {
                       month: "short",
                       year: "numeric",
                       hour: "2-digit",
-                      minute: "2-digit"
+                      minute: "2-digit",
                     })
                   : "No Date";
 
                 const isRecent =
-                  date && Date.now() - new Date(date).getTime() < 7 * 24 * 60 * 60 * 1000;
+                  date &&
+                  Date.now() - new Date(date).getTime() <
+                    7 * 24 * 60 * 60 * 1000;
                 const isPremium = Math.abs(Number(amount || 0)) > 10000;
 
                 const allCategories = [...incomeCategories, ...expenseCategories];
@@ -258,15 +295,17 @@ const TransactionList = () => {
                   allCategories.find((c) => c.label === category) || {
                     label: category,
                     icon: "📂",
-                    color: "#9E9E9E"
+                    color: "#9E9E9E",
                   };
 
                 return (
                   <motion.li
                     key={id || `${idx}-${amount}-${date}`}
-                    className={`transaction-item ${type || (amount > 0 ? "income" : "expense")} ${
-                      isPremium ? "premium-transaction" : ""
-                    } ${isRecent ? "recent-transaction" : ""}`}
+                    className={`transaction-item ${
+                      type || (amount > 0 ? "income" : "expense")
+                    } ${isPremium ? "premium-transaction" : ""} ${
+                      isRecent ? "recent-transaction" : ""
+                    }`}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, x: -20 }}
@@ -274,17 +313,21 @@ const TransactionList = () => {
                       delay: idx * 0.02,
                       type: "spring",
                       stiffness: 300,
-                      damping: 18
+                      damping: 18,
                     }}
                     layout
                   >
-                    {/* --- Transaction Header --- */}
                     <div className="transaction-content">
+                      {/* Header */}
                       <div className="transaction-header">
                         <h4 className="transaction-title">
-                          {highlightText(text || tx.description || "No Description", search)}
-
-                          {isPremium && <span className="premium-badge"> 💎 High Value</span>}
+                          {highlightText(
+                            text || tx.description || "No Description",
+                            search
+                          )}
+                          {isPremium && (
+                            <span className="premium-badge">💎 High Value</span>
+                          )}
                           {isRecent && <span className="new-badge">✨ NEW</span>}
                           {recurring && (
                             <span className="recurring-badge">
@@ -300,7 +343,8 @@ const TransactionList = () => {
                           style={{ borderColor: matchedCategory.color }}
                         >
                           <span className="amount-symbol">
-                            {(type || (amount > 0 ? "income" : "expense")) === "income"
+                            {(type || (amount > 0 ? "income" : "expense")) ===
+                            "income"
                               ? "↑"
                               : "↓"}
                           </span>
@@ -309,7 +353,7 @@ const TransactionList = () => {
                         </div>
                       </div>
 
-                      {/* --- Transaction Meta --- */}
+                      {/* Meta */}
                       <div className="transaction-meta">
                         <span
                           className="category-tag"
@@ -319,33 +363,43 @@ const TransactionList = () => {
                           {matchedCategory.icon} {matchedCategory.label}
                         </span>
 
-                        <span className={`type-tag ${type}`}>{(type || "").toUpperCase()}</span>
+                        <span className={`type-tag ${type}`}>
+                          {(type || "").toUpperCase()}
+                        </span>
 
-                        <span className={`status-tag ${status.toLowerCase()}`}>{status}</span>
+                        <span className={`status-tag ${status.toLowerCase()}`}>
+                          {status}
+                        </span>
 
                         <span className="date-tag" title={formattedDate}>
                           📅 {formattedDate}
                         </span>
 
                         {location && (
-                          <span className="location-tag" title={`Location: ${location}`}>
+                          <span
+                            className="location-tag"
+                            title={`Location: ${location}`}
+                          >
                             🗺️ {location}
                           </span>
                         )}
                       </div>
 
-                      {/* --- Payment, Notes, Tags, Attachments --- */}
+                      {/* Details */}
                       <div className="transaction-details">
                         <div className="payment-info">
                           <span className="payment-icon">💳</span>
                           <span className="payment-text">
                             {paymentMode
-                              ? `${paymentMode.charAt(0).toUpperCase()}${paymentMode.slice(1)}`
+                              ? `${paymentMode.charAt(0).toUpperCase()}${paymentMode.slice(
+                                  1
+                                )}`
                               : "Not specified"}
                             {paymentMode === "account" && accountType && (
                               <span className="account-type">
                                 {" "}
-                                ({accountType.charAt(0).toUpperCase() + accountType.slice(1)})
+                                ({accountType.charAt(0).toUpperCase() +
+                                  accountType.slice(1)})
                               </span>
                             )}
                           </span>
@@ -355,7 +409,9 @@ const TransactionList = () => {
                           <div className="notes-container" title={notes}>
                             <span className="notes-icon">📝</span>
                             <p className="notes-text">
-                              {notes.length > 80 ? `${notes.substring(0, 80)}...` : notes}
+                              {notes.length > 80
+                                ? `${notes.substring(0, 80)}...`
+                                : notes}
                               {notes.length > 80 && (
                                 <button
                                   className="view-more-btn"
@@ -372,7 +428,6 @@ const TransactionList = () => {
                           </div>
                         )}
 
-                        {/* Tags */}
                         {tags.length > 0 && (
                           <div className="tags-container">
                             {tags.map((tag, i) => (
@@ -383,7 +438,6 @@ const TransactionList = () => {
                           </div>
                         )}
 
-                        {/* Attachments */}
                         {attachments.length > 0 && (
                           <div className="attachments-container">
                             {attachments.map((file, i) => (
@@ -403,7 +457,7 @@ const TransactionList = () => {
                       </div>
                     </div>
 
-                    {/* --- Delete Button --- */}
+                    {/* Delete */}
                     <motion.button
                       className="delete-btn"
                       onClick={(e) => {
@@ -425,29 +479,17 @@ const TransactionList = () => {
           </ul>
         )}
       </div>
-
+        <div className="fab-container">
+                <Link to="/add-transaction" className="fab-add" aria-label="Add transaction" title="Add Transaction">
+                  <FaPlus size={18} />
+                </Link>
+              </div>  
       {/* Floating Add Button */}
       <Link
         to="/add-transaction"
         aria-label="Add transaction"
         title="Add Transaction"
         className="th-fab-add"
-        style={{
-          position: "fixed",
-          right: 20,
-          bottom: 20,
-          zIndex: 9999,
-          background: "#6366f1",
-          color: "#fff",
-          borderRadius: "50%",
-          width: 56,
-          height: 56,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 6px 18px rgba(0,0,0,0.25)",
-          textDecoration: "none"
-        }}
       >
         <FaPlus size={18} />
       </Link>
@@ -476,7 +518,6 @@ const TransactionList = () => {
                     navigator.clipboard.writeText(modalNote);
                     alert("Note copied to clipboard!");
                   }}
-                  style={{ marginLeft: 10 }}
                 >
                   <FaCopy /> Copy
                 </button>

@@ -135,8 +135,10 @@
   transition: all 0.25s ease;
   margin-left: 9px;
   background: transparent;
-.auth-input{
-  
+}
+body.dark-mode .password-field input {
+  color: #f9fafb;
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .show-pass-btn{
@@ -185,4 +187,83 @@ body.dark-mode .show-pass-btn{
     opacity: 1;
     transform: translateX(0);
   }
+}
+:root {
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(88, 72, 255, 0.5);
+  --radius: 12px;
+  --shadow-glass: 
+    0 8px 30px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+.auth-form {
+  border: 1.5px solid transparent;
+  background: var(--glass-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-glass);
+  background-clip: padding-box;
+  position: relative;
+}
+.auth-form::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #6366f1, #a855f7, #06b6d4);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.auth-form input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  color: #111827;
+  backdrop-filter: blur(6px);
+}
+.auth-form input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+body.dark-mode .auth-form input {
+  color: #f9fafb;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.auth-form {
+  animation: fadeIn 0.5s ease-in-out, floatCard 6s ease-in-out infinite alternate;
+}
+@keyframes floatCard {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-8px); }
+}
+body.dark-mode {
+  --glass-bg: rgba(17, 24, 39, 0.6);
+  --glass-border: rgba(99, 102, 241, 0.4);
+  --shadow-glass: 
+    0 8px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+body.dark-mode .auth-form h2 {
+  color: #f3f4f6;
+}
+.auth-switch {
+  position: relative;
+}
+.auth-switch::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+.auth-switch:hover::after {
+  width: 100%;
+}
+body.dark-mode .auth-switch {
+  color: #93c5fd;
 }
