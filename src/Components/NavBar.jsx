@@ -10,7 +10,7 @@ const navLinks = [
   { to: "/", label: "Dashboard", icon: <FaWallet size={20} /> },            // Wallet = Overview
   { to: "/history", label: "History", icon: <FaReceipt size={20} /> },      // Transaction history
   { to: "/borrow-lend", label: "Udhari", icon: <FaBalanceScale size={20} /> }, // Borrow/Lend
-  { to: "/finance-tools", label: "Finance Tools", icon: <FaCoins size={20} /> }, // Coins = Tools/Savings
+  { to: "/finance-tools", label: "Finance Tools", icon: <FaCoins size={20} /> }, //Coins = Tools/Savings
 ];
 
 const isMobile = () => window.innerWidth <= 768;

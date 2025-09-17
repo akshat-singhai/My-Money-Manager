@@ -52,6 +52,7 @@ function App() {
                   <div className="spinner" aria-hidden="true"></div>
                   <p>Loading your dashboard...</p>
                 </div>
+
               }
             >
               <Routes>
@@ -92,6 +93,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+               
                 <Route
                   path="/borrow-lend"
                   element={

@@ -746,7 +746,8 @@ body.dark-mode {
   
   .chart-container-box {
     grid-template-columns: repeat(2, 1fr);
-  }
+  
+    overflow-y: scroll;
   
   .heading2 {
     font-size: var(--font-size-3xl);

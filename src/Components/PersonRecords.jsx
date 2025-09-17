@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -50,6 +50,7 @@ const PersonRecords = () => {
     }
   });
 
+  // Load records
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("borrowLendRecords")) || [];
     setRecords(stored.filter((r) => r.name === name));
@@ -59,47 +60,48 @@ const PersonRecords = () => {
     return () => clearTimeout(t);
   }, [name]);
 
-  if (loading) {
-    return (
-      <div className="spinner-container" role="status" aria-live="polite">
-        <Reuleaux
-          size="60"
-          stroke="9"
-          strokeLength="0.55"
-          bgOpacity=".08"
-          speed="1.3"
-          color={isDarkMode ? "#38bdf8" : "#111827"}
-        />
-      </div>
-    );
-  }
-
-  // Filtered + sorted
-  const filtered = records
-    .filter((r) => {
-      const q = search.trim().toLowerCase();
-      if (!q) return true;
-      return (
-        r.note?.toLowerCase().includes(q) ||
-        String(r.amount).includes(q) ||
-        r.date?.includes(q)
+  // ✅ Memoized derived state
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return records
+      .filter((r) => {
+        if (!q) return true;
+        return (
+          r.note?.toLowerCase().includes(q) ||
+          String(r.amount).includes(q) ||
+          r.date?.includes(q)
+        );
+      })
+      .sort(
+        (a, b) =>
+          new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
       );
-    })
-    .sort(
-      (a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
-    );
+  }, [records, search]);
 
-  const borrowed = filtered.filter((r) => r.type === "borrowed");
-  const lent = filtered.filter((r) => r.type === "lent");
+  const borrowed = useMemo(
+    () => filtered.filter((r) => r.type === "borrowed"),
+    [filtered]
+  );
 
-  // Totals (unsettled only)
-  const borrowedTotal = borrowed
-    .filter((r) => !r.settled)
-    .reduce((a, b) => a + b.amount, 0);
-  const lentTotal = lent
-    .filter((r) => !r.settled)
-    .reduce((a, b) => a + b.amount, 0);
-  const netBalance = lentTotal - borrowedTotal;
+  const lent = useMemo(
+    () => filtered.filter((r) => r.type === "lent"),
+    [filtered]
+  );
+
+  const borrowedTotal = useMemo(
+    () => borrowed.filter((r) => !r.settled).reduce((a, b) => a + b.amount, 0),
+    [borrowed]
+  );
+
+  const lentTotal = useMemo(
+    () => lent.filter((r) => !r.settled).reduce((a, b) => a + b.amount, 0),
+    [lent]
+  );
+
+  const netBalance = useMemo(
+    () => lentTotal - borrowedTotal,
+    [lentTotal, borrowedTotal]
+  );
 
   // Helpers
   const updateLocalStorage = (newRecords) => {
@@ -205,6 +207,21 @@ const PersonRecords = () => {
     toast.success("Marked as settled");
   };
 
+  if (loading) {
+    return (
+      <div className="spinner-container" role="status" aria-live="polite">
+        <Reuleaux
+          size="60"
+          stroke="9"
+          strokeLength="0.55"
+          bgOpacity=".08"
+          speed="1.3"
+          color={isDarkMode ? "#38bdf8" : "#111827"}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <Toaster position="top-right" />
@@ -218,7 +235,7 @@ const PersonRecords = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h3 >{borrowed.length} Udhar Liya</h3>
+            <h3>{borrowed.length} Udhar Liya</h3>
             <p>{formatINR(borrowedTotal)}</p>
           </motion.div>
 
@@ -252,6 +269,8 @@ const PersonRecords = () => {
         {/* Search + Export */}
         <div className="records-controls">
           <input
+            className="search-input"
+            aria-label="Search records"
             type="text"
             placeholder="Search notes, amount, or date..."
             value={search}
@@ -274,8 +293,8 @@ const PersonRecords = () => {
             {collapsed.borrowed ? <FaChevronUp /> : <FaChevronDown />}
           </div>
 
-          {!collapsed.borrowed && (
-            borrowed.length ? (
+          {!collapsed.borrowed &&
+            (borrowed.length ? (
               <ul className="records-list">
                 <AnimatePresence>
                   {borrowed.map((rec) => (
@@ -331,8 +350,7 @@ const PersonRecords = () => {
               </ul>
             ) : (
               <p className="empty-msg">No borrowed records yet.</p>
-            )
-          )}
+            ))}
         </div>
 
         {/* Lent Section */}
@@ -345,8 +363,8 @@ const PersonRecords = () => {
             {collapsed.lent ? <FaChevronUp /> : <FaChevronDown />}
           </div>
 
-          {!collapsed.lent && (
-            lent.length ? (
+          {!collapsed.lent &&
+            (lent.length ? (
               <ul className="records-list">
                 <AnimatePresence>
                   {lent.map((rec) => (
@@ -402,8 +420,7 @@ const PersonRecords = () => {
               </ul>
             ) : (
               <p className="empty-msg">No lent records yet.</p>
-            )
-          )}
+            ))}
         </div>
 
         {/* Floating Add Button */}
@@ -444,7 +461,12 @@ const PersonRecords = () => {
               >
                 <h3>{editId ? "✏️ Edit Record" : "➕ Add Record"} for {name}</h3>
                 <form onSubmit={handleSaveRecord}>
-                  <input type="text" value={formData.name} readOnly className="modal-input" />
+                  <input
+                    type="text"
+                    value={formData.name}
+                    readOnly
+                    className="modal-input"
+                  />
                   <input
                     type="number"
                     placeholder="Amount"

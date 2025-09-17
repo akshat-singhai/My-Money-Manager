@@ -1,5 +1,5 @@
-// ...existing code...
-import React, { useState, useEffect } from "react";
+// BorrowLend.jsx (Enhanced)
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -7,13 +7,15 @@ import {
   FaTrash,
   FaSearch,
   FaDownload,
+  FaSortAmountUp,
+  FaSortAmountDown,
 } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import { Reuleaux } from "ldrs/react";
 import "ldrs/react/Reuleaux.css";
 import "./BorrowLend.css";
-// ...existing code...
 
+// ===== Utility =====
 const formatINR = (value = 0) =>
   `₹${Number(value || 0).toLocaleString("en-IN")}`;
 
@@ -46,17 +48,14 @@ const BorrowLend = () => {
       return defaultRecords;
     }
   });
-  const [isDarkMode] = useState(() => {
-    // preserve API from previous file: simple detection from body class
-    try {
-      return document?.body?.classList?.contains?.("dark-mode") || false;
-    } catch {
-      return false;
-    }
-  });
+  const [isDarkMode] = useState(() =>
+    document?.body?.classList?.contains?.("dark-mode") || false
+  );
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState(null);
   const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("name");
+  const [sortDir, setSortDir] = useState("asc");
   const [loading, setLoading] = useState(true); // initial loading spinner
   const [saving, setSaving] = useState(false); // save button spinner
 
@@ -82,21 +81,62 @@ const BorrowLend = () => {
   }, [records]);
 
   // grouping accounts
-  const accounts = records.reduce((acc, r) => {
-    if (!acc[r.name]) acc[r.name] = { name: r.name, totalBorrowed: 0, totalLent: 0, records: [] };
-    if (r.type === "borrowed") acc[r.name].totalBorrowed += Number(r.amount || 0);
-    if (r.type === "lent") acc[r.name].totalLent += Number(r.amount || 0);
-    acc[r.name].records.push(r);
-    return acc;
-  }, {});
-  const accountList = Object.values(accounts).map((a) => ({
-    ...a,
-    netBalance: a.totalLent - a.totalBorrowed,
-  }));
+  const accountList = useMemo(() => {
+    const accounts = records.reduce((acc, r) => {
+      if (!acc[r.name])
+        acc[r.name] = {
+          name: r.name,
+          totalBorrowed: 0,
+          totalLent: 0,
+          records: [],
+        };
+      if (r.type === "borrowed")
+        acc[r.name].totalBorrowed += Number(r.amount || 0);
+      if (r.type === "lent")
+        acc[r.name].totalLent += Number(r.amount || 0);
+      acc[r.name].records.push(r);
+      return acc;
+    }, {});
+    return Object.values(accounts).map((a) => ({
+      ...a,
+      netBalance: a.totalLent - a.totalBorrowed,
+    }));
+  }, [records]);
 
-  const filtered = accountList.filter((acc) =>
-    acc.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // totals summary
+  const summary = useMemo(() => {
+    let borrowed = 0,
+      lent = 0;
+    records.forEach((r) =>
+      r.type === "borrowed"
+        ? (borrowed += Number(r.amount || 0))
+        : (lent += Number(r.amount || 0))
+    );
+    return {
+      borrowed,
+      lent,
+      net: lent - borrowed,
+    };
+  }, [records]);
+
+  // filtering + sorting
+  const filtered = useMemo(() => {
+    let arr = accountList.filter((acc) =>
+      acc.name.toLowerCase().includes(search.toLowerCase())
+    );
+    arr.sort((a, b) => {
+      let v1 = a[sortBy],
+        v2 = b[sortBy];
+      if (typeof v1 === "string") {
+        v1 = v1.toLowerCase();
+        v2 = v2.toLowerCase();
+      }
+      if (v1 < v2) return sortDir === "asc" ? -1 : 1;
+      if (v1 > v2) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+    return arr;
+  }, [accountList, search, sortBy, sortDir]);
 
   const resetForm = () =>
     setFormData({
@@ -109,7 +149,7 @@ const BorrowLend = () => {
 
   const handleSaveRecord = (e) => {
     e.preventDefault();
-    if (!formData.name || formData.amount === "" || formData.amount === null) {
+    if (!formData.name || formData.amount === "") {
       toast.error("⚠️ Please provide name and amount");
       return;
     }
@@ -119,7 +159,9 @@ const BorrowLend = () => {
       if (editId) {
         setRecords((prev) =>
           prev.map((r) =>
-            r.id === editId ? { ...r, ...formData, amount: Number(formData.amount) } : r
+            r.id === editId
+              ? { ...r, ...formData, amount: Number(formData.amount) }
+              : r
           )
         );
         toast.success("✅ Record updated");
@@ -132,7 +174,6 @@ const BorrowLend = () => {
         setRecords((prev) => [...prev, newRecord]);
         toast.success("✅ Record added");
       }
-
       resetForm();
       setEditId(null);
       setShowForm(false);
@@ -147,19 +188,28 @@ const BorrowLend = () => {
   };
 
   const handleExport = () => {
-    const rows = accountList.map((a) => [a.name, a.totalBorrowed, a.totalLent, a.netBalance]);
+    const rows = accountList.map((a) => [
+      a.name,
+      a.totalBorrowed,
+      a.totalLent,
+      a.netBalance,
+    ]);
     if (!rows.length) {
       toast.error("No data to export");
       return;
     }
     const csv = [["Name", "Borrowed", "Lent", "Net"], ...rows]
-      .map((row) => row.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","))
+      .map((row) =>
+        row.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")
+      )
       .join("\r\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `accounts_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `accounts_${new Date()
+      .toISOString()
+      .slice(0, 10)}.csv`;
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -167,10 +217,10 @@ const BorrowLend = () => {
     toast.success("Export started");
   };
 
-  // initial loading screen
+  // ===== Loading =====
   if (loading) {
     return (
-      <div className="spinner-container" role="status" aria-live="polite" style={{ padding: 28 }}>
+      <div className="spinner-container" role="status" style={{ padding: 28 }}>
         <Reuleaux
           size="60"
           stroke="9"
@@ -187,13 +237,33 @@ const BorrowLend = () => {
     <>
       <Toaster position="top-right" />
       <div className="borrow-lend-container">
-        <h2>Udhari</h2>
+        <h2>📒 Udhari Tracker</h2>
+
+        {/* Summary Section */}
+        <div className="summary-cards">
+          <motion.div className="summary-card borrowed" whileHover={{ scale: 1.05 }}>
+            <span>Udhar Liya</span>
+            <h3>{formatINR(summary.borrowed)}</h3>
+          </motion.div>
+          <motion.div className="summary-card lent" whileHover={{ scale: 1.05 }}>
+            <span>Udhar Diya</span>
+            <h3>{formatINR(summary.lent)}</h3>
+          </motion.div>
+          <motion.div
+            className={`summary-card net ${summary.net >= 0 ? "positive" : "negative"}`}
+            whileHover={{ scale: 1.05 }}
+          >
+            <span>Net Balance</span>
+            <h3>{formatINR(summary.net)}</h3>
+          </motion.div>
+        </div>
 
         {/* Search + Controls */}
         <div className="records-controls">
           <div className="SearchBox">
             <FaSearch />
             <input
+            className="search-input"
               aria-label="Search accounts"
               placeholder="Search person..."
               value={search}
@@ -201,9 +271,18 @@ const BorrowLend = () => {
             />
           </div>
 
-          <div style={{ display: "flex", gap: 8 }}>
+          <div className="controls-buttons">
             <button className="bl-export-btn" onClick={handleExport}>
               <FaDownload /> Export
+            </button>
+            <button
+              className="bl-sort-btn"
+              onClick={() =>
+                setSortDir((d) => (d === "asc" ? "desc" : "asc"))
+              }
+            >
+              {sortDir === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />}
+              Sort {sortBy}
             </button>
           </div>
         </div>
@@ -212,48 +291,66 @@ const BorrowLend = () => {
         <div className="records-list">
           <h3 className="summary-cards-text">Accounts</h3>
           {filtered.length === 0 ? (
-            <p className="empty-msg">No accounts found. Add one!</p>
+            <p className="empty-msg">✨ No accounts found. Add one!</p>
           ) : (
             <ul>
               <AnimatePresence>
                 {filtered.map((acc) => (
                   <motion.li
                     key={acc.name}
-                    className={`record-item account ${acc.netBalance >= 0 ? "positive" : "negative"}`}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 12 }}
+                    className={`record-item account ${
+                      acc.netBalance >= 0 ? "positive" : "negative"
+                    }`}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
                     layout
                   >
-                    <div className="avatar">{acc.name.charAt(0).toUpperCase()}</div>
+                    <div className="avatar">
+                      {acc.name.charAt(0).toUpperCase()}
+                    </div>
 
                     <div className="record-details">
-                      <Link to={`/person/${encodeURIComponent(acc.name)}`} className="record-name">
+                      <Link
+                        to={`/person/${encodeURIComponent(acc.name)}`}
+                        className="record-name"
+                      >
                         {acc.name}
                       </Link>
                       <span className="record-note">
-                        Udhar Liya: {formatINR(acc.totalBorrowed)} | Udhar Diya: {formatINR(acc.totalLent)}
+                        Udhar Liya: {formatINR(acc.totalBorrowed)} | Udhar
+                        Diya: {formatINR(acc.totalLent)}
                       </span>
                     </div>
 
                     <div className="record-meta">
-                      <span className={`record-amount ${acc.netBalance >= 0 ? "green" : "red"}`}>
+                      <span
+                        className={`record-amount ${
+                          acc.netBalance >= 0 ? "green" : "red"
+                        }`}
+                      >
                         {formatINR(acc.netBalance)}
                       </span>
                       <span className="record-date">Net Balance</span>
                     </div>
 
                     <div className="record-actions">
-                      <button onClick={() => {
-                        resetForm();
-                        setFormData((s) => ({ ...s, name: acc.name }));
-                        setEditId(null);
-                        setShowForm(true);
-                      }} title="Add record for person">
+                      <button
+                        onClick={() => {
+                          resetForm();
+                          setFormData((s) => ({ ...s, name: acc.name }));
+                          setEditId(null);
+                          setShowForm(true);
+                        }}
+                        title="Add record for person"
+                      >
                         <FaPlus />
                       </button>
 
-                      <button onClick={() => handleDeletePerson(acc.name)} title="Delete Account">
+                      <button
+                        onClick={() => handleDeletePerson(acc.name)}
+                        title="Delete Account"
+                      >
                         <FaTrash />
                       </button>
                     </div>
@@ -282,49 +379,92 @@ const BorrowLend = () => {
         {/* Modal */}
         <AnimatePresence>
           {showForm && (
-            <motion.div className="modal-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <motion.div className="modal" initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}>
+            <motion.div
+              className="modal-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <motion.div
+                className="modal"
+                role="dialog"
+                aria-modal="true"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+              >
                 <h3>{editId ? "✏️ Edit Record" : "➕ Add Record"}</h3>
                 <form onSubmit={handleSaveRecord}>
                   <input
                     type="text"
                     placeholder="Person's Name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                   />
                   <input
                     type="number"
                     placeholder="Amount"
                     value={formData.amount}
-                    onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, amount: e.target.value })
+                    }
                   />
                   <input
                     type="text"
                     placeholder="Note (optional)"
                     value={formData.note}
-                    onChange={(e) => setFormData({ ...formData, note: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, note: e.target.value })
+                    }
                   />
                   <input
                     type="date"
                     value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, date: e.target.value })
+                    }
                   />
                   <select
                     value={formData.type}
-                    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, type: e.target.value })
+                    }
                   >
                     <option value="borrowed">Udhar Liya</option>
                     <option value="lent">Udhar Diya</option>
                   </select>
 
-                  <div className="modal-actions" style={{ display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 8 }}>
-                    <button type="button" onClick={() => { setShowForm(false); setEditId(null); }} disabled={saving}>
+                  <div className="modal-actions">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowForm(false);
+                        setEditId(null);
+                      }}
+                      disabled={saving}
+                    >
                       Cancel
                     </button>
-                    <button type="submit" disabled={saving} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                    <button
+                      type="submit"
+                      disabled={saving}
+                      className="save-btn"
+                    >
                       {saving ? (
-                        <Reuleaux size="18" stroke="3" strokeLength="0.6" color="#fff" speed="1.2" />
-                      ) : editId ? "Update" : "Save"}
+                        <Reuleaux
+                          size="18"
+                          stroke="3"
+                          strokeLength="0.6"
+                          color="#fff"
+                          speed="1.2"
+                        />
+                      ) : editId ? (
+                        "Update"
+                      ) : (
+                        "Save"
+                      )}
                     </button>
                   </div>
                 </form>
@@ -338,4 +478,3 @@ const BorrowLend = () => {
 };
 
 export default BorrowLend;
-// ...existing code...
