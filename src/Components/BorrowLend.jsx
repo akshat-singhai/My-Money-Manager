@@ -182,7 +182,6 @@ const BorrowLend = () => {
   };
 
   const handleDeletePerson = (name) => {
-    if (!window.confirm(`Remove all records for ${name}?`)) return;
     setRecords((prev) => prev.filter((r) => r.name !== name));
     toast.success(`🗑️ Deleted account of ${name}`);
   };

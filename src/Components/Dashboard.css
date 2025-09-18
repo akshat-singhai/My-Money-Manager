@@ -1045,3 +1045,4 @@ body.dark-mode .summary-card::before {
   background: var(--glass-bg-dark);
   backdrop-filter: blur(12px);
 }
+}
