@@ -1,68 +1,79 @@
 // Income Categories
 export const incomeCategories = [
   {
+    id: "salary",
     label: "Salary",
     icon: "💼",
-
+    color: "#2196F3",
     type: "income",
-    description: "Monthly/weekly income from your job"
+    description: "Monthly or weekly income from your job"
   },
   {
-    label: "Business",
+    id: "revenue",
+    label: "Revenue",
     icon: "📈",
-
+    color: "#4CAF50",
     type: "income",
     description: "Earnings from your own business"
   },
   {
+    id: "investments",
     label: "Investments",
     icon: "📊",
-
+    color: "#9C27B0",
     type: "income",
-    description: "Profits/dividends from investments"
+    description: "Profits or dividends from investments"
   },
   {
+    id: "freelancing",
     label: "Freelancing",
     icon: "🖥️",
-
+    color: "#3F51B5",
     type: "income",
     description: "Income from freelance projects"
   },
   {
+    id: "rental",
     label: "Rental Income",
     icon: "🏠",
+    color: "#795548",
     type: "income",
     description: "Earnings from rented properties"
   },
   {
+    id: "gifts_income",
     label: "Gifts",
     icon: "🎁",
     color: "#E91E63",
     type: "income",
     description: "Money received as gifts"
   },
-  { label: "Interest", icon: "💵", type: "income", description: "Interest earned from savings" },
   {
+    id: "interest",
+    label: "Interest",
+    icon: "💵",
+    color: "#009688",
+    type: "income",
+    description: "Interest earned from savings or deposits"
+  },
+  {
+    id: "refunds",
     label: "Refunds",
     icon: "🔄",
     color: "#FF9800",
     type: "income",
-    description: "Money refunded from purchases"
+    description: "Money refunded from purchases or services"
   },
-
-   {
-    label: "Lottery",
-    icon: "🎰",
-    color: "#4CAF50",
-    type: "income",
-    description: "Winnings from lottery or gambling"
-  }, {
+  {
+    id: "bonus",
     label: "Bonus",
     icon: "🏆",
-    color: "#FFEB3B",
+    color: "#FFC107",
     type: "income",
-    description: "Year-end bonus or performance bonus"
-  }, {
+    description: "Performance or year-end bonus"
+  },
+  {
+    id: "sale",
     label: "Sale",
     icon: "🛒",
     color: "#FF5722",
@@ -70,39 +81,43 @@ export const incomeCategories = [
     description: "Income from selling goods or services"
   },
   {
+    id: "commission",
     label: "Commission",
     icon: "💼",
-    color: "#FFC107",
+    color: "#CDDC39",
     type: "income",
     description: "Earnings from commissions"
   },
   {
-    label:"Tips",
-    icon:"💸",
-    color:"#8BC34A",
-    type:"income",
-    description:"Money received as tips for services" 
-  },{
-    label:"Transaction",
-    icon:"💳",
-    color:"#9E9E9E",
-    type:"income",
-    description:"Money received from various transactions"
+    id: "tips",
+    label: "Tips",
+    icon: "💸",
+    color: "#00BCD4",
+    type: "income",
+    description: "Money received as tips for services"
   },
-
   {
+    id: "transaction_income",
+    label: "Transactions",
+    icon: "💳",
+    color: "#9E9E9E",
+    type: "income",
+    description: "Miscellaneous received transactions"
+  },
+  {
+    id: "other_income",
     label: "Other",
     icon: "➕",
     color: "#9E9E9E",
     type: "income",
     description: "Any other income source"
-  },
+  }
 ];
-
 
 // Expense Categories
 export const expenseCategories = [
   {
+    id: "food",
     label: "Food",
     icon: "🍔",
     color: "#FF5722",
@@ -110,34 +125,39 @@ export const expenseCategories = [
     description: "Groceries, dining out, snacks"
   },
   {
+    id: "rent",
     label: "Rent",
     icon: "🏡",
     color: "#795548",
     type: "expense",
-    description: "Monthly house/apartment rent"
+    description: "Monthly house or apartment rent"
   },
   {
+    id: "shopping",
     label: "Shopping",
     icon: "🛍️",
-
+    color: "#9C27B0",
     type: "expense",
     description: "Clothing, accessories, etc."
   },
   {
+    id: "utilities",
     label: "Utilities",
     icon: "💡",
-
+    color: "#FFEB3B",
     type: "expense",
-    description: "Electricity, water, internet bills"
+    description: "Electricity, water, gas bills"
   },
   {
+    id: "travel",
     label: "Travel",
     icon: "✈️",
-
+    color: "#03A9F4",
     type: "expense",
     description: "Flights, fuel, commute expenses"
   },
   {
+    id: "health",
     label: "Health",
     icon: "🏥",
     color: "#8BC34A",
@@ -145,6 +165,7 @@ export const expenseCategories = [
     description: "Medical bills, pharmacy, insurance"
   },
   {
+    id: "education",
     label: "Education",
     icon: "🎓",
     color: "#673AB7",
@@ -152,6 +173,7 @@ export const expenseCategories = [
     description: "Tuition fees, courses, books"
   },
   {
+    id: "transport",
     label: "Transportation",
     icon: "🚗",
     color: "#FF9800",
@@ -159,51 +181,78 @@ export const expenseCategories = [
     description: "Public transport, fuel, parking"
   },
   {
-    label: "Recharge & Bills",
+    id: "recharge",
+    label: "Recharge ",
     icon: "🧾",
-    color: "#FF5722",
+    color: "#F44336",
     type: "expense",
-    description: "Mobile recharge, utility bills"
+    description: "Mobile recharge, DTH, utility bills"
+  },
+  { id:"bills",
+    label: "Bills",
+    icon: "🧾",
+    color: "#FF9800",
+    type: "expense",
+    description: "Utility bills, subscriptions, etc."
   },
   {
-    label: "Internet",
-    icon: "🌐",
-    color: "#3F51B5",
-    type: "expense",
-    description: "Internet subscription and data plans"
-  },
-  {
+    id: "entertainment",
     label: "Entertainment",
     icon: "🎬",
     color: "#FF4081",
     type: "expense",
-    description: "Movies, subscriptions, concerts"
+    description: "Movies, streaming, concerts"
   },
-  { label: "Gifts", icon: "🎁", color: "#E91E63", type: "expense", description: "Money spent on gifts" },
   {
+    id: "subscriptions",
+    label: "Subscriptions",
+    icon: "📺",
+    color: "#009688",
+    type: "expense",
+    description: "Netflix, Spotify, Gym, SaaS tools"
+  },
+  {
+    id: "maintenance",
+    label: "Maintenance",
+    icon: "🛠️",
+    color: "#607D8B",
+    type: "expense",
+    description: "Repairs, house/vehicle maintenance"
+  },
+  {
+    id: "loans",
+    label: "Loans/EMI",
+    icon: "🏦",
+    color: "#9C27B0",
+    type: "expense",
+    description: "Monthly EMI or loan repayments"
+  },
+  {
+    id: "gifts_expense",
+    label: "Gifts",
+    icon: "🎁",
+    color: "#E91E63",
+    type: "expense",
+    description: "Money spent on gifts"
+  },
+  {
+    id: "taxes",
     label: "Taxes",
     icon: "💼",
     color: "#FF9800",
     type: "expense",
     description: "Income and property taxes"
   },
-  { label: "Pets", icon: "🐶", color: "#4CAF50", type: "expense", description: "Pet food, vet bills, accessories" },
   {
-    label: "Transaction",
+    id: "transaction_expense",
+    label: "Transactions",
     icon: "💳",
     color: "#9E9E9E",
     type: "expense",
-    description: "Money received from various transactions"
+    description: "Miscellaneous outgoing transactions"
   },
   {
-    label: "Sports",
-    icon: "⚽",
-    color: "#2196F3",
-    type: "expense",  
-    description: "Gym, sports equipment, events"
-  },
-  { label: "Personal Care", icon: "💇‍♂️", color: "#E91E63", type: "expense", description: "Salon, spa, grooming" },
-  {
+    id: "other_expense",
     label: "Other",
     icon: "➖",
     color: "#9E9E9E",

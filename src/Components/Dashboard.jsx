@@ -15,6 +15,7 @@ import { Reuleaux } from "ldrs/react";
 import 'ldrs/react/Reuleaux.css';
 import "./Dashboard.css";
 
+
 // Constants
 const COLORS = ["#38bdf8", "#6366f1", "#fbbf24", "#ef4444", "#10b981", "#a21caf", "#f472b6", "#f59e42"];
 const PAYMENT_MODES = ['cash', 'online', 'account', 'card', 'upi'];
@@ -755,7 +756,7 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
       )}
-
+      
       {/* Floating Action Buttons */}
       <div className="fab-container">
         <Link to="/add-transaction" className="fab-add" aria-label="Add transaction" title="Add Transaction">
